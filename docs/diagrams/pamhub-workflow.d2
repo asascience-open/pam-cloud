@@ -1,0 +1,70 @@
+#
+# 
+# 
+
+
+
+# High level end to end workflow based on Makara presentation by Jeff Walker
+# What parts of NMFS workflow are essential to NERACOOS PAMHUB workflow?
+collect: "Data Collection" {
+    direction: down
+    gliders
+    moorings
+    ships
+}
+
+staging: "Data Storage" {
+    direction: down
+    icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FStorage%2FCloud%20Storage.svg
+    raw: "Raw Audio Data and Metadata" 
+}
+
+processing: "Data Processing" {
+    direction: down
+    pam-ww: |md
+    Run software in cloud workstation
+    |
+    batch: |md
+    Run batch scale software from console
+    |
+    validate: "Validate Detections"
+} 
+
+manage: "Data Management" {
+    direction: down
+    metadata: |md
+    Record detections and metadata in database
+    |
+}
+
+products: "Data Products and Public Output" {
+    direction: down
+    analyze: |md
+    Analyze with PAMVerse
+    |
+    pacm: |md
+    Visualize with PACM
+    |
+    archive: |md 
+    Archive at NCEI
+    |
+}
+
+applications: "Management Applications" {
+    direction: down
+    one 
+    two
+    three
+}
+
+collect -> staging.raw
+staging.raw -> processing.pam-ww 
+staging.raw -> processing.batch 
+processing.pam-ww -> processing.validate
+processing.batch -> processing.validate
+processing.validate -> manage.metadata
+manage.metadata -> products.analyze
+manage.metadata -> products.pacm
+manage.metadata -> products.archive
+products -> applications
+
