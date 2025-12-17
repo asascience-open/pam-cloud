@@ -17,7 +17,7 @@ Here the data provider has collected PAM data and wants to have the data QA/QCd 
 6. IOOS creates a temporary virtual cloud Windows workstation for the data provider. The workstation has access to the temporary data bucket and has a suite of acoustic analysis software already installed including Raven, R, python (Anaconda, PyCharm), SoundTrap software. Software requiring a license can be installed by the data provider (by coordinating with IOOS admin). The data provider will need its own license.   
 7. Data provider uploads the raw passive acoustic data to the temporary data bucket.  
    1. If data size is manageable, the data provider will upload data via internet using the command line tool gsutil. Transferring compressed files (e.g. .sud files from SoundTrap recorders) should be preferred when available.  
-   2. If data size is too large to transfer via internet, the data provider will ship hard drives to Google via the T[ransfer Appliance service](https://cloud.google.com/transfer-appliance/docs/4.0/overview).  
+   2. If data size is too large to transfer via internet, the data provider will ship hard drives to Google via the [Transfer Appliance service](https://cloud.google.com/transfer-appliance/docs/4.0/overview).  
 8. IOOS analyst connects to the IOOS cloud workstation and starts the QA/QC process. This consists of 1\) running R and python routines to detect times and frequency bands of the data that may have issues (e.g. noise, data gaps, etc) and 2\) manually verifying a portion of the data that were flagged by the scripts. If the data uploaded by the data provider are compressed (e.g. sud file), IOOS will first need to decompress the data (e.g. using the SoundTrap software)  
 9. IOOS analyst creates a QA/QC report and uploads it to the temporary data bucket for the data provider to review.  
 10. Data provider uses temporary cloud workstation to access the QA/QC report and to verify a section of the data flagged using standard (e.g. Raven) and custom (e.g. possibly R/python GUI) software.  
@@ -27,75 +27,3 @@ Here the data provider has collected PAM data and wants to have the data QA/QCd 
 14. Data from the data provider are publicly available on the NCEI PAD Google bucket ([https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic](https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic)) and discoverable on the NCEI Passive Acoustic Data Map ([https://www.ncei.noaa.gov/maps/passive-acoustic-data](https://www.ncei.noaa.gov/maps/passive-acoustic-data))  
 15. If the data provider is not interested in pursuing more data analysis, IOOS terminates the data provider’s temporary cloud data bucket and the cloud workstation.
 
-
-
-## US-001 Archive raw audio at NCEI
-- Archive raw audio 
-  - Create deployment metadata
-  - Upload raw audio to cloud
-  - Quality control raw audio
-  - Create raw audio archive package
-  - Archive raw audio package at NCEI
-
-## US-002 Create hybrid milli-decade (HMD) files and archive
-- Create hybrid milli-decade (HMD) files and archive
-  - Create deployment metadata
-  - Upload raw audio to cloud
-  - Quality control raw audio
-  - Launch pam-ww cloud workstation
-  - Process raw audio with PyPAM
-    - Create PyPAM config yaml files for deployment
-    - Trigger PyPAM processing
-    - Quality control PyPAM output
-  - Archive HMD output at NCEI
-    - Create HMD archive package
-    - Archive HMD package at NCEI
-
-## US-003 Create LFDCS Whale detections
-- Create LFDCS Whale detections, archive at NCEI, and publish to PACM 
-  - Create deployment metdata
-  - Upload raw audio to cloud
-  - Quality control raw audio
-  - Run LFDCS detector
-    - Launch pam-ww cloud workstation
-    - Create LFDCS config parameter file
-    - Run LFDCS detector on pam-ww cloud workstation
-  - Quality control LFDCS output
-  - Create LFDCS archive package
-  - Archive LFDCS archive package at NCEI
-  - _Upload LFDCS detections to Makara and PACM (NOTE: To be verified)_
-
-## US-004 Visualizations
-
-## Overall WBS
-
-- Stakeholder Outreach
-  - Data Providers
-  - Customers for derived products
-- Develop Cloud Storage System
-  - Upload small datasets
-  - Upload large datasets
-  - Upload metadata
-  - Upload derived products
-- Develop pam-ww cloud workstation 
-  - Create windows based workstation
-  - Install software dependencies
-  - Negotiate licenses for software dependencies
-- Develop batch scaling infrastructure
-  - Decide on workflow orchetration architecture
-  - Develop detector interface architecture (to support plug and play detectors in a workflow)
-  - Create containers with dependencies
-  - Reproduce manual workflows
-- Create database infrastructure (if not Makara)
-  - Collect requirements for each software dependency and NCEI
-  - Create data model for each use case
-  - Determine metadata requirements for NCEI archiving
-- Create derived products
-  - Visualization system for HMD files
-  - Visualization of HMD climatology
-
-
-## Use Case 005 - HMD Climatology 
-From Jackie in Google Docs comments.  We'd like to start with a plotted climatology of HMD. This is helpful for observing variability and detecting anomalies, and it's also similar to our existing Climatology which we hope to integrate some of the data sets in the future. @xavier.mouy@whoi.edu has worked on this and has some code to share.
-
-After creating the use case documentation, answer this comment and refer her to Github.
