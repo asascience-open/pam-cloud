@@ -8,9 +8,11 @@ PAM Analyst
 
 # Internal PAMHUB is the main system in question
 # Stakeholder engagement will help determine the needed functionality of the Data Processing container.
-PAMHUB
+PAMHUB "PAMHUB" {
+
+}
 PAMHUB.Portal
-PAMHUB.Raw Ingest Bucket
+PAMHUB.Ingest Layer
 PAMHUB.Metadata Database
 PAMHUB.Data Processing 
 PAMHUB.Archive Staging Bucket
@@ -19,3 +21,12 @@ PAMHUB.Archive Staging Bucket
 NCEI
 NODD
 PACM
+
+TODO: Get a copy of the secoora system landscape and use as a basis for this diagram.
+
+- Ingest layer: authenticated upload endpoints and connector agents. CLI or Google Transport hard drives
+- Storage layer: object store with metadata catalog and lifecycle policies.
+- Processing layer: Manual cloud based workstaition (pam-ww) or batch scaling.
+- Visualization: Visualization for select products.  Possibly, building on the [SoundCOOP Visualization system](https://soundcoop.portal.axds.co)
+- Operations: monitoring, alerting, logs, backups, and cost management.
+- Export layer: dataset packaging and export workflows for downstream customers (e.g. NOAA/NCEI archive, PACM).

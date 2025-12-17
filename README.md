@@ -1,6 +1,6 @@
 # PAMHUB 
 
-PAMHUB is a NERACOOS-hosted migration and reimplementation of NOAA Fisheries’ [PAM-SI Cloud](https://nmfs-ost.github.io/PAM-Cloud/) system. PAMHUB provides passive acoustic monitoring (PAM) ingestion, storage, processing, visualization, and archival export capabilities similar in purpose and user workflow to NOAA’s PAM-SI Cloud, but implemented and operated outside NOAA cloud infrastructure and targeted primarily at [non-NOAA scientists](data-providers.md). The goal is to give non-NOAA researchers and institutions a supported cloud service for storing, processing, visualizing, and exporting PAM data, while maintaining interoperability with common archival patterns where practical.
+PAMHUB is a NERACOOS-hosted migration and reimplementation of NOAA Fisheries’ [PAM-SI Cloud](https://nmfs-ost.github.io/PAM-Cloud/) system. PAMHUB provides passive acoustic monitoring (PAM) ingestion, storage, processing, visualization, and archival export capabilities similar in purpose and user workflow to NOAA’s PAM-SI Cloud, but implemented and operated outside NOAA cloud infrastructure and targeted primarily at [non-NOAA scientists](docs/data-providers.md). The goal is to give non-NOAA researchers and institutions a supported cloud service for storing, processing, visualizing, and exporting PAM data, while maintaining interoperability with common archival patterns where practical.
 
 ## Motivation & goals
 - Provide the regional ocean-observing and marine research communities with a maintained PAM cloud platform under NERACOOS operations.
@@ -25,12 +25,6 @@ GitHub Issues, Projects, and Milestones will be used to track and plan project p
 ## High-level architecture
 See [architecture.md](docs/architecture.md) for diagrams and an expanded description of PAMHUB.
 
-- Ingest layer: authenticated upload endpoints and connector agents.
-- Storage layer: object store with metadata catalog and lifecycle policies.
-- Processing layer: orchestrated container jobs (Kubernetes jobs, managed batch, or serverless tasks).
-- Visualization: Visualization for select products.  Building on the [SoundCOOP Visualization system](https://soundcoop.portal.axds.co)
-- Operations: monitoring, alerting, logs, backups, and cost management.
-- Archival/export: dataset packaging and export workflows to NOAA/NCEI archive.
 
 ## Contributing
 TBD
