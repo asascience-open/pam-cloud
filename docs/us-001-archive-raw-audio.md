@@ -7,7 +7,9 @@ Here the data provider has collected PAM data and wants to have the data QA/QCd 
 
 2. *Workflow* 
 
-![][image1]
+
+![Upload to NCEI][dataflow-ncei]
+
 
 1. Data provider recovers PAM moorings, downloads data from the recorders and performs data backup.	  
 2. Data provider enters metadata of the deployment locations, instrument specifications and recording cycles to the NOAA Makara database using the Makara Data Portal interface ([https://passiveacoustics.fisheries.noaa.gov](https://passiveacoustics.fisheries.noaa.gov)). At this stage the data provider also defines data sharing permissions (PACM visibility, accessibility from other users, etc.).  
@@ -27,3 +29,4 @@ Here the data provider has collected PAM data and wants to have the data QA/QCd 
 14. Data from the data provider are publicly available on the NCEI PAD Google bucket ([https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic](https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic)) and discoverable on the NCEI Passive Acoustic Data Map ([https://www.ncei.noaa.gov/maps/passive-acoustic-data](https://www.ncei.noaa.gov/maps/passive-acoustic-data))  
 15. If the data provider is not interested in pursuing more data analysis, IOOS terminates the data provider’s temporary cloud data bucket and the cloud workstation.
 
+[dataflow-ncei]: images/Diagram_data-upload-NCEI_.png
