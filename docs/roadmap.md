@@ -17,36 +17,48 @@ gantt
     Track costs                         :active,  cost, 2025-09-01, 2026-07-31
 
     section Stakeholder Engagement
-    Obtain data from a : se1, 2026-01-06,7d
-    Obtain data from b : se2, 2026-01-06,7d
-    Obtain data from c : se3, 2026-01-06,7d
-    Define visualization 2: se4, 2026-01-06, 2026-01-31
-    ONR Programmatic Review                :milestone, 2026-01-14, 0d
-    Regional Coordination Workshop.        : milestone, 2026-01-21, 0d
-    GMRI Engagement.  : se5, 2026-03-01, 2026-07-31
+    Obtain data from providers : se1, 2026-01-06,14d
+    Define climatology visualization  : se4, 2026-01-06, 2026-01-31
+    ONR Programmatic Review           :milestone, 2026-01-14, 0d
+    Regional Coordination Workshop    : milestone, 2026-01-21, 0d
+    GMRI Engagement           : se5, 2026-03-01, 2026-07-31
+    Negotiate code/data sharing w NOAA  : se6, 2025-12-01, 2026-02-15
 
     section MVP Manual Processing
-    Create pam-ww workstation               :active, man1, after dd2, 30d
+    Create pam-ww Windows workstation     :active, man1, after dd2, 30d
     Upload test data          : man2, after man1  , 10d
     Manual QC of raw audio    : man3, after man1  , 10d
+    Manual derivation of HMD  : man6, after man1, 30d
     Process LFDCS detections  : man4, after man1, 20d
     Test N detectors.         : man5, after man4, 30d
 
-    section Scaling and automation
-    Design batch scaling orchestration             :after doc1, 30d
+    section Scaling and Automation
+    Design batch scaling orchestration             :s1, after doc1, 30d
     Decide on Makara replacement      :milestone, 2026-01-30, 0d
+    Test automation against manual products : s3, after s1, 30d
+    Finalize batch-scaling    : s4, after s3, 30d
 
     section Usability
     Document architecture         : u1, 2025-08-06,2026-08-30
-    Document manual and batch operations. : 2025-08-06,2026-08-30
+    Document manual and batch operations. : u2, 2025-02-06,2026-08-30
+    Create training curriculum for users  : u3, 2026-02-06,2026-08-30
+
+    section Visualization
+    Create draft visualization website : v1, 2026-02-01, 2026-04-01
+    Determine website host : milestone, m2, 2026-01-05, 0d
+    Refine visualization website   : v2, after u3, 30d
+    Deploy visualization to host      : v3, 2026-03-01, 2026-03-30
 
     section Interoperability
-    Define NCEI archive process : 2025-08-06, 2026-08-30
-    Develop metadata export package for archive : 2025-08-06, 2026-08-30
-    Archive N datasets.  : 2025-08-06,2026-08-30
-    Visualize on PACM.   : 2025-08-06,2026-08-30
-    Determine website host : milestone, m2, 2026-01-05, 0d
-    Deploy visualization to host.      : 2026-03-01, 2026-03-30
+    Define NCEI archive process : i1, 2026-02-01, 30d
+    Develop metadata export package for archive : i2, after i1, 30d
+    Archive N datasets/derived products  : i3, 2026-02-01, 2026-08-30
+    Visualize on PACM???   : 2026-04-01, 2026-08-30
+
+    section Transition
+    Determine long-term analyst role  : t1, 2026-04-01, 2026-06-30
+    Transition PAMHUB portal to GMRI  : t2, after v3, 60d
+    Transition Cloud Infrastructure to host : t3, after s3, 30d
 
     section Contracting and Reporting
     End ONR Period of Performance.  : milestone, 2026-07-31,0d
@@ -54,31 +66,12 @@ gantt
 
 ```
 
-The envisioned Phases
-- Phase 0 — (Discovery Phase) Requirements & design: map NOAA PAM-Cloud features to PAMHUB decisions.
-- Phase 1 — MVP: ingest raw audio storage, manual quality control using cloud workstation (pam-ww) based detection processing, 
-- Phase 2 — Scale & automation: batch scaling, queueing, operational maturity.
-- Phase 3 — Usability: docs, onboarding workshops, example datasets for community use.
-- Phase 4 — Interoperability: archival export templates and national compatibility.
+TODO: Add a field in the github issue template for new data uploads to estimate dataset size (Gb)
 
-Throughout the project there will be ongoing stakeholder engagement to identify new datasets for ingestion into the system and new products to be developed based on the PAMHUB data holdings.
+TODO: Create a section below for each section in the Gantt chart.  Include more details of the work to be done in the Gantt section.  Elaborate with questions, decisions, uncertainties.
 
-- Stakeholder Outreach
-  - [Data Providers](data-providers.md) 
-  - Customers for derived products (see [User Story 004](us-004-visualizations) for initial product development goals.
-
-
-- Develop Cloud Storage System
-  - Upload small datasets
-  - Upload large datasets
-  - Upload metadata
-  - Upload derived products
-- Develop pam-ww cloud workstation 
-  - Create windows based workstation
-  - Install software dependencies
-  - Negotiate licenses for software dependencies
 - Develop batch scaling infrastructure
-  - Decide on workflow orchetration architecture
+  - Decide on workflow orchestration architecture
   - Develop detector interface architecture (to support plug and play detectors in a workflow)
   - Create containers with dependencies
   - Reproduce manual workflows

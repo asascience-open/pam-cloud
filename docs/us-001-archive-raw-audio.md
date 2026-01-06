@@ -1,11 +1,11 @@
-# Story 1: Upload raw PAM data to NCEI
+# User Story 1: Upload raw PAM data to NCEI
 
-1. *Description*: 
+## Description 
 
 Here the data provider has collected PAM data and wants to have the data QA/QCd and have the data uploaded to the public NCEI repository. 
 
 
-2. *Workflow* 
+## Workflow
 
 
 ![Upload to NCEI][dataflow-ncei]
