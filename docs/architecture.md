@@ -4,7 +4,8 @@
 
 - Ingest layer: authenticated upload endpoints and connector agents.
 - Storage layer: object store with metadata catalog and lifecycle policies.
-- Processing layer: Manual cloud based workstaition (pam-ww) or batch scaling.
+- Processing layer: Manual cloud based workstation (pam-ww) or batch scaling.
+  - Research the SoundScapes data processing worklflow to see what we can reuse.
 - Visualization: Visualization for select products.  Possibly, building on the [SoundCOOP Visualization system](https://soundcoop.portal.axds.co)
 - Operations: monitoring, alerting, logs, backups, and cost management.
 - Export layer: dataset packaging and export workflows for downstream customers (e.g. NOAA/NCEI archive, PACM).
@@ -14,6 +15,7 @@
 ![High level data flow][dataflow]
 
 ## Data Model
+Metadata and configuration files platform, detections, ancillary data.
 
 ### Platform and Deployment Metadata
 
@@ -27,6 +29,9 @@ Adopting the Makara database structure for metatdata and detection management?
 -OR-
 
 Adopting the metadata model that underpins Tethys?
+
+### Detections
+
 
 ### Quality Control Results
 

@@ -6,6 +6,8 @@
 
 # High level end to end workflow based on Makara presentation by Jeff Walker
 # What parts of NMFS workflow are essential to NERACOOS PAMHUB workflow?
+# See https://nmfs-ost.github.io/PAM-Cloud/ for "End to end data analysis in the cloud"
+# 
 collect: "Data Collection" {
     direction: down
     gliders
@@ -16,7 +18,7 @@ collect: "Data Collection" {
 staging: "Data Storage" {
     direction: down
     icon: https://icons.terrastruct.com/gcp%2FProducts%20and%20services%2FStorage%2FCloud%20Storage.svg
-    raw: "Raw Audio Data and Metadata" 
+    raw: "Raw Audio Data and Metadata Files" 
 }
 
 processing: "Data Processing" {

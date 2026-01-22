@@ -1,32 +1,80 @@
 # High Level System Landscape
 # 
-
+vars: {
+2  d2-config: {
+3    layout-engine: tala
+4  }
+5}
 
 # External
-Data Acquisition
-PAM Analyst
+obs: Observing Platform {
+    direction: down
+    gliders: Gliders
+    bottom: Bottom Mounted Platforms
+    buoy: Moored Buoys
+    ship: Research Vessels
+
+}
+
+operator: PAM Operator  {
+    shape: c4-person
+}
+
 
 # Internal PAMHUB is the main system in question
 # Stakeholder engagement will help determine the needed functionality of the Data Processing container.
-PAMHUB "PAMHUB" {
+pamhub: "PAMHUB" {
+    shape: rectangle
+    label.near: bottom-left
 
+    ingest: Ingest {
+        shape: rectangle
+    }
+    storage: Storage {
+        shape: cylinder
+    }
+    database: Metadata and Detection Database {
+        shape: cylinder
+    }
+    pam-ww: Data Processing Workstation {
+        shape: rectangle
+    }
+    staging: Archive Staging Bucket {
+        shape: cylinder
+    }
+    batch: Orchestration Workflow {
+        shape: package
+    }
+    analyst: PAM Analyst {
+        shape: c4-person
+    }
 }
-PAMHUB.Portal
-PAMHUB.Ingest Layer
-PAMHUB.Metadata Database
-PAMHUB.Data Processing 
-PAMHUB.Archive Staging Bucket
+
 
 # More External Systems
 NCEI
 NODD
 PACM
+website: Visualization Portal
 
-TODO: Get a copy of the secoora system landscape and use as a basis for this diagram.
 
-- Ingest layer: authenticated upload endpoints and connector agents. CLI or Google Transport hard drives
-- Storage layer: object store with metadata catalog and lifecycle policies.
-- Processing layer: Manual cloud based workstaition (pam-ww) or batch scaling.
-- Visualization: Visualization for select products.  Possibly, building on the [SoundCOOP Visualization system](https://soundcoop.portal.axds.co)
-- Operations: monitoring, alerting, logs, backups, and cost management.
-- Export layer: dataset packaging and export workflows for downstream customers (e.g. NOAA/NCEI archive, PACM).
+# - Ingest layer: authenticated upload endpoints and connector agents. CLI or Google Transport hard drives
+# - Storage layer: object store with metadata catalog and lifecycle policies.
+# - Processing layer: Manual cloud based workstaition (pam-ww) or batch scaling.
+# - Visualization: Visualization for select products.  Possibly, building on the [SoundCOOP Visualization system](https://soundcoop.portal.axds.co)
+# - Operations: monitoring, alerting, logs, backups, and cost management.
+# - Export layer: dataset packaging and export workflows for downstream customers (e.g. NOAA/NCEI archive, PACM).
+
+# Connections
+
+# Operator uploads raw audio
+operator -> obs: Collect raw observation
+operator -> pamhub.ingest: Upload raw audio files and metadata
+pamhub.ingest -> pamhub.storage: QA/QC and store audio/metadata
+pamhub.ingest -> pamhub.database: Load platform/deployment metadata
+pamhub.analyst -> pamhub.pam-ww: Manually process raw audio
+pamhub.pam-ww <-> pamhub.storage: Retrieve raw audio/Store products
+pamhub.analyst -> pamhub.archive: Create archive package for NCEI
+pamhub.batch <-> pamhub.storage: Automated processing 
+pamhub.analyst -> PACM: Manually publish detections to PACM
+pamhub.archive <- NCEI: Retrieve archive package

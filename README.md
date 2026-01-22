@@ -8,36 +8,18 @@ PAMHUB is a NERACOOS-hosted migration and reimplementation of NOAA Fisheries’ 
 - Prioritize accessibility and clear onboarding for non-NOAA scientists.
 - Implement infrastructure, policies, and tooling appropriate to NERACOOS (may differ from NOAA choices while preserving essential functionality).
 
-## Scope & assumptions
-- NOAA PAM-Cloud documentation is used as the functional baseline that PAMHUB maps to. PAMHUB aims for similar behavior and user workflows, not necessarily identical APIs or internal architecture.
-- PAMHUB will run outside NOAA-managed Google cloud accounts and therefore may use different operational tooling.
-- Data subject to NOAA-specific restrictions remain subject to their original policies — migration does not change access rights unless explicitly authorized by data owners.
-- The first delivery targets a Minimum Viable Product (MVP) focused on ingestion, storage, basic manual processing.
-- PAMHUB will not have write access to Makara Database
-- PAMHUB will not have read access to Makara Database
-
 ## Roadmap
-See [roadmap.md](docs/roadmap.md) for the current development goals.  
-
-GitHub Issues, Projects, and Milestones will be used to track and plan project progress.
-
+See [roadmap.md](docs/roadmap.md) for the current development goals.  GitHub Issues, Projects, and Milestones will be used to track and plan project progress.
 
 ## High-level architecture
 See [architecture.md](docs/architecture.md) for diagrams and an expanded description of PAMHUB.
 
-
 ## Contributing
-TBD
+Contributions are restricted to the core project team at this time.
 
 ## License  
-TBD - NERACOOS preferences?
-
-## Contacts
-- NERACOOS operations lead — (add name and email)  
-- Project manager — (add name and email)  
-- PAM Analyst - 
-- For PAM-Cloud baseline questions, refer to [NOAA PAM-Cloud documentation](https://nmfs-ost.github.io/PAM-Cloud/).
+TBD
 
 ## Acknowledgements & references
-- NOAA Fisheries PAM-SI Cloud — baseline functional reference (source of the functional baseline).
+- NOAA Fisheries PAM-SI Cloud — baseline functional reference (PAMHUB replicates many of the PAM-SI (aka PAM-Cloud) functions but is not a complete migration). [NOAA PAM-Cloud documentation](https://nmfs-ost.github.io/PAM-Cloud/).
 
