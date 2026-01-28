@@ -1,62 +1,81 @@
 # High Level System Landscape
-# 
+#
 vars: {
-2  d2-config: {
-3    layout-engine: tala
-4  }
-5}
+  d2-config: {
+        layout-engine: elk  
+  }
+}
+direction: down
 
 # External
 obs: Observing Platform {
-    direction: down
-    gliders: Gliders
-    bottom: Bottom Mounted Platforms
-    buoy: Moored Buoys
-    ship: Research Vessels
-
+  direction: down
+  gliders: Gliders
+  bottom: Bottom Mounted Platforms
+  buoy: Moored Buoys
+  ship: Research Vessels
 }
 
-operator: PAM Operator  {
-    shape: c4-person
+operator: PAM Operator {
+  shape: c4-person
 }
-
-
+analyst: PAM Analyst {
+  shape: c4-person
+}
 # Internal PAMHUB is the main system in question
 # Stakeholder engagement will help determine the needed functionality of the Data Processing container.
 pamhub: "PAMHUB" {
-    shape: rectangle
-    label.near: bottom-left
+  shape: rectangle
+  label.near: bottom-left
 
-    ingest: Ingest {
-        shape: rectangle
+  ingest: Ingest {
+    shape: rectangle
+    CLI
+    Transport Service
+    Upload Portal
+  }
+  storage: Storage {
+    bucket: Object Storage Bucket {
+      shape: cylinder
     }
-    storage: Storage {
-        shape: cylinder
+    archive-bucket: Archive Staging Bucket {
+      shape: cylinder
     }
     database: Metadata and Detection Database {
-        shape: cylinder
+      shape: cylinder
     }
+  }
+  processing: Processing {
     pam-ww: Data Processing Workstation {
-        shape: rectangle
-    }
-    staging: Archive Staging Bucket {
-        shape: cylinder
+      shape: rectangle
     }
     batch: Orchestration Workflow {
-        shape: package
+      shape: package
     }
-    analyst: PAM Analyst {
-        shape: c4-person
-    }
+  }
+  export: Export Products {
+    archive-formatter
+    pacm-formatter
+    hmd-visualization-formatter
+    hmd-climatology-formatter
+  }
+  operations: Operations {
+    Monitoring
+    Alerts
+    Cost Management
+  }
 }
 
-
 # More External Systems
-NCEI
-NODD
-PACM
-website: Visualization Portal
+external: External Systems {
+  NCEI
+  NODD
+  PACM
+  website: Visualization Portal
 
+  NCEI -> NODD: Publish archive to NODD
+
+}
 
 # - Ingest layer: authenticated upload endpoints and connector agents. CLI or Google Transport hard drives
 # - Storage layer: object store with metadata catalog and lifecycle policies.
@@ -66,15 +85,10 @@ website: Visualization Portal
 # - Export layer: dataset packaging and export workflows for downstream customers (e.g. NOAA/NCEI archive, PACM).
 
 # Connections
-
-# Operator uploads raw audio
 operator -> obs: Collect raw observation
 operator -> pamhub.ingest: Upload raw audio files and metadata
-pamhub.ingest -> pamhub.storage: QA/QC and store audio/metadata
-pamhub.ingest -> pamhub.database: Load platform/deployment metadata
-pamhub.analyst -> pamhub.pam-ww: Manually process raw audio
-pamhub.pam-ww <-> pamhub.storage: Retrieve raw audio/Store products
-pamhub.analyst -> pamhub.archive: Create archive package for NCEI
-pamhub.batch <-> pamhub.storage: Automated processing 
-pamhub.analyst -> PACM: Manually publish detections to PACM
-pamhub.archive <- NCEI: Retrieve archive package
+pamhub.ingest -> pamhub.storage: Write incoming data/metadata
+pamhub.processing -> pamhub.storage: Read/write raw and processed data
+analyst -> pamhub.processing: Manual processing, configure orchestration workflow
+pamhub.export -> external
+
