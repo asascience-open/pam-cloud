@@ -10,6 +10,8 @@
 - Operations: monitoring, alerting, logs, backups, and cost management.
 - Export layer: dataset packaging and export workflows for downstream customers (e.g. NOAA/NCEI archive, PACM).
 
+![System Landscape][pam-cloud-system]
+
 ## Data Flow
 
 ![High level data flow][dataflow]
@@ -43,3 +45,4 @@ Adopting the metadata model that underpins Tethys?
 
 
 [dataflow]: images/pamhub-workflow.svg
+[pam-cloud-system]: images/pam-cloud-system.svg
