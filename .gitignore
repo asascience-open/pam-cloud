@@ -1,2 +1,4 @@
 pam-cloud.code-workspace
 .gitignore
+.DS_Store
+.vscode
