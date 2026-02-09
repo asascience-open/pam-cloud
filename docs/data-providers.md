@@ -2,6 +2,9 @@
 
 Below are select data providers that are included in the initial testing and design phase.  This list does not contain the planned data holdings for the completed system.  (Specific contact information is not included here and kept offline.)
 
+> [!NOTE] 
+> TODO: Update this page once the issues are created for each individual data set to be uploaded.
+
 ## ME State PAM operator	
 
 ## MA state PAM operator	
