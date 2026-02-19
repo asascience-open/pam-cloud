@@ -66,7 +66,6 @@ gantt
 
 ```
 
-TODO: Add a field in the github issue template for new data uploads to estimate dataset size (Gb)
 
 TODO: Create a section below for each section in the Gantt chart.  Include more details of the work to be done in the Gantt section.  Elaborate with questions, decisions, uncertainties.
 
