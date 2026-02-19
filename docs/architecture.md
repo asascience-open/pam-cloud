@@ -17,6 +17,7 @@
 ![High level data flow][dataflow]
 
 ## Data Model
+
 Metadata and configuration files platform, detections, ancillary data.
 
 ### Platform and Deployment Metadata
@@ -24,7 +25,6 @@ Metadata and configuration files platform, detections, ancillary data.
 > [!CAUTION]
 > There is a pending decision regarding the dependence on the Makara Database system and the database model in Makara.  If this project chooses to diverge from the Makara data system then we will need to decide on a new metadata model.  This impacts the way we record platform and deployment metadata as well as species detections from different detectors.
 >
-
 
 Adopting the Makara database structure for metatdata and detection management?
 
@@ -37,8 +37,6 @@ Adopting the metadata model that underpins Tethys?
 
 ### Quality Control Results
 
-
-### Detections
 
 
 ### Archive Data and Metadata Formats
