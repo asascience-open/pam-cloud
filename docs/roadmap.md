@@ -1,12 +1,12 @@
 # High Level PAMHUB Roadmap 
 
-This document describes the high level roadmap for PAMHUB development and decomposes the initial known User Stories into smaller increments that will be used for more detailed project planning.  Day to day project management will utilize Github Issues, Milestones, and Projects.
+This document describes the high level roadmap for PAMHUB development and lists the use cases that will be supported.  Day to day project management will utilize Github Issues, Milestones, and Projects.
 
 
 ```mermaid
 gantt
     dateFormat  YYYY-MM-DD
-    title       PAMHUB Migration
+    title       PAMHUB Development
     excludes    weekends
     %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
 
@@ -56,83 +56,48 @@ gantt
     Visualize on PACM???   : 2026-04-01, 2026-08-30
 
     section Transition
-    Determine long-term analyst role  : t1, 2026-04-01, 2026-06-30
+    Determine long-term analyst role  : t1, 2026-10-01, 2027-06-30
     Transition PAMHUB portal to GMRI  : t2, after v3, 60d
     Transition Cloud Infrastructure to host : t3, after s3, 30d
 
     section Contracting and Reporting
-    End ONR Period of Performance.  : milestone, 2026-07-31,0d
-    Development ends : vert, 2026-07-31
+    End ONR Period of Performance.  : milestone, 2027-07-31,0d
+    Development ends : vert, 2027-06-01
 
 ```
 
+## Outstanding Decisions needed
 
-TODO: Create a section below for each section in the Gantt chart.  Include more details of the work to be done in the Gantt section.  Elaborate with questions, decisions, uncertainties.
-
-- Develop batch scaling infrastructure
+- Clarify the end user needs for a computation environment (Who are the users of the workflow and analysis tools and are they separate from the users of the Visualization portal)
+- Decide on and Create database infrastructure (if not Makara)
+- Decide on Data Providers for first phase of the project. 
+- - Develop batch scaling infrastructure
   - Decide on workflow orchestration architecture
+- Decide on full suite of detectors to support
   - Develop detector interface architecture (to support plug and play detectors in a workflow)
-  - Create containers with dependencies
   - Reproduce manual workflows
-- Create database infrastructure (if not Makara)
-  - Collect requirements for each software dependency and NCEI
-  - Create data model for each user story (or use case)
-  - Determine metadata requirements for NCEI archiving
-- Create derived products
-  - Visualization system for HMD files
-  - Visualization of HMD climatology
-
-## User Stories 
-References and decomposition into standalone tasks.  Original [User Stories](./PAM_Cloud_stories.docx.md).  NOTE: This file is not maintained.  It will be decomposed into smaller stories below and recorded as Issues.
-
-### US-001 Archive raw audio at NCEI
-Original reference: [User Story 001](us-001-archive-raw-audio.md)
-- Archive raw audio 
-  - Create deployment metadata
-  - Upload raw audio to cloud (large files via hard drive and small files via gsutils)
-  - Quality control raw audio
-  - Create raw audio archive package
-  - Archive raw audio package at NCEI
-
-### US-002 Create hybrid milli-decade (HMD) files and archive
-Original reference: [User Story 002](us-002-create-HMD-files.md)
-
-- Create hybrid milli-decade (HMD) files and archive
-  - Create deployment metadata
-  - Upload raw audio to cloud
-  - Quality control raw audio
-  - Launch pam-ww cloud workstation
-  - Process raw audio with PyPAM
-    - Create PyPAM config yaml files for deployment
-    - Trigger PyPAM processing
-    - Quality control PyPAM output
-  - Archive HMD output at NCEI
-    - Create HMD archive package
-    - Archive HMD package at NCEI
-
-## US-003 Create LFDCS Whale detections
-Original reference: [User Story 003](us-003-lfdcs-whale-detections.md)
-
-- Create LFDCS Whale detections, archive at NCEI, and publish to PACM 
-  - Create deployment metdata
-  - Upload raw audio to cloud
-  - Quality control raw audio
-  - Run LFDCS detector
-    - Launch pam-ww cloud workstation
-    - Create LFDCS config parameter file
-    - Run LFDCS detector on pam-ww cloud workstation
-  - Quality control LFDCS output
-  - Create LFDCS archive package
-  - Archive LFDCS archive package at NCEI
-  - _Upload LFDCS detections to Makara and PACM (NOTE: To be verified)_
-
-## US-004 Visualize HMD Climatology
-[User Story 004](us-004-visualize-climatology)
-
- 
-From Jackie in Google Docs comments.  We'd like to start with a plotted climatology of HMD. This is helpful for observing variability and detecting anomalies, and it's also similar to our existing Climatology which we hope to integrate some of the data sets in the future. @xavier.mouy@whoi.edu has worked on this and has some code to share.
+  - Special focus on detectors (e.g. LFDCS) that aren't easily integrated into the Python based orchestration
+- Decide on derived products created by PAMHUB software
+- Develop long term O&M cost estimator
 
 
-## US-005 Other Visualizations
+## Use Cases
 
-Placeholder for additional derived products and visualizations to be defined through targetd stakeholder engagement.
+References and decomposition into standalone tasks.  Original [User Stories](./PAM_Cloud_stories.docx.md).  NOTE: This file is not maintained.  It will be decomposed into smaller stories or use cases below and recorded as Issues.
+
+| UC ID | Use Case write up  | Related Issues |
+|------|---------------------|----------------|
+| uc-001 | [Archive at NCEI](./uc-001-archive-pam-data-at-ncei.md) | NA|
+| uc-002 | [Calculate spectograms w PyPAM](./uc-002-calculate-spectrograms.md) | NA|
+| uc-003 | [Apply species detectors](./uc-003-detect-species-presence.md) | NA|
+| uc-004 | [Visualize climatology](./uc-004-visualize-spectrogram-climatology.md) | NA|
+| uc-005 | [Upload data](./uc-005-upload-raw-data-to-pamhub.md) | NA|
+| uc-006 | [Visualize other](./uc-006-visualizations-other.md) | NA|
+
+Other use cases we have/are considering.
+
+1. Upload detections to PACM
+2. Archive Spectograms/HMD files
+3. Quality control raw data from within the workstation or as an automated process
+4. Provide JupyterHub analysis environment - either as an alternative to the workstation or as the interface to drive the automated workflows or check results.
+5. 

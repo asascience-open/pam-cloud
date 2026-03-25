@@ -1,4 +1,5 @@
-pam-cloud.code-workspace
-.gitignore
-.DS_Store
-.vscode
+/pam-cloud.code-workspace
+*.DS_Store
+.vscode/
+/notes-scratchpad.md
+/docs/diagrams/.structurizr/

@@ -1,15 +1,52 @@
-# User Story 1: Upload raw PAM data to NCEI
+# Use Case: Upload Raw PAM Data to NCEI
 
-## Description 
+**ID:** UC-001
+**Goal:** Submit a raw audio dataset and associated metadata for QA/QC and long-term archiving at NCEI
 
-Here the data provider has collected PAM data and wants to have the data QA/QCd and have the data uploaded to the public NCEI repository. 
+---
+
+## 1. Descriptions
+
+**Primary Actor:** PAM Data Provider
+**Trigger:** A data provider has recovered PAM moorings, downloaded data from the recorders, and is ready to begin the archiving process.
+**Pre-conditions:** TBD. What level of quality control is done before uploading anything?  Do we expect that PAMHUB receives only raw data or partially/completely processed data?  This is important to decide how many times a given data set might be uploaded to the PAMHUB.
+**Post-conditions:** TBD
+**Priority:** High
+
+## 2. Basic Flow (Happy Path)
+
+> **Note:** This section is pending completion. The basic flow will be derived from manual archiving interactions conducted by the PAM Analyst during the first increment. The PAM Analyst will document exact steps during live NCEI submissions, and those steps will inform this section.
+
+Draft flow from original user stories.  
+
+- Archive raw audio 
+  - Create deployment metadata
+  - Upload raw audio to cloud (large files via hard drive and small files via gsutils)
+  - Quality control raw audio
+  - Create raw audio archive package
+  - Archive raw audio package at NCEI
+
+## 3. Alternative / Exception Flows
+
+### 3.1 Data volume too large for internet transfer
+
+Includes, data volumes are too large and therefore egress fees are too expensive for cloud to cloud transfer.
+> TBD
+
+### 3.2 Navy review required before NCEI submission
+
+> TBD
+
+### 3.3 Other TBD failure
+
+> TBD
+
+## 4. Special Requirements
+
+> TBD — Requirements will be captured by the PAM Analyst during manual NCEI archiving interactions in the first increment and passed to the development team for incorporation here.
 
 
-## Workflow
-
-
-![Upload to NCEI][dataflow-ncei]
-
+## Prior User Story
 
 1. Data provider recovers PAM moorings, downloads data from the recorders and performs data backup.	  
 2. Data provider enters metadata of the deployment locations, instrument specifications and recording cycles to the NOAA Makara database using the Makara Data Portal interface ([https://passiveacoustics.fisheries.noaa.gov](https://passiveacoustics.fisheries.noaa.gov)). At this stage the data provider also defines data sharing permissions (PACM visibility, accessibility from other users, etc.).  
@@ -30,3 +67,7 @@ Here the data provider has collected PAM data and wants to have the data QA/QCd 
 15. If the data provider is not interested in pursuing more data analysis, IOOS terminates the data provider’s temporary cloud data bucket and the cloud workstation.
 
 [dataflow-ncei]: images/Diagram_data-upload-NCEI_.png
+
+---
+
+*Status: Stub — intentionally incomplete. Do not begin implementation design against this document until Sections 2 and 3 are populated and the document is marked Ready for Review.*

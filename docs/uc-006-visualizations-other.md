@@ -1,6 +1,6 @@
 # Use Case: [Name of Use Case]
 
-**ID:** UC-001  
+**ID:** UC-006  
 **Primary Actor:** [e.g., Customer, Admin]  
 **Goal:** [Summary of what the actor wants to achieve]  
 

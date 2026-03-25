@@ -5,13 +5,13 @@
 
 ---
 
-> **Important:** The primary actor for this use case has not been defined. We know this capability is desired but we do not yet have sufficient detail on who will use it, what questions they are trying to answer, or what geographic regions and time ranges are relevant. This use case must not be developed further until the customer engagement work package defined in Decision 4 of `scope-reframe-2026.md` is complete and produces a written summary of the intended user, their goals, and their technical context.
+> **Important:** The primary actor for this use case has not been defined. We know this capability is desired but we do not yet have sufficient detail on who will use it, what questions they are trying to answer, or what geographic regions and time ranges are relevant. This use case must not be developed further until the customer engagement work package defined in Decision 4 is complete and produces a written summary of the intended user, their goals, and their technical context.
 
 ---
 
 ## 1. Descriptions
 
-**Primary Actor:** TBD — pending customer engagement (see Decision 4 in `scope-reframe-2026.md`)
+**Primary Actor:** TBD — pending customer engagement (either Data Provider, PAM Analyst, or new role for external PI)
 **Trigger:** TBD
 **Pre-conditions:** TBD
 **Post-conditions:** TBD

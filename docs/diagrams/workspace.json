@@ -1,0 +1,536 @@
+{
+  "configuration" : { },
+  "description" : "Passive Acoustic Monitoring Data Platform",
+  "documentation" : { },
+  "id" : 1,
+  "lastModifiedDate" : "2026-03-25T19:54:10Z",
+  "model" : {
+    "people" : [ {
+      "description" : "Submits raw acoustic recordings and metadata.",
+      "id" : "1",
+      "name" : "Data Provider",
+      "properties" : {
+        "structurizr.dsl.identifier" : "dataProvider"
+      },
+      "relationships" : [ {
+        "description" : "Uploads raw acoustic files & metadata",
+        "destinationId" : "3",
+        "id" : "29",
+        "sourceId" : "1",
+        "tags" : "Relationship",
+        "technology" : "HTTPS / S3 presigned URL"
+      }, {
+        "description" : "POST acoustic files & metadata",
+        "destinationId" : "4",
+        "id" : "34",
+        "sourceId" : "1",
+        "tags" : "Relationship",
+        "technology" : "HTTPS multipart / presigned URL"
+      } ],
+      "tags" : "Element,Person,External Person"
+    }, {
+      "description" : "Reviews, annotates, and approves processed data via cloud workstation.",
+      "id" : "2",
+      "name" : "PAM Analyst",
+      "properties" : {
+        "structurizr.dsl.identifier" : "analyst"
+      },
+      "relationships" : [ {
+        "description" : "Reviews detections, annotates, approves products",
+        "destinationId" : "3",
+        "id" : "30",
+        "sourceId" : "2",
+        "tags" : "Relationship",
+        "technology" : "HTTPS / Web UI"
+      }, {
+        "description" : "Reviews detections, annotates, approves",
+        "destinationId" : "8",
+        "id" : "35",
+        "sourceId" : "2",
+        "tags" : "Relationship",
+        "technology" : "HTTPS / Browser"
+      } ],
+      "tags" : "Element,Person"
+    } ],
+    "softwareSystems" : [ {
+      "containers" : [ {
+        "description" : "Accepts file uploads, validates metadata, and triggers ingestion workflow.",
+        "documentation" : { },
+        "id" : "4",
+        "name" : "Ingestion API",
+        "properties" : {
+          "structurizr.dsl.identifier" : "ingestApi"
+        },
+        "relationships" : [ {
+          "description" : "Writes raw files",
+          "destinationId" : "5",
+          "id" : "12",
+          "sourceId" : "4",
+          "tags" : "Relationship",
+          "technology" : "AWS CLI; S3 PutObject"
+        }, {
+          "description" : "Records ingestion event; metadata",
+          "destinationId" : "10",
+          "id" : "13",
+          "sourceId" : "4",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Triggers ingestion run",
+          "destinationId" : "6",
+          "id" : "14",
+          "sourceId" : "4",
+          "tags" : "Relationship",
+          "technology" : "?"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "Web Application; REST API; CLI"
+      }, {
+        "description" : "Stores raw acoustic files (WAV, FLAC, Other?) and associated metadata (fmt - TBD).",
+        "documentation" : { },
+        "id" : "5",
+        "name" : "Raw Data Bucket",
+        "properties" : {
+          "structurizr.dsl.identifier" : "rawBucket"
+        },
+        "tags" : "Element,Container,Storage",
+        "technology" : "Cloud Object Store"
+      }, {
+        "description" : "Schedules and monitors processing pipelines; manages job retries & logging.",
+        "documentation" : { },
+        "id" : "6",
+        "name" : "Dagster Orchestrator",
+        "properties" : {
+          "structurizr.dsl.identifier" : "dagster"
+        },
+        "relationships" : [ {
+          "description" : "Dispatches processing jobs",
+          "destinationId" : "7",
+          "id" : "15",
+          "sourceId" : "6",
+          "tags" : "Relationship",
+          "technology" : "Job queue / K8s Job"
+        }, {
+          "description" : "Reads/writes workflow state",
+          "destinationId" : "10",
+          "id" : "16",
+          "sourceId" : "6",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Triggers product delivery jobs",
+          "destinationId" : "11",
+          "id" : "17",
+          "sourceId" : "6",
+          "tags" : "Relationship",
+          "technology" : "REST"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "Workflow Engine"
+      }, {
+        "description" : "Executes algorithms: spectrogram generation, detector models, QA checks.",
+        "documentation" : { },
+        "id" : "7",
+        "name" : "Processing Workers",
+        "properties" : {
+          "structurizr.dsl.identifier" : "processingWorkers"
+        },
+        "relationships" : [ {
+          "description" : "Reads raw files",
+          "destinationId" : "5",
+          "id" : "18",
+          "sourceId" : "7",
+          "tags" : "Relationship",
+          "technology" : "S3 GetObject"
+        }, {
+          "description" : "Writes output products",
+          "destinationId" : "9",
+          "id" : "19",
+          "sourceId" : "7",
+          "tags" : "Relationship",
+          "technology" : "S3 PutObject"
+        }, {
+          "description" : "Records detections & processing results",
+          "destinationId" : "10",
+          "id" : "20",
+          "sourceId" : "7",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "JupyterHub/Dask"
+      }, {
+        "description" : "Windows VM for analyst annotation review, detection validation & approval.",
+        "documentation" : { },
+        "id" : "8",
+        "name" : "Cloud Workstation",
+        "properties" : {
+          "structurizr.dsl.identifier" : "workstation"
+        },
+        "relationships" : [ {
+          "description" : "Reads/writes annotations & approvals",
+          "destinationId" : "10",
+          "id" : "21",
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "SQL via API"
+        }, {
+          "description" : "Streams spectrograms for review",
+          "destinationId" : "9",
+          "id" : "22",
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "S3 presigned URL"
+        }, {
+          "description" : "Triggers approval workflow step",
+          "destinationId" : "6",
+          "id" : "23",
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "REST"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "Virtual Machine"
+      }, {
+        "description" : "Stores processed outputs: spectrograms, detection CSVs, archive packages.",
+        "documentation" : { },
+        "id" : "9",
+        "name" : "Products Bucket",
+        "properties" : {
+          "structurizr.dsl.identifier" : "productsBucket"
+        },
+        "tags" : "Element,Container,Storage",
+        "technology" : "Cloud Object Store"
+      }, {
+        "description" : "Tracks deployments, recordings, detections, annotations, workflow state & audit log.",
+        "documentation" : { },
+        "id" : "10",
+        "name" : "Metadata Database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "metadataDb"
+        },
+        "tags" : "Element,Container,Database",
+        "technology" : "Relational DB"
+      }, {
+        "description" : "Exposes processed products to downstream systems via authenticated endpoints.",
+        "documentation" : { },
+        "id" : "11",
+        "name" : "Delivery API",
+        "properties" : {
+          "structurizr.dsl.identifier" : "deliveryApi"
+        },
+        "relationships" : [ {
+          "description" : "Reads finalized products",
+          "destinationId" : "9",
+          "id" : "24",
+          "sourceId" : "11",
+          "tags" : "Relationship",
+          "technology" : "S3 GetObject"
+        }, {
+          "description" : "Reads delivery manifest",
+          "destinationId" : "10",
+          "id" : "25",
+          "sourceId" : "11",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Pushes archive packages",
+          "destinationId" : "26",
+          "id" : "36",
+          "sourceId" : "11",
+          "tags" : "Relationship",
+          "technology" : "HTTPS / SFTP"
+        }, {
+          "description" : "POSTs detection reports",
+          "destinationId" : "27",
+          "id" : "37",
+          "sourceId" : "11",
+          "tags" : "Relationship",
+          "technology" : "REST API"
+        }, {
+          "description" : "Publishes products & metadata",
+          "destinationId" : "28",
+          "id" : "38",
+          "sourceId" : "11",
+          "tags" : "Relationship",
+          "technology" : "REST API / S3 event"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "REST API"
+      } ],
+      "description" : "Ingests raw acoustic data, orchestrates processing pipelines, and delivers output products.",
+      "documentation" : { },
+      "id" : "3",
+      "name" : "PAMHUB",
+      "properties" : {
+        "structurizr.dsl.identifier" : "acousticPlatform"
+      },
+      "relationships" : [ {
+        "description" : "Delivers archived data packages",
+        "destinationId" : "26",
+        "id" : "31",
+        "sourceId" : "3",
+        "tags" : "Relationship",
+        "technology" : "HTTPS / SFTP"
+      }, {
+        "description" : "Delivers species detection results & reports",
+        "destinationId" : "27",
+        "id" : "32",
+        "sourceId" : "3",
+        "tags" : "Relationship",
+        "technology" : "REST API"
+      }, {
+        "description" : "Delivers processed spectrograms, annotations & metadata",
+        "destinationId" : "28",
+        "id" : "33",
+        "sourceId" : "3",
+        "tags" : "Relationship",
+        "technology" : "REST API / S3 event"
+      } ],
+      "tags" : "Element,Software System"
+    }, {
+      "description" : "National Centers for Environmental Information long-term data archive.",
+      "documentation" : { },
+      "id" : "26",
+      "name" : "NCEI Archive",
+      "properties" : {
+        "structurizr.dsl.identifier" : "ncei"
+      },
+      "tags" : "Element,Software System,External System"
+    }, {
+      "description" : "Passive Acoustic Cetacean Monitor – species detection and reporting platform.",
+      "documentation" : { },
+      "id" : "27",
+      "name" : "PACM",
+      "properties" : {
+        "structurizr.dsl.identifier" : "pacm"
+      },
+      "tags" : "Element,Software System,External System"
+    }, {
+      "description" : "Interactive web application for exploring acoustic products and annotations.",
+      "documentation" : { },
+      "id" : "28",
+      "name" : "Visualizer",
+      "properties" : {
+        "structurizr.dsl.identifier" : "visualizer"
+      },
+      "tags" : "Element,Software System,External System"
+    } ]
+  },
+  "name" : "PAMHUB",
+  "properties" : {
+    "structurizr.inspection.error" : "3",
+    "structurizr.dsl" : "d29ya3NwYWNlICJQQU1IVUIiICJQYXNzaXZlIEFjb3VzdGljIE1vbml0b3JpbmcgRGF0YSBQbGF0Zm9ybSIgewoKICAgICFpbXBsaWVkUmVsYXRpb25zaGlwcyB0cnVlCgoKICAgIG1vZGVsIHsKCiAgICAgICAgIyDilIDilIAgQWN0b3JzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoKICAgICAgICBkYXRhUHJvdmlkZXIgPSBwZXJzb24gIkRhdGEgUHJvdmlkZXIiICJTdWJtaXRzIHJhdyBhY291c3RpYyByZWNvcmRpbmdzIGFuZCBtZXRhZGF0YS4iICJFeHRlcm5hbCBQZXJzb24iCgogICAgICAgIGFuYWx5c3QgPSBwZXJzb24gIlBBTSBBbmFseXN0IiAiUmV2aWV3cywgYW5ub3RhdGVzLCBhbmQgYXBwcm92ZXMgcHJvY2Vzc2VkIGRhdGEgdmlhIGNsb3VkIHdvcmtzdGF0aW9uLiIKCiAgICAgICAgCiAgICAgICAgIyDilIDilIAgU3lzdGVtcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKCiAgICAgICAgYWNvdXN0aWNQbGF0Zm9ybSA9IHNvZnR3YXJlU3lzdGVtICJQQU1IVUIiICJJbmdlc3RzIHJhdyBhY291c3RpYyBkYXRhLCBvcmNoZXN0cmF0ZXMgcHJvY2Vzc2luZyBwaXBlbGluZXMsIGFuZCBkZWxpdmVycyBvdXRwdXQgcHJvZHVjdHMuIiB7CgogICAgICAgICAgICAjIOKUgOKUgCBDb250YWluZXJzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoKICAgICAgICAgICAgaW5nZXN0QXBpID0gY29udGFpbmVyICJJbmdlc3Rpb24gQVBJIiAiQWNjZXB0cyBmaWxlIHVwbG9hZHMsIHZhbGlkYXRlcyBtZXRhZGF0YSwgYW5kIHRyaWdnZXJzIGluZ2VzdGlvbiB3b3JrZmxvdy4iICJXZWIgQXBwbGljYXRpb247IFJFU1QgQVBJOyBDTEkiCgogICAgICAgICAgICByYXdCdWNrZXQgPSBjb250YWluZXIgIlJhdyBEYXRhIEJ1Y2tldCIgIlN0b3JlcyByYXcgYWNvdXN0aWMgZmlsZXMgKFdBViwgRkxBQywgT3RoZXI/KSBhbmQgYXNzb2NpYXRlZCBtZXRhZGF0YSAoZm10IC0gVEJEKS4iICJDbG91ZCBPYmplY3QgU3RvcmUiICJTdG9yYWdlIgoKICAgICAgICAgICAgZGFnc3RlciA9IGNvbnRhaW5lciAiRGFnc3RlciBPcmNoZXN0cmF0b3IiICJTY2hlZHVsZXMgYW5kIG1vbml0b3JzIHByb2Nlc3NpbmcgcGlwZWxpbmVzOyBtYW5hZ2VzIGpvYiByZXRyaWVzICYgbG9nZ2luZy4iICJXb3JrZmxvdyBFbmdpbmUiCgogICAgICAgICAgICBwcm9jZXNzaW5nV29ya2VycyA9IGNvbnRhaW5lciAiUHJvY2Vzc2luZyBXb3JrZXJzIiAiRXhlY3V0ZXMgYWxnb3JpdGhtczogc3BlY3Ryb2dyYW0gZ2VuZXJhdGlvbiwgZGV0ZWN0b3IgbW9kZWxzLCBRQSBjaGVja3MuIiAiSnVweXRlckh1Yi9EYXNrIgoKICAgICAgICAgICAgd29ya3N0YXRpb24gPSBjb250YWluZXIgIkNsb3VkIFdvcmtzdGF0aW9uIiAiV2luZG93cyBWTSBmb3IgYW5hbHlzdCBhbm5vdGF0aW9uIHJldmlldywgZGV0ZWN0aW9uIHZhbGlkYXRpb24gJiBhcHByb3ZhbC4iICJWaXJ0dWFsIE1hY2hpbmUiCgogICAgICAgICAgICBwcm9kdWN0c0J1Y2tldCA9IGNvbnRhaW5lciAiUHJvZHVjdHMgQnVja2V0IiAiU3RvcmVzIHByb2Nlc3NlZCBvdXRwdXRzOiBzcGVjdHJvZ3JhbXMsIGRldGVjdGlvbiBDU1ZzLCBhcmNoaXZlIHBhY2thZ2VzLiIgIkNsb3VkIE9iamVjdCBTdG9yZSIgIlN0b3JhZ2UiCgogICAgICAgICAgICBtZXRhZGF0YURiID0gY29udGFpbmVyICJNZXRhZGF0YSBEYXRhYmFzZSIgIlRyYWNrcyBkZXBsb3ltZW50cywgcmVjb3JkaW5ncywgZGV0ZWN0aW9ucywgYW5ub3RhdGlvbnMsIHdvcmtmbG93IHN0YXRlICYgYXVkaXQgbG9nLiIgIlJlbGF0aW9uYWwgREIiICJEYXRhYmFzZSIKCiAgICAgICAgICAgIGRlbGl2ZXJ5QXBpID0gY29udGFpbmVyICJEZWxpdmVyeSBBUEkiICJFeHBvc2VzIHByb2Nlc3NlZCBwcm9kdWN0cyB0byBkb3duc3RyZWFtIHN5c3RlbXMgdmlhIGF1dGhlbnRpY2F0ZWQgZW5kcG9pbnRzLiIgIlJFU1QgQVBJIgoKICAgICAgICAgICAgIyDilIDilIAgQ29udGFpbmVyLXRvLWNvbnRhaW5lciByZWxhdGlvbnNoaXBzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoKICAgICAgICAgICAgaW5nZXN0QXBpICAgICAgICAgLT4gcmF3QnVja2V0ICAgICAgICAgIldyaXRlcyByYXcgZmlsZXMiICJBV1MgQ0xJOyBTMyBQdXRPYmplY3QiCiAgICAgICAgICAgIGluZ2VzdEFwaSAgICAgICAgIC0+IG1ldGFkYXRhRGIgICAgICAgICJSZWNvcmRzIGluZ2VzdGlvbiBldmVudDsgbWV0YWRhdGEiICJTUUwiCiAgICAgICAgICAgIGluZ2VzdEFwaSAgICAgICAgIC0+IGRhZ3N0ZXIgICAgICAgICAgICJUcmlnZ2VycyBpbmdlc3Rpb24gcnVuIiAiPyIKICAgICAgICAgICAgZGFnc3RlciAgICAgICAgICAgLT4gcHJvY2Vzc2luZ1dvcmtlcnMgIkRpc3BhdGNoZXMgcHJvY2Vzc2luZyBqb2JzIiAiSm9iIHF1ZXVlIC8gSzhzIEpvYiIKICAgICAgICAgICAgZGFnc3RlciAgICAgICAgICAgLT4gbWV0YWRhdGFEYiAgICAgICAgIlJlYWRzL3dyaXRlcyB3b3JrZmxvdyBzdGF0ZSIgIlNRTCIKICAgICAgICAgICAgZGFnc3RlciAgICAgICAgICAgLT4gZGVsaXZlcnlBcGkgICAgICAgIlRyaWdnZXJzIHByb2R1Y3QgZGVsaXZlcnkgam9icyIgIlJFU1QiCiAgICAgICAgICAgIHByb2Nlc3NpbmdXb3JrZXJzIC0+IHJhd0J1Y2tldCAgICAgICAgICJSZWFkcyByYXcgZmlsZXMiICJTMyBHZXRPYmplY3QiCiAgICAgICAgICAgIHByb2Nlc3NpbmdXb3JrZXJzIC0+IHByb2R1Y3RzQnVja2V0ICAgICJXcml0ZXMgb3V0cHV0IHByb2R1Y3RzIiAiUzMgUHV0T2JqZWN0IgogICAgICAgICAgICBwcm9jZXNzaW5nV29ya2VycyAtPiBtZXRhZGF0YURiICAgICAgICAiUmVjb3JkcyBkZXRlY3Rpb25zICYgcHJvY2Vzc2luZyByZXN1bHRzIiAiU1FMIgogICAgICAgICAgICB3b3Jrc3RhdGlvbiAgICAgICAtPiBtZXRhZGF0YURiICAgICAgICAiUmVhZHMvd3JpdGVzIGFubm90YXRpb25zICYgYXBwcm92YWxzIiAiU1FMIHZpYSBBUEkiCiAgICAgICAgICAgIHdvcmtzdGF0aW9uICAgICAgIC0+IHByb2R1Y3RzQnVja2V0ICAgICJTdHJlYW1zIHNwZWN0cm9ncmFtcyBmb3IgcmV2aWV3IiAiUzMgcHJlc2lnbmVkIFVSTCIKICAgICAgICAgICAgd29ya3N0YXRpb24gICAgICAgLT4gZGFnc3RlciAgICAgICAgICAgIlRyaWdnZXJzIGFwcHJvdmFsIHdvcmtmbG93IHN0ZXAiICJSRVNUIgogICAgICAgICAgICBkZWxpdmVyeUFwaSAgICAgICAtPiBwcm9kdWN0c0J1Y2tldCAgICAiUmVhZHMgZmluYWxpemVkIHByb2R1Y3RzIiAiUzMgR2V0T2JqZWN0IgogICAgICAgICAgICBkZWxpdmVyeUFwaSAgICAgICAtPiBtZXRhZGF0YURiICAgICAgICAiUmVhZHMgZGVsaXZlcnkgbWFuaWZlc3QiICJTUUwiCiAgICAgICAgfQoKICAgICAgICBuY2VpID0gc29mdHdhcmVTeXN0ZW0gIk5DRUkgQXJjaGl2ZSIgIk5hdGlvbmFsIENlbnRlcnMgZm9yIEVudmlyb25tZW50YWwgSW5mb3JtYXRpb24gbG9uZy10ZXJtIGRhdGEgYXJjaGl2ZS4iICJFeHRlcm5hbCBTeXN0ZW0iCgogICAgICAgIHBhY20gPSBzb2Z0d2FyZVN5c3RlbSAiUEFDTSIgIlBhc3NpdmUgQWNvdXN0aWMgQ2V0YWNlYW4gTW9uaXRvciDigJMgc3BlY2llcyBkZXRlY3Rpb24gYW5kIHJlcG9ydGluZyBwbGF0Zm9ybS4iICJFeHRlcm5hbCBTeXN0ZW0iCgogICAgICAgIHZpc3VhbGl6ZXIgPSBzb2Z0d2FyZVN5c3RlbSAiVmlzdWFsaXplciIgIkludGVyYWN0aXZlIHdlYiBhcHBsaWNhdGlvbiBmb3IgZXhwbG9yaW5nIGFjb3VzdGljIHByb2R1Y3RzIGFuZCBhbm5vdGF0aW9ucy4iICJFeHRlcm5hbCBTeXN0ZW0iCgogICAgICAgICMg4pSA4pSAIFN5c3RlbS1sZXZlbCByZWxhdGlvbnNoaXBzIChMZXZlbCAxKSDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKCiAgICAgICAgZGF0YVByb3ZpZGVyICAgICAtPiBhY291c3RpY1BsYXRmb3JtICJVcGxvYWRzIHJhdyBhY291c3RpYyBmaWxlcyAmIG1ldGFkYXRhIiAiSFRUUFMgLyBTMyBwcmVzaWduZWQgVVJMIgogICAgICAgIGFuYWx5c3QgICAgICAgICAgLT4gYWNvdXN0aWNQbGF0Zm9ybSAiUmV2aWV3cyBkZXRlY3Rpb25zLCBhbm5vdGF0ZXMsIGFwcHJvdmVzIHByb2R1Y3RzIiAiSFRUUFMgLyBXZWIgVUkiCiAgICAgICAgYWNvdXN0aWNQbGF0Zm9ybSAtPiBuY2VpICAgICAgICAgICAgICJEZWxpdmVycyBhcmNoaXZlZCBkYXRhIHBhY2thZ2VzIiAiSFRUUFMgLyBTRlRQIgogICAgICAgIGFjb3VzdGljUGxhdGZvcm0gLT4gcGFjbSAgICAgICAgICAgICAiRGVsaXZlcnMgc3BlY2llcyBkZXRlY3Rpb24gcmVzdWx0cyAmIHJlcG9ydHMiICJSRVNUIEFQSSIKICAgICAgICBhY291c3RpY1BsYXRmb3JtIC0+IHZpc3VhbGl6ZXIgICAgICAgIkRlbGl2ZXJzIHByb2Nlc3NlZCBzcGVjdHJvZ3JhbXMsIGFubm90YXRpb25zICYgbWV0YWRhdGEiICJSRVNUIEFQSSAvIFMzIGV2ZW50IgoKICAgICAgICAjIOKUgOKUgCBDb250YWluZXItdG8tYWN0b3IgLyBjb250YWluZXItdG8tZXh0ZXJuYWwgcmVsYXRpb25zaGlwcyAoTGV2ZWwgMikg4pSA4pSA4pSACgogICAgICAgIGRhdGFQcm92aWRlciAgICAgICAgICAgICAgICAgICAgICAgICAtPiBpbmdlc3RBcGkgICAiUE9TVCBhY291c3RpYyBmaWxlcyAmIG1ldGFkYXRhIiAiSFRUUFMgbXVsdGlwYXJ0IC8gcHJlc2lnbmVkIFVSTCIKICAgICAgICBhbmFseXN0ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLT4gd29ya3N0YXRpb24gIlJldmlld3MgZGV0ZWN0aW9ucywgYW5ub3RhdGVzLCBhcHByb3ZlcyIgIkhUVFBTIC8gQnJvd3NlciIKICAgICAgICBkZWxpdmVyeUFwaSAgICAgICAgIC0+IG5jZWkgICAgICAgICAgICAgICAgICAgICAgICAgIlB1c2hlcyBhcmNoaXZlIHBhY2thZ2VzIiAiSFRUUFMgLyBTRlRQIgogICAgICAgIGRlbGl2ZXJ5QXBpICAgICAgICAgLT4gcGFjbSAgICAgICAgICAgICAgICAgICAgICAgICAiUE9TVHMgZGV0ZWN0aW9uIHJlcG9ydHMiICJSRVNUIEFQSSIKICAgICAgICBkZWxpdmVyeUFwaSAgICAgICAgIC0+IHZpc3VhbGl6ZXIgICAgICAgICAgICAgICAgICAgIlB1Ymxpc2hlcyBwcm9kdWN0cyAmIG1ldGFkYXRhIiAiUkVTVCBBUEkgLyBTMyBldmVudCIKCiAgICB9CgogICAgdmlld3MgewoKICAgICAgICBzeXN0ZW1Db250ZXh0IGFjb3VzdGljUGxhdGZvcm0gIlN5c3RlbUNvbnRleHQiICJTeXN0ZW0gQ29udGV4dCBmb3IgdGhlIFBBTUhVQiIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b0xheW91dCBscgogICAgICAgIH0KCiAgICAgICAgY29udGFpbmVyIGFjb3VzdGljUGxhdGZvcm0gIkNvbnRhaW5lcnMiICJDb250YWluZXJzIHdpdGhpbiB0aGUgUEFNSFVCIiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgICAgICBhdXRvTGF5b3V0IGxyCiAgICAgICAgfQoKICAgICAgICBzdHlsZXMgewogICAgICAgICAgICBlbGVtZW50ICJQZXJzb24iIHsKICAgICAgICAgICAgICAgIHNoYXBlIFBlcnNvbgogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAiIzA4NDI3YiIKICAgICAgICAgICAgICAgIGNvbG9yICIjZmZmZmZmIgogICAgICAgICAgICAgICAgc3Ryb2tlICIjMDUyZDU2IgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkV4dGVybmFsIFBlcnNvbiIgewogICAgICAgICAgICAgICAgc2hhcGUgUGVyc29uCiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICIjOTk5OTk5IgogICAgICAgICAgICAgICAgY29sb3IgIiNmZmZmZmYiCiAgICAgICAgICAgICAgICBzdHJva2UgIiM2YjZiNmIiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiU29mdHdhcmUgU3lzdGVtIiB7CiAgICAgICAgICAgICAgICBzaGFwZSBSb3VuZGVkQm94CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICIjMTE2OGJkIgogICAgICAgICAgICAgICAgY29sb3IgIiNmZmZmZmYiCiAgICAgICAgICAgICAgICBzdHJva2UgIiMwYjQ4ODQiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiRXh0ZXJuYWwgU3lzdGVtIiB7CiAgICAgICAgICAgICAgICBzaGFwZSBSb3VuZGVkQm94CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICIjOTk5OTk5IgogICAgICAgICAgICAgICAgY29sb3IgIiNmZmZmZmYiCiAgICAgICAgICAgICAgICBzdHJva2UgIiM2YjZiNmIiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiQ29udGFpbmVyIiB7CiAgICAgICAgICAgICAgICBzaGFwZSBSb3VuZGVkQm94CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICIjMTE2OGJkIgogICAgICAgICAgICAgICAgY29sb3IgIiNmZmZmZmYiCiAgICAgICAgICAgICAgICBzdHJva2UgIiMwYjQ4ODQiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiRGF0YWJhc2UiIHsKICAgICAgICAgICAgICAgIHNoYXBlIEN5bGluZGVyCiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICIjMTE2OGJkIgogICAgICAgICAgICAgICAgY29sb3IgIiNmZmZmZmYiCiAgICAgICAgICAgICAgICBzdHJva2UgIiMwYjQ4ODQiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiU3RvcmFnZSIgewogICAgICAgICAgICAgICAgc2hhcGUgQ3lsaW5kZXIKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIiMxMTY4YmQiCiAgICAgICAgICAgICAgICBjb2xvciAiI2ZmZmZmZiIKICAgICAgICAgICAgICAgIHN0cm9rZSAiIzBiNDg4NCIKICAgICAgICAgICAgfQogICAgICAgIH0KCiAgICB9Cgp9",
+    "structurizr.inspection.info" : "0",
+    "structurizr.inspection.ignore" : "0",
+    "structurizr.inspection.warning" : "0"
+  },
+  "views" : {
+    "configuration" : {
+      "styles" : {
+        "elements" : [ {
+          "background" : "#1168bd",
+          "color" : "#ffffff",
+          "shape" : "RoundedBox",
+          "stroke" : "#0b4884",
+          "tag" : "Container"
+        }, {
+          "background" : "#1168bd",
+          "color" : "#ffffff",
+          "shape" : "Cylinder",
+          "stroke" : "#0b4884",
+          "tag" : "Database"
+        }, {
+          "background" : "#999999",
+          "color" : "#ffffff",
+          "shape" : "Person",
+          "stroke" : "#6b6b6b",
+          "tag" : "External Person"
+        }, {
+          "background" : "#999999",
+          "color" : "#ffffff",
+          "shape" : "RoundedBox",
+          "stroke" : "#6b6b6b",
+          "tag" : "External System"
+        }, {
+          "background" : "#08427b",
+          "color" : "#ffffff",
+          "shape" : "Person",
+          "stroke" : "#052d56",
+          "tag" : "Person"
+        }, {
+          "background" : "#1168bd",
+          "color" : "#ffffff",
+          "shape" : "RoundedBox",
+          "stroke" : "#0b4884",
+          "tag" : "Software System"
+        }, {
+          "background" : "#1168bd",
+          "color" : "#ffffff",
+          "shape" : "Cylinder",
+          "stroke" : "#0b4884",
+          "tag" : "Storage"
+        } ]
+      },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "edgeSeparation" : 50,
+        "nodeSeparation" : 50,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 100,
+        "vertices" : true
+      },
+      "description" : "Containers within the PAMHUB",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "26",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "27",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "28",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Containers",
+      "name" : "Container View: PAMHUB",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "12"
+      }, {
+        "id" : "13"
+      }, {
+        "id" : "14"
+      }, {
+        "id" : "15"
+      }, {
+        "id" : "16"
+      }, {
+        "id" : "17"
+      }, {
+        "id" : "18"
+      }, {
+        "id" : "19"
+      }, {
+        "id" : "20"
+      }, {
+        "id" : "21"
+      }, {
+        "id" : "22"
+      }, {
+        "id" : "23"
+      }, {
+        "id" : "24"
+      }, {
+        "id" : "25"
+      }, {
+        "id" : "34"
+      }, {
+        "id" : "35"
+      }, {
+        "id" : "36"
+      }, {
+        "id" : "37"
+      }, {
+        "id" : "38"
+      } ],
+      "softwareSystemId" : "3"
+    } ],
+    "systemContextViews" : [ {
+      "automaticLayout" : {
+        "edgeSeparation" : 50,
+        "nodeSeparation" : 50,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 100,
+        "vertices" : true
+      },
+      "description" : "System Context for the PAMHUB",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "26",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "27",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "28",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "SystemContext",
+      "name" : "System Context View: PAMHUB",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "29"
+      }, {
+        "id" : "30"
+      }, {
+        "id" : "31"
+      }, {
+        "id" : "32"
+      }, {
+        "id" : "33"
+      } ],
+      "softwareSystemId" : "3"
+    } ]
+  }
+}

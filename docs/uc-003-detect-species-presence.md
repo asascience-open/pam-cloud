@@ -15,12 +15,28 @@
 
 ## 2. Basic Flow (Happy Path)
 
-> **Note:** This section is pending completion. The basic flow will vary depending on which species detectors are in scope (see Decision 3 in `scope-reframe-2026.md`) and which orchestration tool is confirmed (see Decision 2a). Two distinct sub-flows are anticipated and may need to be split into separate use cases:
+> **Note:** This section is pending completion. The basic flow will vary depending on which species detectors are in scope and which orchestration tool is confirmed. Two distinct sub-flows are anticipated and may need to be split into separate use cases:
 >
 > - **Sub-flow A:** Cross-platform, scriptable detectors integrated into the orchestration workflow (e.g., a Dagster pipeline)
 > - **Sub-flow B:** Windows-only, GUI-driven detectors such as LFDCS that require a separate integration strategy (see Decision 2b)
 >
-> Do not consolidate these sub-flows until Decision 2b is resolved.
+> Do not consolidate these sub-flows until decision on detector architecture and metadata database are resolved.
+>
+
+Draft steps from original user story which only focused on LFDCS.  Retained until this use case is fully revised.
+
+- Create LFDCS Whale detections, archive at NCEI, and publish to PACM 
+  - Create deployment metdata
+  - Upload raw audio and metadata to cloud via asset manager
+  - Launch pam-ww cloud workstation
+  - Quality control raw audio
+  - Run LFDCS detector
+    - Create LFDCS config parameter file
+    - Run LFDCS detector on pam-ww cloud workstation
+  - Quality control LFDCS output, approve detections
+  - Create LFDCS archive package
+  - Archive LFDCS archive package at NCEI
+  - _Upload LFDCS detections to Makara and PACM (NOTE: To be verified)_
 
 ## 3. Alternative / Exception Flows
 
@@ -34,7 +50,7 @@
 
 ### 3.3 Windows-only detector cannot be run in the standard orchestration environment
 
-> TBD — pending resolution of Decision 2b in `scope-reframe-2026.md`
+> TBD — is this a true statement?
 
 ## 4. Special Requirements
 
