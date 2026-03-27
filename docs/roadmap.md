@@ -6,7 +6,7 @@ This document describes the high level roadmap for PAMHUB development and lists 
 ```mermaid
 gantt
     dateFormat  YYYY-MM-DD
-    title       PAMHUB Development
+    title       IGNORE PAMHUB Development IGNORE
     excludes    weekends
     %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
 
@@ -93,11 +93,12 @@ References and decomposition into standalone tasks.  Original [User Stories](./P
 | uc-004 | [Visualize climatology](./uc-004-visualize-spectrogram-climatology.md) | NA|
 | uc-005 | [Upload data](./uc-005-upload-raw-data-to-pamhub.md) | NA|
 | uc-006 | [Visualize other](./uc-006-visualizations-other.md) | NA|
+| uc-007 | [Quality control raw audio](./uc-007-quality-control-raw-audio.md) | NA|
 
 Other use cases we have/are considering.
 
 1. Upload detections to PACM
 2. Archive Spectograms/HMD files
-3. Quality control raw data from within the workstation or as an automated process
+3. Quality control raw data as an automated process
 4. Provide JupyterHub analysis environment - either as an alternative to the workstation or as the interface to drive the automated workflows or check results.
 5. 

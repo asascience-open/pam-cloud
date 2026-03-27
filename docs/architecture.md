@@ -2,19 +2,15 @@
 
 ## Static Structure
 
-- Ingest layer: authenticated upload endpoints and connector agents.
-- Storage layer: object store with metadata catalog and lifecycle policies.
-- Processing layer: Manual cloud based workstation (pam-ww) or batch scaling.
-  - Research the SoundScapes data processing worklflow to see what we can reuse.
-- Visualization: Visualization for select products.  Possibly, building on the [SoundCOOP Visualization system](https://soundcoop.portal.axds.co)
-- Operations: monitoring, alerting, logs, backups, and cost management.
-- Export layer: dataset packaging and export workflows for downstream customers (e.g. NOAA/NCEI archive, PACM).
+![System Context][pam-cloud-system-context]
 
-![System Landscape][pam-cloud-system]
+![Containers in PAMHUB][pam-cloud-containers]
+
+> ![NOTE] These diagrams follow the [C4 software diagramming](https://c4model.com) conventions.  Importantly, in these diagrams "Containers" are generic objects that "contain" functionality provided by software packages.  They are simply a level of abstraction that allows for showing different levels of detail in different diagrams.  THEY ARE NOT DOCKER CONTAINERS!
 
 ## Data Flow
 
-![High level data flow][dataflow]
+TBD Data flow diagrams for select use cases.
 
 ## Data Model
 
@@ -26,21 +22,7 @@ Metadata and configuration files platform, detections, ancillary data.
 > There is a pending decision regarding the dependence on the Makara Database system and the database model in Makara.  If this project chooses to diverge from the Makara data system then we will need to decide on a new metadata model.  This impacts the way we record platform and deployment metadata as well as species detections from different detectors.
 >
 
-Adopting the Makara database structure for metatdata and detection management?
-
--OR-
-
-Adopting the metadata model that underpins Tethys?
-
-### Detections
 
 
-### Quality Control Results
-
-
-
-### Archive Data and Metadata Formats
-
-
-[dataflow]: images/pamhub-workflow.svg
-[pam-cloud-system]: images/pam-cloud-system.svg
+[pam-cloud-system-context]: images/pamhub-SystemContext.svg
+[pam-cloud-containers]: images/pamhub-Containers.svg
