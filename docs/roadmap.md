@@ -80,9 +80,9 @@ References and decomposition into standalone tasks.  Original [User Stories](./P
 | uc-006 | [Visualize other](./uc-006-visualizations-other.md) | NA|
 | uc-007 | [Quality control raw audio](./uc-007-quality-control-raw-audio.md) | NA|
 | uc-008 | [Publish detections to PACM and/or NCEI](./uc-008-publish-detections.md) | NA |
-| uc-0 | [Integrate internal SoundScope visualization](./uc-009-soundscope-integration.md) | NA |
-| uc-0 | [Provide analysis environment to external PIs/Data providers](./uc-010-external-investigator-analysis.md) | NA |
-| uc-0 | [QC check prior to data upload](./uc-011-pre-upload-integrity-check.md) | NA |
+| uc-009 | [Integrate internal SoundScope visualization](./uc-009-soundscope-integration.md) | NA |
+| uc-010 | [Provide analysis environment to external PIs/Data providers](./uc-010-external-investigator-analysis.md) | NA |
+| uc-011 | [QC check prior to data upload](./uc-011-pre-upload-integrity-check.md) | NA |
 
 Other use cases we have/are considering:
 
