@@ -18,11 +18,7 @@ Metadata and configuration files platform, detections, ancillary data.
 
 ### Platform and Deployment Metadata
 
-> [!CAUTION]
-> There is a pending decision regarding the dependence on the Makara Database system and the database model in Makara.  If this project chooses to diverge from the Makara data system then we will need to decide on a new metadata model.  This impacts the way we record platform and deployment metadata as well as species detections from different detectors.
->
-
-
+This project will implement the Makara database schema behind a web based Asset Manager user interface.  This Asset Manager system is built with modern, robust tools that will be much easier to develop against, deploy, and maintain. The backend is just PostgreSQL with PostgREST on top, and the frontend is a schema-driven admin UI built with React and TypeScript.
 
 [pam-cloud-system-context]: images/pamhub-SystemContext.svg
 [pam-cloud-containers]: images/pamhub-Containers.svg

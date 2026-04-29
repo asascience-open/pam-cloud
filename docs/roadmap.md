@@ -66,24 +66,9 @@ gantt
 
 ```
 
-## Outstanding Decisions needed
-
-- Clarify the end user needs for a computation environment (Who are the users of the workflow and analysis tools and are they separate from the users of the Visualization portal)
-- Decide on and Create database infrastructure (if not Makara)
-- Decide on Data Providers for first phase of the project. 
-- - Develop batch scaling infrastructure
-  - Decide on workflow orchestration architecture
-- Decide on full suite of detectors to support
-  - Develop detector interface architecture (to support plug and play detectors in a workflow)
-  - Reproduce manual workflows
-  - Special focus on detectors (e.g. LFDCS) that aren't easily integrated into the Python based orchestration
-- Decide on derived products created by PAMHUB software
-- Develop long term O&M cost estimator
-
-
 ## Use Cases
 
-References and decomposition into standalone tasks.  Original [User Stories](./PAM_Cloud_stories.docx.md).  NOTE: This file is not maintained.  It will be decomposed into smaller stories or use cases below and recorded as Issues.
+References and decomposition into standalone tasks.  Original [User Stories](./PAM_Cloud_stories.docx.md).  NOTE: This file is not maintained.  It has been decomposed into smaller stories or use cases below.
 
 | UC ID | Use Case write up  | Related Issues |
 |------|---------------------|----------------|
@@ -94,11 +79,13 @@ References and decomposition into standalone tasks.  Original [User Stories](./P
 | uc-005 | [Upload data](./uc-005-upload-raw-data-to-pamhub.md) | NA|
 | uc-006 | [Visualize other](./uc-006-visualizations-other.md) | NA|
 | uc-007 | [Quality control raw audio](./uc-007-quality-control-raw-audio.md) | NA|
+| uc-008 | [Publish detections to PACM and/or NCEI](./uc-008-publish-detections.md) | NA |
+| uc-0 | [Integrate internal SoundScope visualization](./uc-009-soundscope-integration.md) | NA |
+| uc-0 | [Provide analysis environment to external PIs/Data providers](./uc-010-external-investigator-analysis.md) | NA |
+| uc-0 | [QC check prior to data upload](./uc-011-pre-upload-integrity-check.md) | NA |
 
-Other use cases we have/are considering.
+Other use cases we have/are considering:
 
-1. Upload detections to PACM
-2. Archive Spectograms/HMD files
-3. Quality control raw data as an automated process
-4. Provide JupyterHub analysis environment - either as an alternative to the workstation or as the interface to drive the automated workflows or check results.
-5. 
+1. Archive Spectograms/HMD files
+2. Quality control raw data as an automated process
+3. Archive detections

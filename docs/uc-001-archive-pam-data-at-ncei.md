@@ -1,30 +1,37 @@
-# Use Case: Upload Raw PAM Data to NCEI
+# Use Case: Archive Raw PAM Data with NCEI
 
 **ID:** UC-001
-**Goal:** Submit a raw audio dataset and associated metadata for QA/QC and long-term archiving at NCEI
+**Goal:** Submit a raw audio dataset and associated metadata for long-term archiving at NCEI
 
 ---
 
 ## 1. Descriptions
 
-**Primary Actor:** PAM Data Provider
-**Trigger:** A data provider has recovered PAM moorings, downloaded data from the recorders, and is ready to begin the archiving process.
-**Pre-conditions:** TBD. What level of quality control is done before uploading anything?  Do we expect that PAMHUB receives only raw data or partially/completely processed data?  This is important to decide how many times a given data set might be uploaded to the PAMHUB.
-**Post-conditions:** TBD
+**Primary Actor:** PAM Data Provider (or PAM Analyst on their behalf)
+
+**Trigger:** A data provider has uploaded PAM acoustic data, and is ready to begin the archiving process.
+
+**Pre-conditions:**
+
+To be refined based on resources and references provided by [NCEI](https://www.ncei.noaa.gov/products/passive-acoustic-data)
+
+- Sufficient metadata exists and is properly formatted
+- Data files comply with NCEI standards
+
+
+**Post-conditions:** 
+
+- Accession number has been created
+- DOI has been created
+- Data is publicly accessible on the NCEI Google Cloud bucket
+- Data is publicly accessible on the NOAA Open Data Dissemination (NODD) website and cloud buckets (the specific cloud and access method is determined at the time of archiving.)
+
 **Priority:** High
 
 ## 2. Basic Flow (Happy Path)
 
 > **Note:** This section is pending completion. The basic flow will be derived from manual archiving interactions conducted by the PAM Analyst during the first increment. The PAM Analyst will document exact steps during live NCEI submissions, and those steps will inform this section.
 
-Draft flow from original user stories.  
-
-- Archive raw audio 
-  - Create deployment metadata
-  - Upload raw audio to cloud (large files via hard drive and small files via gsutils)
-  - Quality control raw audio
-  - Create raw audio archive package
-  - Archive raw audio package at NCEI
 
 ## 3. Alternative / Exception Flows
 
@@ -48,6 +55,7 @@ Includes, data volumes are too large and therefore egress fees are too expensive
 
 ## Prior User Story
 
+> ![WARNING] Steps below are not validated. Retained 
 1. Data provider recovers PAM moorings, downloads data from the recorders and performs data backup.	  
 2. Data provider enters metadata of the deployment locations, instrument specifications and recording cycles to the NOAA Makara database using the Makara Data Portal interface ([https://passiveacoustics.fisheries.noaa.gov](https://passiveacoustics.fisheries.noaa.gov)). At this stage the data provider also defines data sharing permissions (PACM visibility, accessibility from other users, etc.).  
 3. NOAA includes deployment location and metadata to the PACM website  
@@ -60,7 +68,7 @@ Includes, data volumes are too large and therefore egress fees are too expensive
 8. IOOS analyst connects to the IOOS cloud workstation and starts the QA/QC process. This consists of 1\) running R and python routines to detect times and frequency bands of the data that may have issues (e.g. noise, data gaps, etc) and 2\) manually verifying a portion of the data that were flagged by the scripts. If the data uploaded by the data provider are compressed (e.g. sud file), IOOS will first need to decompress the data (e.g. using the SoundTrap software)  
 9. IOOS analyst creates a QA/QC report and uploads it to the temporary data bucket for the data provider to review.  
 10. Data provider uses temporary cloud workstation to access the QA/QC report and to verify a section of the data flagged using standard (e.g. Raven) and custom (e.g. possibly R/python GUI) software.  
-11. Once the data provider approves the QA/QC report. IOOS proceeds with the data clearance process with the Navy. If the Navy requests the data to be scrutinized, they will be given access to the temporary NCEI data bucket to download and scrutinize the data. Data deemed problematic will be redacted and the NCEI data packaging process can start.   
+11. Once the data provider approves the QA/QC report. IOOS proceeds with the data clearance process with the Navy. If the Navy requests the data to be scrutinized, they will be given access to the temporary NCEI data bucket to download and scrutinize the data. Data deemed problematic will be redacted and the NCEI data packaging process can start.
 12. IOOS uses BigQuery to query Makara and get all the metadata required to package the data to NCEI. IOOS uses PACE/Passive packer to package the data in a way that NCEI’s team can use. IOOS uses custom python script to include QC masks to the data package for easier integration to NCEI’s repository. All NCEI-ready data are placed on the NCEI data bucket.  
 13. NCEI downloads data from the NCEI data bucket and integrates it to the the PAD  
 14. Data from the data provider are publicly available on the NCEI PAD Google bucket ([https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic](https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic)) and discoverable on the NCEI Passive Acoustic Data Map ([https://www.ncei.noaa.gov/maps/passive-acoustic-data](https://www.ncei.noaa.gov/maps/passive-acoustic-data))  

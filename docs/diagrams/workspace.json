@@ -5,7 +5,7 @@
   "description" : "Passive Acoustic Monitoring Data Platform",
   "documentation" : { },
   "id" : 1,
-  "lastModifiedDate" : "2026-03-27T22:17:55Z",
+  "lastModifiedDate" : "2026-04-29T22:32:00Z",
   "model" : {
     "people" : [ {
       "description" : "Submits acoustic recordings, metadata, and derived products.",
@@ -17,17 +17,37 @@
       "relationships" : [ {
         "description" : "Uploads raw acoustic files & metadata",
         "destinationId" : "3",
-        "id" : "29",
+        "id" : "34",
         "sourceId" : "1",
         "tags" : "Relationship",
         "technology" : "HTTPS / S3 presigned URL"
       }, {
-        "description" : "Provide acoustic files & metadata",
+        "description" : "Create/upload/edit project metadata",
         "destinationId" : "4",
-        "id" : "34",
+        "id" : "39",
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Check files on user disk before upload",
+        "destinationId" : "5",
+        "id" : "40",
         "sourceId" : "1",
         "tags" : "Relationship",
-        "technology" : "Asset Manager / AWS CLI upload"
+        "technology" : "Pyodide"
+      }, {
+        "description" : "Upload raw audio",
+        "destinationId" : "6",
+        "id" : "41",
+        "sourceId" : "1",
+        "tags" : "Relationship",
+        "technology" : "AWS CLI upload"
+      }, {
+        "description" : "Analyze PAM data and products TBD",
+        "destinationId" : "13",
+        "id" : "46",
+        "sourceId" : "1",
+        "tags" : "Relationship",
+        "technology" : "UNKNOWN/TBD"
       } ],
       "tags" : "Element,Person,External Person"
     }, {
@@ -40,57 +60,78 @@
       "relationships" : [ {
         "description" : "Reviews detections, annotates, performs QA/QC, approves products",
         "destinationId" : "3",
-        "id" : "30",
+        "id" : "35",
         "sourceId" : "2",
         "tags" : "Relationship",
         "technology" : "Virtual Machine/JupyterHub"
       }, {
         "description" : "Reviews detections, annotates, approves",
-        "destinationId" : "8",
-        "id" : "35",
+        "destinationId" : "13",
+        "id" : "42",
         "sourceId" : "2",
         "tags" : "Relationship",
-        "technology" : "SSH / HTTPS?"
+        "technology" : "SSH / HTTPS"
       } ],
       "tags" : "Element,Person"
     } ],
     "softwareSystems" : [ {
       "containers" : [ {
-        "description" : "Accepts file uploads, validates metadata, and triggers ingestion workflow.",
+        "description" : "Accepts metadata file uploads, input/edit/validate metadata, and triggers ingestion workflow.",
         "documentation" : { },
         "id" : "4",
+        "name" : "Asset Manager",
+        "properties" : {
+          "structurizr.dsl.identifier" : "asset-manager"
+        },
+        "relationships" : [ {
+          "description" : "Create/Update project environment.",
+          "destinationId" : "6",
+          "id" : "18",
+          "sourceId" : "4",
+          "tags" : "Relationship",
+          "technology" : "?"
+        }, {
+          "description" : "Creat/Update metadata",
+          "destinationId" : "15",
+          "id" : "19",
+          "sourceId" : "4",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        } ],
+        "tags" : "Element,Container,Web Page",
+        "technology" : "Web Application; FastAPI"
+      }, {
+        "description" : "Inspect user files before upload for errors",
+        "documentation" : { },
+        "id" : "5",
+        "name" : "Data Integrity Checker",
+        "properties" : {
+          "structurizr.dsl.identifier" : "data-integrity-checker"
+        },
+        "tags" : "Element,Container,Web Page",
+        "technology" : "Pyodide/PAMHUB Tools"
+      }, {
+        "description" : "Create user/project environment, accepts file uploads.",
+        "documentation" : { },
+        "id" : "6",
         "name" : "Ingest Service",
         "properties" : {
           "structurizr.dsl.identifier" : "ingest"
         },
         "relationships" : [ {
-          "description" : "Writes raw files",
-          "destinationId" : "5",
-          "id" : "12",
-          "sourceId" : "4",
+          "description" : "Write raw audio files",
+          "destinationId" : "7",
+          "id" : "20",
+          "sourceId" : "6",
           "tags" : "Relationship",
-          "technology" : "AWS CLI; S3 PutObject"
-        }, {
-          "description" : "Records ingestion event; metadata",
-          "destinationId" : "10",
-          "id" : "13",
-          "sourceId" : "4",
-          "tags" : "Relationship",
-          "technology" : "SQL"
-        }, {
-          "description" : "Triggers ingestion run",
-          "destinationId" : "6",
-          "id" : "14",
-          "sourceId" : "4",
-          "tags" : "Relationship",
-          "technology" : "?"
+          "technology" : "AWS CLI; S3 PutObject; Other?"
         } ],
         "tags" : "Element,Container",
         "technology" : "Web Application; REST API; CLI"
       }, {
         "description" : "Stores raw acoustic files (wav, FLAC, mp3, other?) and associated metadata (fmt - TBD).",
         "documentation" : { },
-        "id" : "5",
+        "id" : "7",
         "name" : "Raw Data Bucket",
         "properties" : {
           "structurizr.dsl.identifier" : "rawBucket"
@@ -98,105 +139,128 @@
         "tags" : "Element,Container,Storage",
         "technology" : "Cloud Object Store"
       }, {
-        "description" : "Schedules and monitors processing pipelines; manages job retries & logging.",
-        "documentation" : { },
-        "id" : "6",
-        "name" : "Workflow Orchestrator",
-        "properties" : {
-          "structurizr.dsl.identifier" : "workflow"
-        },
-        "relationships" : [ {
-          "description" : "Dispatches processing jobs",
-          "destinationId" : "7",
-          "id" : "15",
-          "sourceId" : "6",
-          "tags" : "Relationship",
-          "technology" : "Job queue / K8s Job"
+        "components" : [ {
+          "description" : "Schedules and monitors HMD file creation processing pipelines; manages job retries & logging.",
+          "documentation" : { },
+          "id" : "9",
+          "name" : "HMD Pipeline",
+          "properties" : {
+            "structurizr.dsl.identifier" : "hmd-workflow"
+          },
+          "tags" : "Element,Component",
+          "technology" : "Dagster Flow/Dask/Python"
         }, {
-          "description" : "Reads/writes workflow state",
-          "destinationId" : "10",
-          "id" : "16",
-          "sourceId" : "6",
-          "tags" : "Relationship",
-          "technology" : "SQL"
+          "description" : "Schedules and monitors species detection workflows; manages job retries & logging.",
+          "documentation" : { },
+          "id" : "10",
+          "name" : "Detector Pipeline",
+          "properties" : {
+            "structurizr.dsl.identifier" : "detector-workflow"
+          },
+          "tags" : "Element,Component,Priority3",
+          "technology" : "Dagster Flow/Dask/Python"
         }, {
-          "description" : "Triggers product delivery jobs",
-          "destinationId" : "11",
-          "id" : "17",
-          "sourceId" : "6",
-          "tags" : "Relationship",
-          "technology" : "REST"
+          "description" : "Create and publish archive package for raw audio files",
+          "documentation" : { },
+          "id" : "11",
+          "name" : "Archive Package Pipeline",
+          "properties" : {
+            "structurizr.dsl.identifier" : "ncei-workflow"
+          },
+          "tags" : "Element,Component",
+          "technology" : "Dagster Flow/Dask/Python"
+        }, {
+          "description" : "Create new HMD-based metrics and publish to visualization service.",
+          "documentation" : { },
+          "id" : "12",
+          "name" : "Update HMD Visualization",
+          "properties" : {
+            "structurizr.dsl.identifier" : "extract-hmd-visuals-workflow"
+          },
+          "tags" : "Element,Component,Priority2",
+          "technology" : "Dagster Flow/Python"
         } ],
-        "tags" : "Element,Container",
-        "technology" : "Dagster Workflow Engine"
-      }, {
-        "description" : "Executes algorithms: spectrogram generation, detector models, QA checks.",
-        "documentation" : { },
-        "id" : "7",
-        "name" : "Processing Workers",
-        "properties" : {
-          "structurizr.dsl.identifier" : "processingWorkers"
-        },
-        "relationships" : [ {
-          "description" : "Reads raw files",
-          "destinationId" : "5",
-          "id" : "18",
-          "sourceId" : "7",
-          "tags" : "Relationship",
-          "technology" : "S3 GetObject"
-        }, {
-          "description" : "Writes output products",
-          "destinationId" : "9",
-          "id" : "19",
-          "sourceId" : "7",
-          "tags" : "Relationship",
-          "technology" : "S3 PutObject"
-        }, {
-          "description" : "Records detections & processing results",
-          "destinationId" : "10",
-          "id" : "20",
-          "sourceId" : "7",
-          "tags" : "Relationship",
-          "technology" : "SQL"
-        } ],
-        "tags" : "Element,Container",
-        "technology" : "JupyterHub/Dask"
-      }, {
-        "description" : "Windows VM for analyst annotation review, detection validation & approval.",
+        "description" : "Administer Dagster OSS components; Orchestrate PAMHUB Flows",
         "documentation" : { },
         "id" : "8",
-        "name" : "Cloud Workstation",
+        "name" : "Dagster Orchestration",
+        "properties" : {
+          "structurizr.dsl.identifier" : "dagster-service"
+        },
+        "relationships" : [ {
+          "description" : "Read metadata",
+          "destinationId" : "15",
+          "id" : "25",
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "SQL"
+        }, {
+          "description" : "Write product files",
+          "destinationId" : "14",
+          "id" : "26",
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "S3 PutObject/Xarray/?"
+        }, {
+          "description" : "Read raw files",
+          "destinationId" : "7",
+          "id" : "27",
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "S3 GetObject/?"
+        }, {
+          "description" : "Publish data and products",
+          "destinationId" : "16",
+          "id" : "28",
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "UNKNOWN"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "K8s/Docker/AWS?"
+      }, {
+        "description" : "Development environment for one-off analysis and data pipeline invocation.",
+        "documentation" : { },
+        "id" : "13",
+        "name" : "JupyterHub",
         "properties" : {
           "structurizr.dsl.identifier" : "workstation"
         },
         "relationships" : [ {
-          "description" : "Reads/writes annotations & approvals",
-          "destinationId" : "10",
+          "description" : "Read raw files",
+          "destinationId" : "7",
           "id" : "21",
-          "sourceId" : "8",
+          "sourceId" : "13",
           "tags" : "Relationship",
-          "technology" : "SQL via API"
+          "technology" : "S3 GetObject/?"
         }, {
-          "description" : "Streams spectrograms for review",
-          "destinationId" : "9",
+          "description" : "Read/write metadata",
+          "destinationId" : "15",
           "id" : "22",
-          "sourceId" : "8",
+          "sourceId" : "13",
           "tags" : "Relationship",
-          "technology" : "S3 presigned URL"
+          "technology" : "SQL via ??"
         }, {
-          "description" : "Triggers approval workflow step",
-          "destinationId" : "6",
+          "description" : "Write analysis results",
+          "destinationId" : "14",
           "id" : "23",
-          "sourceId" : "8",
+          "sourceId" : "13",
           "tags" : "Relationship",
-          "technology" : "REST"
+          "technology" : "S3 PutObject/Xarray?"
+        }, {
+          "description" : "Launch data pipeline",
+          "destinationId" : "8",
+          "id" : "24",
+          "sourceId" : "13",
+          "tags" : "Relationship",
+          "technology" : "Dagster/Python"
         } ],
-        "tags" : "Element,Container",
-        "technology" : "Virtual Machine"
+        "tags" : "Element,Container,Web Page",
+        "technology" : "JupyterHub"
       }, {
         "description" : "Stores processed outputs: spectrograms, detection CSVs, archive packages.",
         "documentation" : { },
-        "id" : "9",
+        "id" : "14",
         "name" : "Products Bucket",
         "properties" : {
           "structurizr.dsl.identifier" : "productsBucket"
@@ -204,9 +268,9 @@
         "tags" : "Element,Container,Storage",
         "technology" : "Cloud Object Store"
       }, {
-        "description" : "Tracks deployments, recordings, detections, annotations, workflow state & audit log.",
+        "description" : "Tracks deployments, recordings, detections, annotations, workflow state & audit log. Makara like.",
         "documentation" : { },
-        "id" : "10",
+        "id" : "15",
         "name" : "Metadata Database",
         "properties" : {
           "structurizr.dsl.identifier" : "metadataDb"
@@ -216,49 +280,59 @@
       }, {
         "description" : "Exposes processed products to downstream systems via authenticated endpoints.",
         "documentation" : { },
-        "id" : "11",
+        "id" : "16",
         "name" : "Delivery API",
         "properties" : {
           "structurizr.dsl.identifier" : "deliveryApi"
         },
         "relationships" : [ {
-          "description" : "Reads finalized products",
-          "destinationId" : "9",
-          "id" : "24",
-          "sourceId" : "11",
+          "description" : "Extracts and formats finalized products",
+          "destinationId" : "14",
+          "id" : "29",
+          "sourceId" : "16",
           "tags" : "Relationship",
           "technology" : "S3 GetObject"
         }, {
-          "description" : "Reads delivery manifest",
-          "destinationId" : "10",
-          "id" : "25",
-          "sourceId" : "11",
+          "description" : "Extracts and formats metadata for publication",
+          "destinationId" : "15",
+          "id" : "30",
+          "sourceId" : "16",
           "tags" : "Relationship",
           "technology" : "SQL"
         }, {
           "description" : "Pushes archive packages",
-          "destinationId" : "26",
-          "id" : "36",
-          "sourceId" : "11",
+          "destinationId" : "31",
+          "id" : "43",
+          "sourceId" : "16",
           "tags" : "Relationship",
           "technology" : "HTTPS / S3 "
         }, {
-          "description" : "POSTs detection reports",
-          "destinationId" : "27",
-          "id" : "37",
-          "sourceId" : "11",
+          "description" : "Provides detection reports",
+          "destinationId" : "32",
+          "id" : "44",
+          "sourceId" : "16",
           "tags" : "Relationship",
-          "technology" : "REST API"
+          "technology" : "UNKNOWN"
         }, {
           "description" : "Publishes products & metadata",
-          "destinationId" : "28",
-          "id" : "38",
-          "sourceId" : "11",
+          "destinationId" : "33",
+          "id" : "45",
+          "sourceId" : "16",
           "tags" : "Relationship",
           "technology" : "REST API / S3 event"
         } ],
         "tags" : "Element,Container",
         "technology" : "REST API"
+      }, {
+        "description" : "Visualize using SoundScope TBD",
+        "documentation" : { },
+        "id" : "17",
+        "name" : "SoundScope Visualization",
+        "properties" : {
+          "structurizr.dsl.identifier" : "soundscopeVis"
+        },
+        "tags" : "Element,Container,Web Page,Priority3",
+        "technology" : "UNKNOWN"
       } ],
       "description" : "Ingests acoustic data, orchestrates processing pipelines, and delivers output products.",
       "documentation" : { },
@@ -269,22 +343,22 @@
       },
       "relationships" : [ {
         "description" : "Delivers archived data packages",
-        "destinationId" : "26",
-        "id" : "31",
+        "destinationId" : "31",
+        "id" : "36",
         "sourceId" : "3",
         "tags" : "Relationship",
         "technology" : "HTTPS / SFTP"
       }, {
         "description" : "Delivers species detection results & reports",
-        "destinationId" : "27",
-        "id" : "32",
+        "destinationId" : "32",
+        "id" : "37",
         "sourceId" : "3",
         "tags" : "Relationship",
         "technology" : "Manual CSV/API ???"
       }, {
         "description" : "Delivers processed spectrograms, annotations & metadata",
-        "destinationId" : "28",
-        "id" : "33",
+        "destinationId" : "33",
+        "id" : "38",
         "sourceId" : "3",
         "tags" : "Relationship",
         "technology" : "REST API / S3 event"
@@ -293,7 +367,7 @@
     }, {
       "description" : "National Centers for Environmental Information long-term data archive.",
       "documentation" : { },
-      "id" : "26",
+      "id" : "31",
       "name" : "NCEI Archive",
       "properties" : {
         "structurizr.dsl.identifier" : "ncei"
@@ -302,7 +376,7 @@
     }, {
       "description" : "Passive Acoustic Cetacean Monitor – species detection and reporting platform.",
       "documentation" : { },
-      "id" : "27",
+      "id" : "32",
       "name" : "PACM",
       "properties" : {
         "structurizr.dsl.identifier" : "pacm"
@@ -311,23 +385,55 @@
     }, {
       "description" : "Interactive web application for exploring acoustic products and annotations.",
       "documentation" : { },
-      "id" : "28",
+      "id" : "33",
       "name" : "Visualization Portal",
       "properties" : {
         "structurizr.dsl.identifier" : "visualizer"
       },
-      "tags" : "Element,Software System,External Web Page"
+      "tags" : "Element,Software System,External Web Page,Priority2"
     } ]
   },
   "name" : "PAMHUB",
   "properties" : {
-    "structurizr.inspection.error" : "2",
-    "structurizr.dsl" : "d29ya3NwYWNlICJQQU1IVUIiICJQYXNzaXZlIEFjb3VzdGljIE1vbml0b3JpbmcgRGF0YSBQbGF0Zm9ybSIgewoJCgkhaW1wbGllZFJlbGF0aW9uc2hpcHMgdHJ1ZQoJCgkKCW1vZGVsIHsKCQkKCQkjIOKUgOKUgCBBY3RvcnMg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACgkJCgkJZGF0YVByb3ZpZGVyID0gcGVyc29uICJEYXRhIFByb3ZpZGVyIiAiU3VibWl0cyBhY291c3RpYyByZWNvcmRpbmdzLCBtZXRhZGF0YSwgYW5kIGRlcml2ZWQgcHJvZHVjdHMuIiAiRXh0ZXJuYWwgUGVyc29uIgoJCQoJCWFuYWx5c3QgPSBwZXJzb24gIlBBTSBBbmFseXN0IiAiUmV2aWV3cywgYW5ub3RhdGVzLCBhbmQgYXBwcm92ZXMgcHJvY2Vzc2VkIGRhdGEgdmlhIGNsb3VkIHdvcmtzdGF0aW9uLiIKCQkKCQkKCQkjIOKUgOKUgCBTeXN0ZW1zIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoJCQoJCWFjb3VzdGljUGxhdGZvcm0gPSBzb2Z0d2FyZVN5c3RlbSAiUEFNSFVCIiAiSW5nZXN0cyBhY291c3RpYyBkYXRhLCBvcmNoZXN0cmF0ZXMgcHJvY2Vzc2luZyBwaXBlbGluZXMsIGFuZCBkZWxpdmVycyBvdXRwdXQgcHJvZHVjdHMuIiB7CgkJCQoJCQkjIOKUgOKUgCBDb250YWluZXJzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoJCQkKCQkJaW5nZXN0ID0gY29udGFpbmVyICJJbmdlc3QgU2VydmljZSIgIkFjY2VwdHMgZmlsZSB1cGxvYWRzLCB2YWxpZGF0ZXMgbWV0YWRhdGEsIGFuZCB0cmlnZ2VycyBpbmdlc3Rpb24gd29ya2Zsb3cuIiAiV2ViIEFwcGxpY2F0aW9uOyBSRVNUIEFQSTsgQ0xJIgoJCQkKCQkJcmF3QnVja2V0ID0gY29udGFpbmVyICJSYXcgRGF0YSBCdWNrZXQiICJTdG9yZXMgcmF3IGFjb3VzdGljIGZpbGVzICh3YXYsIEZMQUMsIG1wMywgb3RoZXI/KSBhbmQgYXNzb2NpYXRlZCBtZXRhZGF0YSAoZm10IC0gVEJEKS4iICJDbG91ZCBPYmplY3QgU3RvcmUiICJTdG9yYWdlIgoJCQkKCQkJd29ya2Zsb3cgPSBjb250YWluZXIgIldvcmtmbG93IE9yY2hlc3RyYXRvciIgIlNjaGVkdWxlcyBhbmQgbW9uaXRvcnMgcHJvY2Vzc2luZyBwaXBlbGluZXM7IG1hbmFnZXMgam9iIHJldHJpZXMgJiBsb2dnaW5nLiIgIkRhZ3N0ZXIgV29ya2Zsb3cgRW5naW5lIgoJCQkKCQkJcHJvY2Vzc2luZ1dvcmtlcnMgPSBjb250YWluZXIgIlByb2Nlc3NpbmcgV29ya2VycyIgIkV4ZWN1dGVzIGFsZ29yaXRobXM6IHNwZWN0cm9ncmFtIGdlbmVyYXRpb24sIGRldGVjdG9yIG1vZGVscywgUUEgY2hlY2tzLiIgIkp1cHl0ZXJIdWIvRGFzayIKCQkJCgkJCXdvcmtzdGF0aW9uID0gY29udGFpbmVyICJDbG91ZCBXb3Jrc3RhdGlvbiIgIldpbmRvd3MgVk0gZm9yIGFuYWx5c3QgYW5ub3RhdGlvbiByZXZpZXcsIGRldGVjdGlvbiB2YWxpZGF0aW9uICYgYXBwcm92YWwuIiAiVmlydHVhbCBNYWNoaW5lIgoJCQkKCQkJcHJvZHVjdHNCdWNrZXQgPSBjb250YWluZXIgIlByb2R1Y3RzIEJ1Y2tldCIgIlN0b3JlcyBwcm9jZXNzZWQgb3V0cHV0czogc3BlY3Ryb2dyYW1zLCBkZXRlY3Rpb24gQ1NWcywgYXJjaGl2ZSBwYWNrYWdlcy4iICJDbG91ZCBPYmplY3QgU3RvcmUiICJTdG9yYWdlIgoJCQkKCQkJbWV0YWRhdGFEYiA9IGNvbnRhaW5lciAiTWV0YWRhdGEgRGF0YWJhc2UiICJUcmFja3MgZGVwbG95bWVudHMsIHJlY29yZGluZ3MsIGRldGVjdGlvbnMsIGFubm90YXRpb25zLCB3b3JrZmxvdyBzdGF0ZSAmIGF1ZGl0IGxvZy4iICJSZWxhdGlvbmFsIERCIiAiRGF0YWJhc2UiCgkJCQoJCQlkZWxpdmVyeUFwaSA9IGNvbnRhaW5lciAiRGVsaXZlcnkgQVBJIiAiRXhwb3NlcyBwcm9jZXNzZWQgcHJvZHVjdHMgdG8gZG93bnN0cmVhbSBzeXN0ZW1zIHZpYSBhdXRoZW50aWNhdGVkIGVuZHBvaW50cy4iICJSRVNUIEFQSSIKCQkJCgkJCSMg4pSA4pSAIENvbnRhaW5lci10by1jb250YWluZXIgcmVsYXRpb25zaGlwcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAKCQkJCgkJCWluZ2VzdCAgICAgICAgIC0+IHJhd0J1Y2tldCAgICAgICAgICJXcml0ZXMgcmF3IGZpbGVzIiAiQVdTIENMSTsgUzMgUHV0T2JqZWN0IgoJCQlpbmdlc3QgICAgICAgICAtPiBtZXRhZGF0YURiICAgICAgICAiUmVjb3JkcyBpbmdlc3Rpb24gZXZlbnQ7IG1ldGFkYXRhIiAiU1FMIgoJCQlpbmdlc3QgICAgICAgICAtPiB3b3JrZmxvdyAgICAgICAgICAgIlRyaWdnZXJzIGluZ2VzdGlvbiBydW4iICI/IgoJCQl3b3JrZmxvdyAgICAgICAgICAgLT4gcHJvY2Vzc2luZ1dvcmtlcnMgIkRpc3BhdGNoZXMgcHJvY2Vzc2luZyBqb2JzIiAiSm9iIHF1ZXVlIC8gSzhzIEpvYiIKCQkJd29ya2Zsb3cgICAgICAgICAgIC0+IG1ldGFkYXRhRGIgICAgICAgICJSZWFkcy93cml0ZXMgd29ya2Zsb3cgc3RhdGUiICJTUUwiCgkJCXdvcmtmbG93ICAgICAgICAgICAtPiBkZWxpdmVyeUFwaSAgICAgICAiVHJpZ2dlcnMgcHJvZHVjdCBkZWxpdmVyeSBqb2JzIiAiUkVTVCIKCQkJcHJvY2Vzc2luZ1dvcmtlcnMgLT4gcmF3QnVja2V0ICAgICAgICAgIlJlYWRzIHJhdyBmaWxlcyIgIlMzIEdldE9iamVjdCIKCQkJcHJvY2Vzc2luZ1dvcmtlcnMgLT4gcHJvZHVjdHNCdWNrZXQgICAgIldyaXRlcyBvdXRwdXQgcHJvZHVjdHMiICJTMyBQdXRPYmplY3QiCgkJCXByb2Nlc3NpbmdXb3JrZXJzIC0+IG1ldGFkYXRhRGIgICAgICAgICJSZWNvcmRzIGRldGVjdGlvbnMgJiBwcm9jZXNzaW5nIHJlc3VsdHMiICJTUUwiCgkJCXdvcmtzdGF0aW9uICAgICAgIC0+IG1ldGFkYXRhRGIgICAgICAgICJSZWFkcy93cml0ZXMgYW5ub3RhdGlvbnMgJiBhcHByb3ZhbHMiICJTUUwgdmlhIEFQSSIKCQkJd29ya3N0YXRpb24gICAgICAgLT4gcHJvZHVjdHNCdWNrZXQgICAgIlN0cmVhbXMgc3BlY3Ryb2dyYW1zIGZvciByZXZpZXciICJTMyBwcmVzaWduZWQgVVJMIgoJCQl3b3Jrc3RhdGlvbiAgICAgICAtPiB3b3JrZmxvdyAgICAgICAgICAiVHJpZ2dlcnMgYXBwcm92YWwgd29ya2Zsb3cgc3RlcCIgIlJFU1QiCgkJCWRlbGl2ZXJ5QXBpICAgICAgIC0+IHByb2R1Y3RzQnVja2V0ICAgICJSZWFkcyBmaW5hbGl6ZWQgcHJvZHVjdHMiICJTMyBHZXRPYmplY3QiCgkJCWRlbGl2ZXJ5QXBpICAgICAgIC0+IG1ldGFkYXRhRGIgICAgICAgICJSZWFkcyBkZWxpdmVyeSBtYW5pZmVzdCIgIlNRTCIKCQl9CgkJCgkJbmNlaSA9IHNvZnR3YXJlU3lzdGVtICJOQ0VJIEFyY2hpdmUiICJOYXRpb25hbCBDZW50ZXJzIGZvciBFbnZpcm9ubWVudGFsIEluZm9ybWF0aW9uIGxvbmctdGVybSBkYXRhIGFyY2hpdmUuIiAiRXh0ZXJuYWwgU3lzdGVtIgoJCQoJCXBhY20gPSBzb2Z0d2FyZVN5c3RlbSAiUEFDTSIgIlBhc3NpdmUgQWNvdXN0aWMgQ2V0YWNlYW4gTW9uaXRvciDigJMgc3BlY2llcyBkZXRlY3Rpb24gYW5kIHJlcG9ydGluZyBwbGF0Zm9ybS4iICJFeHRlcm5hbCBTeXN0ZW0iCgkJCgkJdmlzdWFsaXplciA9IHNvZnR3YXJlU3lzdGVtICJWaXN1YWxpemF0aW9uIFBvcnRhbCIgIkludGVyYWN0aXZlIHdlYiBhcHBsaWNhdGlvbiBmb3IgZXhwbG9yaW5nIGFjb3VzdGljIHByb2R1Y3RzIGFuZCBhbm5vdGF0aW9ucy4iICJFeHRlcm5hbCBXZWIgUGFnZSIKCQkKCQkjIOKUgOKUgCBTeXN0ZW0tbGV2ZWwgcmVsYXRpb25zaGlwcyAoTGV2ZWwgMSkg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACgkJCgkJZGF0YVByb3ZpZGVyICAgICAtPiBhY291c3RpY1BsYXRmb3JtICJVcGxvYWRzIHJhdyBhY291c3RpYyBmaWxlcyAmIG1ldGFkYXRhIiAiSFRUUFMgLyBTMyBwcmVzaWduZWQgVVJMIgoJCWFuYWx5c3QgICAgICAgICAgLT4gYWNvdXN0aWNQbGF0Zm9ybSAiUmV2aWV3cyBkZXRlY3Rpb25zLCBhbm5vdGF0ZXMsIHBlcmZvcm1zIFFBL1FDLCBhcHByb3ZlcyBwcm9kdWN0cyIgIlZpcnR1YWwgTWFjaGluZS9KdXB5dGVySHViIgoJCWFjb3VzdGljUGxhdGZvcm0gLT4gbmNlaSAgICAgICAgICAgICAiRGVsaXZlcnMgYXJjaGl2ZWQgZGF0YSBwYWNrYWdlcyIgIkhUVFBTIC8gU0ZUUCIKCQlhY291c3RpY1BsYXRmb3JtIC0+IHBhY20gICAgICAgICAgICAgIkRlbGl2ZXJzIHNwZWNpZXMgZGV0ZWN0aW9uIHJlc3VsdHMgJiByZXBvcnRzIiAiTWFudWFsIENTVi9BUEkgPz8/IgoJCWFjb3VzdGljUGxhdGZvcm0gLT4gdmlzdWFsaXplciAgICAgICAiRGVsaXZlcnMgcHJvY2Vzc2VkIHNwZWN0cm9ncmFtcywgYW5ub3RhdGlvbnMgJiBtZXRhZGF0YSIgIlJFU1QgQVBJIC8gUzMgZXZlbnQiCgkJCgkJIyDilIDilIAgQ29udGFpbmVyLXRvLWFjdG9yIC8gY29udGFpbmVyLXRvLWV4dGVybmFsIHJlbGF0aW9uc2hpcHMgKExldmVsIDIpIOKUgOKUgOKUgAoJCQoJCWRhdGFQcm92aWRlciAgICAgICAgICAgICAgICAgICAgICAgICAtPiBpbmdlc3QgICAiUHJvdmlkZSBhY291c3RpYyBmaWxlcyAmIG1ldGFkYXRhIiAiQXNzZXQgTWFuYWdlciAvIEFXUyBDTEkgdXBsb2FkIgoJCWFuYWx5c3QgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAtPiB3b3Jrc3RhdGlvbiAiUmV2aWV3cyBkZXRlY3Rpb25zLCBhbm5vdGF0ZXMsIGFwcHJvdmVzIiAiU1NIIC8gSFRUUFM/IgoJCWRlbGl2ZXJ5QXBpICAgICAgICAgLT4gbmNlaSAgICAgICAgICAgICAgICAgICAgICAgICAiUHVzaGVzIGFyY2hpdmUgcGFja2FnZXMiICJIVFRQUyAvIFMzICIKCQlkZWxpdmVyeUFwaSAgICAgICAgIC0+IHBhY20gICAgICAgICAgICAgICAgICAgICAgICAgIlBPU1RzIGRldGVjdGlvbiByZXBvcnRzIiAiUkVTVCBBUEkiCgkJZGVsaXZlcnlBcGkgICAgICAgICAtPiB2aXN1YWxpemVyICAgICAgICAgICAgICAgICAgICJQdWJsaXNoZXMgcHJvZHVjdHMgJiBtZXRhZGF0YSIgIlJFU1QgQVBJIC8gUzMgZXZlbnQiCgkJCgl9CgkKCXZpZXdzIHsKCQkKCQlzeXN0ZW1Db250ZXh0IGFjb3VzdGljUGxhdGZvcm0gIlN5c3RlbUNvbnRleHQiICJTeXN0ZW0gQ29udGV4dCBmb3IgdGhlIFBBTUhVQiIgewoJCQlpbmNsdWRlICoKCQkJYXV0b0xheW91dCBscgoJCX0KCQkKCQljb250YWluZXIgYWNvdXN0aWNQbGF0Zm9ybSAiQ29udGFpbmVycyIgIkNvbnRhaW5lcnMgd2l0aGluIHRoZSBQQU1IVUIiIHsKCQkJaW5jbHVkZSAqCgkJCWF1dG9MYXlvdXQgbHIKCQl9CgkJCgkJc3R5bGVzIHsKCQkJZWxlbWVudCAiUGVyc29uIiB7CgkJCQlzaGFwZSBQZXJzb24KCQkJCWJhY2tncm91bmQgIiMwODQyN2IiCgkJCQljb2xvciAiI2ZmZmZmZiIKCQkJCXN0cm9rZSAiIzA1MmQ1NiIKCQkJfQoJCQllbGVtZW50ICJFeHRlcm5hbCBQZXJzb24iIHsKCQkJCXNoYXBlIFBlcnNvbgoJCQkJYmFja2dyb3VuZCAiIzk5OTk5OSIKCQkJCWNvbG9yICIjZmZmZmZmIgoJCQkJc3Ryb2tlICIjNmI2YjZiIgoJCQl9CgkJCWVsZW1lbnQgIlNvZnR3YXJlIFN5c3RlbSIgewoJCQkJc2hhcGUgUm91bmRlZEJveAoJCQkJYmFja2dyb3VuZCAiIzExNjhiZCIKCQkJCWNvbG9yICIjZmZmZmZmIgoJCQkJc3Ryb2tlICIjMGI0ODg0IgoJCQl9CgkJCWVsZW1lbnQgIldlYiBQYWdlIiB7CgkJCQlzaGFwZSBXZWJCcm93c2VyCgkJCQliYWNrZ3JvdW5kICIjMTE2OGJkIgoJCQkJY29sb3IgIiNmZmZmZmYiCgkJCQlzdHJva2UgIiMwYjQ4ODQiCgkJCX0KCQkJZWxlbWVudCAiRXh0ZXJuYWwgV2ViIFBhZ2UiIHsKCQkJCXNoYXBlIFdlYkJyb3dzZXIKCQkJCWJhY2tncm91bmQgIiM5OTk5OTkiCgkJCQljb2xvciAiI2ZmZmZmZiIKCQkJCXN0cm9rZSAiIzZiNmI2YiIKCQkJfQoJCQllbGVtZW50ICJFeHRlcm5hbCBTeXN0ZW0iIHsKCQkJCXNoYXBlIFJvdW5kZWRCb3gKCQkJCWJhY2tncm91bmQgIiM5OTk5OTkiCgkJCQljb2xvciAiI2ZmZmZmZiIKCQkJCXN0cm9rZSAiIzZiNmI2YiIKCQkJfQoJCQllbGVtZW50ICJDb250YWluZXIiIHsKCQkJCXNoYXBlIFJvdW5kZWRCb3gKCQkJCWJhY2tncm91bmQgIiMxMTY4YmQiCgkJCQljb2xvciAiI2ZmZmZmZiIKCQkJCXN0cm9rZSAiIzBiNDg4NCIKCQkJfQoJCQllbGVtZW50ICJEYXRhYmFzZSIgewoJCQkJc2hhcGUgQ3lsaW5kZXIKCQkJCWJhY2tncm91bmQgIiMxMTY4YmQiCgkJCQljb2xvciAiI2ZmZmZmZiIKCQkJCXN0cm9rZSAiIzBiNDg4NCIKCQkJfQoJCQllbGVtZW50ICJTdG9yYWdlIiB7CgkJCQlzaGFwZSBDeWxpbmRlcgoJCQkJYmFja2dyb3VuZCAiIzExNjhiZCIKCQkJCWNvbG9yICIjZmZmZmZmIgoJCQkJc3Ryb2tlICIjMGI0ODg0IgoJCQl9CgkJfQoJCQoJfQoJY29uZmlndXJhdGlvbiB7CgkJc2NvcGUgc29mdHdhcmVzeXN0ZW0KCX0KfQ==",
+    "structurizr.inspection.error" : "8",
+    "structurizr.dsl" : "d29ya3NwYWNlICJQQU1IVUIiICJQYXNzaXZlIEFjb3VzdGljIE1vbml0b3JpbmcgRGF0YSBQbGF0Zm9ybSIgewoJCgkhaW1wbGllZFJlbGF0aW9uc2hpcHMgdHJ1ZQoJCgkKCW1vZGVsIHsKCQkKCQkjIOKUgOKUgCBBY3RvcnMg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACgkJCgkJZGF0YVByb3ZpZGVyID0gcGVyc29uICJEYXRhIFByb3ZpZGVyIiAiU3VibWl0cyBhY291c3RpYyByZWNvcmRpbmdzLCBtZXRhZGF0YSwgYW5kIGRlcml2ZWQgcHJvZHVjdHMuIiAiRXh0ZXJuYWwgUGVyc29uIgoJCQoJCWFuYWx5c3QgPSBwZXJzb24gIlBBTSBBbmFseXN0IiAiUmV2aWV3cywgYW5ub3RhdGVzLCBhbmQgYXBwcm92ZXMgcHJvY2Vzc2VkIGRhdGEgdmlhIGNsb3VkIHdvcmtzdGF0aW9uLiIKCQkKCQkKCQkjIOKUgOKUgCBTeXN0ZW1zIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoJCQoJCWFjb3VzdGljUGxhdGZvcm0gPSBzb2Z0d2FyZVN5c3RlbSAiUEFNSFVCIiAiSW5nZXN0cyBhY291c3RpYyBkYXRhLCBvcmNoZXN0cmF0ZXMgcHJvY2Vzc2luZyBwaXBlbGluZXMsIGFuZCBkZWxpdmVycyBvdXRwdXQgcHJvZHVjdHMuIiB7CgkJCQoJCQkjIOKUgOKUgCBDb250YWluZXJzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoJCQkKCQkJYXNzZXQtbWFuYWdlciA9IGNvbnRhaW5lciAiQXNzZXQgTWFuYWdlciIgIkFjY2VwdHMgbWV0YWRhdGEgZmlsZSB1cGxvYWRzLCBpbnB1dC9lZGl0L3ZhbGlkYXRlIG1ldGFkYXRhLCBhbmQgdHJpZ2dlcnMgaW5nZXN0aW9uIHdvcmtmbG93LiIgIldlYiBBcHBsaWNhdGlvbjsgRmFzdEFQSSIgIldlYiBQYWdlIgoJCQlkYXRhLWludGVncml0eS1jaGVja2VyID0gY29udGFpbmVyICJEYXRhIEludGVncml0eSBDaGVja2VyIiAiSW5zcGVjdCB1c2VyIGZpbGVzIGJlZm9yZSB1cGxvYWQgZm9yIGVycm9ycyIgIlB5b2RpZGUvUEFNSFVCIFRvb2xzIiAiV2ViIFBhZ2UiCgkJCWluZ2VzdCA9IGNvbnRhaW5lciAiSW5nZXN0IFNlcnZpY2UiICJDcmVhdGUgdXNlci9wcm9qZWN0IGVudmlyb25tZW50LCBhY2NlcHRzIGZpbGUgdXBsb2Fkcy4iICJXZWIgQXBwbGljYXRpb247IFJFU1QgQVBJOyBDTEkiCgkJCQoJCQlyYXdCdWNrZXQgPSBjb250YWluZXIgIlJhdyBEYXRhIEJ1Y2tldCIgIlN0b3JlcyByYXcgYWNvdXN0aWMgZmlsZXMgKHdhdiwgRkxBQywgbXAzLCBvdGhlcj8pIGFuZCBhc3NvY2lhdGVkIG1ldGFkYXRhIChmbXQgLSBUQkQpLiIgIkNsb3VkIE9iamVjdCBTdG9yZSIgIlN0b3JhZ2UiCgkJCQoJCQlkYWdzdGVyLXNlcnZpY2UgPSBjb250YWluZXIgIkRhZ3N0ZXIgT3JjaGVzdHJhdGlvbiIgIkFkbWluaXN0ZXIgRGFnc3RlciBPU1MgY29tcG9uZW50czsgT3JjaGVzdHJhdGUgUEFNSFVCIEZsb3dzIiAiSzhzL0RvY2tlci9BV1M/IiAgewoJCQkJCgkJCQlobWQtd29ya2Zsb3cgPSBjb21wb25lbnQgIkhNRCBQaXBlbGluZSIgIlNjaGVkdWxlcyBhbmQgbW9uaXRvcnMgSE1EIGZpbGUgY3JlYXRpb24gcHJvY2Vzc2luZyBwaXBlbGluZXM7IG1hbmFnZXMgam9iIHJldHJpZXMgJiBsb2dnaW5nLiIgIkRhZ3N0ZXIgRmxvdy9EYXNrL1B5dGhvbiIKCQkJCWRldGVjdG9yLXdvcmtmbG93ID0gY29tcG9uZW50ICJEZXRlY3RvciBQaXBlbGluZSIgIlNjaGVkdWxlcyBhbmQgbW9uaXRvcnMgc3BlY2llcyBkZXRlY3Rpb24gd29ya2Zsb3dzOyBtYW5hZ2VzIGpvYiByZXRyaWVzICYgbG9nZ2luZy4iICJEYWdzdGVyIEZsb3cvRGFzay9QeXRob24iICJQcmlvcml0eTMiCgkJCQluY2VpLXdvcmtmbG93ID0gY29tcG9uZW50ICJBcmNoaXZlIFBhY2thZ2UgUGlwZWxpbmUiICJDcmVhdGUgYW5kIHB1Ymxpc2ggYXJjaGl2ZSBwYWNrYWdlIGZvciByYXcgYXVkaW8gZmlsZXMiICJEYWdzdGVyIEZsb3cvRGFzay9QeXRob24iCgkJCQlleHRyYWN0LWhtZC12aXN1YWxzLXdvcmtmbG93ID0gY29tcG9uZW50ICJVcGRhdGUgSE1EIFZpc3VhbGl6YXRpb24iICJDcmVhdGUgbmV3IEhNRC1iYXNlZCBtZXRyaWNzIGFuZCBwdWJsaXNoIHRvIHZpc3VhbGl6YXRpb24gc2VydmljZS4iICJEYWdzdGVyIEZsb3cvUHl0aG9uIiAiUHJpb3JpdHkyIgoJCQl9CgkJCQoJCQl3b3Jrc3RhdGlvbiA9IGNvbnRhaW5lciAiSnVweXRlckh1YiIgIkRldmVsb3BtZW50IGVudmlyb25tZW50IGZvciBvbmUtb2ZmIGFuYWx5c2lzIGFuZCBkYXRhIHBpcGVsaW5lIGludm9jYXRpb24uIiAiSnVweXRlckh1YiIgICJXZWIgUGFnZSIKCQkJCgkJCXByb2R1Y3RzQnVja2V0ID0gY29udGFpbmVyICJQcm9kdWN0cyBCdWNrZXQiICJTdG9yZXMgcHJvY2Vzc2VkIG91dHB1dHM6IHNwZWN0cm9ncmFtcywgZGV0ZWN0aW9uIENTVnMsIGFyY2hpdmUgcGFja2FnZXMuIiAiQ2xvdWQgT2JqZWN0IFN0b3JlIiAiU3RvcmFnZSIKCQkJCgkJCW1ldGFkYXRhRGIgPSBjb250YWluZXIgIk1ldGFkYXRhIERhdGFiYXNlIiAiVHJhY2tzIGRlcGxveW1lbnRzLCByZWNvcmRpbmdzLCBkZXRlY3Rpb25zLCBhbm5vdGF0aW9ucywgd29ya2Zsb3cgc3RhdGUgJiBhdWRpdCBsb2cuIE1ha2FyYSBsaWtlLiIgIlJlbGF0aW9uYWwgREIiICJEYXRhYmFzZSIKCQkJCgkJCWRlbGl2ZXJ5QXBpID0gY29udGFpbmVyICJEZWxpdmVyeSBBUEkiICJFeHBvc2VzIHByb2Nlc3NlZCBwcm9kdWN0cyB0byBkb3duc3RyZWFtIHN5c3RlbXMgdmlhIGF1dGhlbnRpY2F0ZWQgZW5kcG9pbnRzLiIgIlJFU1QgQVBJIgoJCQkKCQkJIyBSZXBvIGZvciBzb3VuZHNjb3BlOiBodHRwczovL2dpdGh1Yi5jb20veGF2aWVybW91eS9Tb3VuZFNjb3BlCgkJCXNvdW5kc2NvcGVWaXMgPSBjb250YWluZXIgIlNvdW5kU2NvcGUgVmlzdWFsaXphdGlvbiIgIlZpc3VhbGl6ZSB1c2luZyBTb3VuZFNjb3BlIFRCRCIgIlVOS05PV04iICJXZWIgUGFnZSwgUHJpb3JpdHkzIgoJCQkKCQkJIyDilIDilIAgQ29udGFpbmVyLXRvLWNvbnRhaW5lciByZWxhdGlvbnNoaXBzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgAoJCQkKCQkJIyBJbmdlc3QKCQkJYXNzZXQtbWFuYWdlciAgLT4gaW5nZXN0ICAgICAgICAgICAiQ3JlYXRlL1VwZGF0ZSBwcm9qZWN0IGVudmlyb25tZW50LiIgIj8iCgkJCWFzc2V0LW1hbmFnZXIgIC0+IG1ldGFkYXRhRGIgICAgICAgICJDcmVhdC9VcGRhdGUgbWV0YWRhdGEiICJTUUwiCgkJCWluZ2VzdCAgICAgICAgIC0+IHJhd0J1Y2tldCAgICAgICAgICJXcml0ZSByYXcgYXVkaW8gZmlsZXMiICJBV1MgQ0xJOyBTMyBQdXRPYmplY3Q7IE90aGVyPyIKCQkJCgkJCSMgRGlyZWN0IGludGVyYWN0aW9uIGJldHdlZW4gSnVweXRlckh1YiBhbmQgZGF0YQoJCQl3b3Jrc3RhdGlvbiAgICAgICAtPiByYXdCdWNrZXQgICAgICAgICAiUmVhZCByYXcgZmlsZXMiICJTMyBHZXRPYmplY3QvPyIKCQkJd29ya3N0YXRpb24gICAgICAgLT4gbWV0YWRhdGFEYiAgICAgICAgIlJlYWQvd3JpdGUgbWV0YWRhdGEiICJTUUwgdmlhID8/IgoJCQl3b3Jrc3RhdGlvbiAgICAgICAtPiBwcm9kdWN0c0J1Y2tldCAgICAiV3JpdGUgYW5hbHlzaXMgcmVzdWx0cyIgIlMzIFB1dE9iamVjdC9YYXJyYXk/IgoJCQkKCQkJIyBXb3Jrc3RhdGlvbiBpbml0aWF0ZXMgZGF0YSBwaXBlbGluZXMKCQkJd29ya3N0YXRpb24gICAgLT4gZGFnc3Rlci1zZXJ2aWNlICAgICAgIkxhdW5jaCBkYXRhIHBpcGVsaW5lIiAiRGFnc3Rlci9QeXRob24iCgkJCWRhZ3N0ZXItc2VydmljZSAgIC0+IG1ldGFkYXRhRGIgICAgICAgICJSZWFkIG1ldGFkYXRhIiAiU1FMIgoJCQlkYWdzdGVyLXNlcnZpY2UgICAtPiBwcm9kdWN0c0J1Y2tldCAgICAgICAiV3JpdGUgcHJvZHVjdCBmaWxlcyIgIlMzIFB1dE9iamVjdC9YYXJyYXkvPyIKCQkJZGFnc3Rlci1zZXJ2aWNlIC0+IHJhd0J1Y2tldCAgICAgICAgICJSZWFkIHJhdyBmaWxlcyIgIlMzIEdldE9iamVjdC8/IgoJCQlkYWdzdGVyLXNlcnZpY2UgLT4gZGVsaXZlcnlBcGkgICAgICAgICJQdWJsaXNoIGRhdGEgYW5kIHByb2R1Y3RzIiAiVU5LTk9XTiIKCQkJCgkJCWRlbGl2ZXJ5QXBpICAgICAgIC0+IHByb2R1Y3RzQnVja2V0ICAgICJFeHRyYWN0cyBhbmQgZm9ybWF0cyBmaW5hbGl6ZWQgcHJvZHVjdHMiICJTMyBHZXRPYmplY3QiCgkJCWRlbGl2ZXJ5QXBpICAgICAgIC0+IG1ldGFkYXRhRGIgICAgICAgICJFeHRyYWN0cyBhbmQgZm9ybWF0cyBtZXRhZGF0YSBmb3IgcHVibGljYXRpb24iICJTUUwiCgkJfQoJCQoJCW5jZWkgPSBzb2Z0d2FyZVN5c3RlbSAiTkNFSSBBcmNoaXZlIiAiTmF0aW9uYWwgQ2VudGVycyBmb3IgRW52aXJvbm1lbnRhbCBJbmZvcm1hdGlvbiBsb25nLXRlcm0gZGF0YSBhcmNoaXZlLiIgIkV4dGVybmFsIFN5c3RlbSIKCQkKCQlwYWNtID0gc29mdHdhcmVTeXN0ZW0gIlBBQ00iICJQYXNzaXZlIEFjb3VzdGljIENldGFjZWFuIE1vbml0b3Ig4oCTIHNwZWNpZXMgZGV0ZWN0aW9uIGFuZCByZXBvcnRpbmcgcGxhdGZvcm0uIiAiRXh0ZXJuYWwgU3lzdGVtIgoJCQoJCXZpc3VhbGl6ZXIgPSBzb2Z0d2FyZVN5c3RlbSAiVmlzdWFsaXphdGlvbiBQb3J0YWwiICJJbnRlcmFjdGl2ZSB3ZWIgYXBwbGljYXRpb24gZm9yIGV4cGxvcmluZyBhY291c3RpYyBwcm9kdWN0cyBhbmQgYW5ub3RhdGlvbnMuIiAiRXh0ZXJuYWwgV2ViIFBhZ2UsIFByaW9yaXR5MiIKCQkKCQkjIOKUgOKUgCBTeXN0ZW0tbGV2ZWwgcmVsYXRpb25zaGlwcyAoTGV2ZWwgMSkg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACgkJCgkJZGF0YVByb3ZpZGVyICAgICAtPiBhY291c3RpY1BsYXRmb3JtICJVcGxvYWRzIHJhdyBhY291c3RpYyBmaWxlcyAmIG1ldGFkYXRhIiAiSFRUUFMgLyBTMyBwcmVzaWduZWQgVVJMIgoJCWFuYWx5c3QgICAgICAgICAgLT4gYWNvdXN0aWNQbGF0Zm9ybSAiUmV2aWV3cyBkZXRlY3Rpb25zLCBhbm5vdGF0ZXMsIHBlcmZvcm1zIFFBL1FDLCBhcHByb3ZlcyBwcm9kdWN0cyIgIlZpcnR1YWwgTWFjaGluZS9KdXB5dGVySHViIgoJCWFjb3VzdGljUGxhdGZvcm0gLT4gbmNlaSAgICAgICAgICAgICAiRGVsaXZlcnMgYXJjaGl2ZWQgZGF0YSBwYWNrYWdlcyIgIkhUVFBTIC8gU0ZUUCIKCQlhY291c3RpY1BsYXRmb3JtIC0+IHBhY20gICAgICAgICAgICAgIkRlbGl2ZXJzIHNwZWNpZXMgZGV0ZWN0aW9uIHJlc3VsdHMgJiByZXBvcnRzIiAiTWFudWFsIENTVi9BUEkgPz8/IgoJCWFjb3VzdGljUGxhdGZvcm0gLT4gdmlzdWFsaXplciAgICAgICAiRGVsaXZlcnMgcHJvY2Vzc2VkIHNwZWN0cm9ncmFtcywgYW5ub3RhdGlvbnMgJiBtZXRhZGF0YSIgIlJFU1QgQVBJIC8gUzMgZXZlbnQiCgkJCgkJIyDilIDilIAgQ29udGFpbmVyLXRvLWFjdG9yIC8gY29udGFpbmVyLXRvLWV4dGVybmFsIHJlbGF0aW9uc2hpcHMgKExldmVsIDIpIOKUgOKUgOKUgAoJCQoJCWRhdGFQcm92aWRlciAgICAgICAgICAgICAgICAgICAgICAgICAtPiBhc3NldC1tYW5hZ2VyICAgIkNyZWF0ZS91cGxvYWQvZWRpdCBwcm9qZWN0IG1ldGFkYXRhIiAiIgoJCWRhdGFQcm92aWRlciAgICAgLT4gZGF0YS1pbnRlZ3JpdHktY2hlY2tlciAiQ2hlY2sgZmlsZXMgb24gdXNlciBkaXNrIGJlZm9yZSB1cGxvYWQiICJQeW9kaWRlIgoJCWRhdGFQcm92aWRlciAgICAgICAgICAgICAgICAgICAgICAgICAtPiBpbmdlc3QgICAiVXBsb2FkIHJhdyBhdWRpbyIgIkFXUyBDTEkgdXBsb2FkIgoJCWFuYWx5c3QgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAtPiB3b3Jrc3RhdGlvbiAiUmV2aWV3cyBkZXRlY3Rpb25zLCBhbm5vdGF0ZXMsIGFwcHJvdmVzIiAiU1NIIC8gSFRUUFMiCgkJZGVsaXZlcnlBcGkgICAgICAgICAtPiBuY2VpICAgICAgICAgICAgICAgICAgICAgICAgICJQdXNoZXMgYXJjaGl2ZSBwYWNrYWdlcyIgIkhUVFBTIC8gUzMgIgoJCWRlbGl2ZXJ5QXBpICAgICAgICAgLT4gcGFjbSAgICAgICAgICAgICAgICAgICAgICAgICAiUHJvdmlkZXMgZGV0ZWN0aW9uIHJlcG9ydHMiICJVTktOT1dOIgoJCWRlbGl2ZXJ5QXBpICAgICAgICAgLT4gdmlzdWFsaXplciAgICAgICAgICAgICAgICAgICAiUHVibGlzaGVzIHByb2R1Y3RzICYgbWV0YWRhdGEiICJSRVNUIEFQSSAvIFMzIGV2ZW50IgoJCQoJCSMgVGhpcyBpbnRlcmFjdGlvbiBpcyBUQkQgYmFzZWQgb24gY29zdAoJCWRhdGFQcm92aWRlciAtPiB3b3Jrc3RhdGlvbiAiQW5hbHl6ZSBQQU0gZGF0YSBhbmQgcHJvZHVjdHMgVEJEIiAiVU5LTk9XTi9UQkQiCgl9CgkKCXZpZXdzIHsKCQkKCQlzeXN0ZW1Db250ZXh0IGFjb3VzdGljUGxhdGZvcm0gIlN5c3RlbUNvbnRleHQiICJTeXN0ZW0gQ29udGV4dCBmb3IgdGhlIFBBTUhVQiIgewoJCQlpbmNsdWRlICoKCQkJYXV0b0xheW91dCBscgoJCX0KCQkKCQljb250YWluZXIgYWNvdXN0aWNQbGF0Zm9ybSAiQ29udGFpbmVycyIgIkNvbnRhaW5lcnMgd2l0aGluIHRoZSBQQU1IVUIiIHsKCQkJaW5jbHVkZSAqCgkJCWF1dG9MYXlvdXQgbHIKCQl9CgkJCgkJY29tcG9uZW50IGRhZ3N0ZXItc2VydmljZSAiRGFnc3RlckNvbXBvbmVudCIgIkRhdGEgcGlwZWxpbmVzIG9yY2hlc3RyYXRlZCBieSBEYWdzdGVyIiB7CgkJCWluY2x1ZGUgKgoJCQlhdXRvTGF5b3V0IGxyCgkJfQoJCQoJCSMgVE9ETzogKFByaTEpIGR5bmFtaWMgdmlldyB0byBwZXJmb3JtIGFuYWx5c2lzIGFuZCBRQyB1Yy0wMDctcXVhbGl0eS1jb250cm9sLXJhdy1hdWRpby5tZAoJCSMgVE9ETzogKFByaTEpIGR5bmFtaWMgdmlldyB0byBhcmNoaXZlIGF0IE5DRUkgdWMtMDAxLWFyY2hpdmUtcGFtLWRhdGEtYXQtbmNlaS5tZAoJCSMgVE9ETzogKFByaTEpIGR5bmFtaWMgdmlldyBmb3IgY3JlYXRpbmcgSE1EIGZpbGVzIHVjLTAwMi1jYWxjdWxhdGUtc3BlY3RvZ3JhbXMubWQKCQkjIFRPRE86IChQcmkzKSBkeW5hbWljIHZpZXcgdG8gcnVuIGEgc3BlY2llcyBkZXRlY3RvciB1Yy0wMDMtZGV0ZWN0LXNwZWNpZXMtcHJlc2VuY2UubWQKCQkjIFRPRE86IGR5bmFtaWMgdmlldyB0byBwdWJsaXNoIGRldGVjdGlvbnMgdG8gUEFDTSBhbmQvb3IgTkNFSSB1Yy0wMDgtcHVibGlzaC1kZXRlY3Rpb25zLm1kCgkJIyBUT0RPOiBXcml0ZSB1c2UgY2FzZSBvbiBwdWJsaXNoaW5nIGRldGVjdGlvbnMgdG8gUEFDTSBhbmQvb3IgTkNFSSB1Yy0wMDgtcHVibGlzaC1kZXRlY3Rpb25zLm1kCgkJIyBUT0RPOiAoUHJpMikgZHluYW1pYyB2aWV3IHRvIHVwZGF0ZSBITUQgY2xpbWF0b2xvZ3kgYW5kIHB1Ymxpc2ggdG8gdmlzdWFsaXphdGlvbiBzZXJ2ZXIKCQkjIFRPRE86IChQcmkyKSBXcml0ZSB1c2UgY2FzZSBvbiBleHRyYWN0aW5nIEhNRCBtZXRyaWNzIHRvIHB1Ymxpc2ggdG8gdmlzdWFsaXphdGlvbiBzZXJ2ZXIKCQkjIFRPRE86IEFuYWx5emUgYW5kIHVuZGVyc3RhbmQgU291bmRTY29wZSB2aXN1YWxpemF0aW9uIHVzZSBjYXNlCgkJIyBUT0RPOiBXcml0ZSB1c2UgY2FzZSBkZWZpbmluZyBleHRlcm5hbCBQSSAoZGF0YSBwcm92aWRlcikgaW50ZXJhY3Rpbmcgd2l0aCB0aGUgSnVweXRlcmh1Yi4gdWMtMDEwLWV4dGVybmFsLWludmVzdGlnYXRvci1hbmFseXNpcy5tZAoJCQoJCXN0eWxlcyB7CgkJCWVsZW1lbnQgIlBlcnNvbiIgewoJCQkJc2hhcGUgUGVyc29uCgkJCQliYWNrZ3JvdW5kICIjMDg0MjdiIgoJCQkJY29sb3IgIiNmZmZmZmYiCgkJCQlzdHJva2UgIiMwNTJkNTYiCgkJCX0KCQkJZWxlbWVudCAiRXh0ZXJuYWwgUGVyc29uIiB7CgkJCQlzaGFwZSBQZXJzb24KCQkJCWJhY2tncm91bmQgIiM5OTk5OTkiCgkJCQljb2xvciAiI2ZmZmZmZiIKCQkJCXN0cm9rZSAiIzZiNmI2YiIKCQkJfQoJCQllbGVtZW50ICJTb2Z0d2FyZSBTeXN0ZW0iIHsKCQkJCXNoYXBlIFJvdW5kZWRCb3gKCQkJCWJhY2tncm91bmQgIiMxMTY4YmQiCgkJCQljb2xvciAiI2ZmZmZmZiIKCQkJCXN0cm9rZSAiIzBiNDg4NCIKCQkJfQoJCQllbGVtZW50ICJXZWIgUGFnZSIgewoJCQkJc2hhcGUgV2ViQnJvd3NlcgoJCQkJYmFja2dyb3VuZCAiIzExNjhiZCIKCQkJCWNvbG9yICIjZmZmZmZmIgoJCQkJc3Ryb2tlICIjMGI0ODg0IgoJCQl9CgkJCWVsZW1lbnQgIkV4dGVybmFsIFdlYiBQYWdlIiB7CgkJCQlzaGFwZSBXZWJCcm93c2VyCgkJCQliYWNrZ3JvdW5kICIjOTk5OTk5IgoJCQkJY29sb3IgIiNmZmZmZmYiCgkJCQlzdHJva2UgIiM2YjZiNmIiCgkJCX0KCQkJZWxlbWVudCAiRXh0ZXJuYWwgU3lzdGVtIiB7CgkJCQlzaGFwZSBSb3VuZGVkQm94CgkJCQliYWNrZ3JvdW5kICIjOTk5OTk5IgoJCQkJY29sb3IgIiNmZmZmZmYiCgkJCQlzdHJva2UgIiM2YjZiNmIiCgkJCX0KCQkJZWxlbWVudCAiQ29udGFpbmVyIiB7CgkJCQlzaGFwZSBSb3VuZGVkQm94CgkJCQliYWNrZ3JvdW5kICIjMTE2OGJkIgoJCQkJY29sb3IgIiNmZmZmZmYiCgkJCQlzdHJva2UgIiMwYjQ4ODQiCgkJCX0KCQkJZWxlbWVudCAiRGF0YWJhc2UiIHsKCQkJCXNoYXBlIEN5bGluZGVyCgkJCQliYWNrZ3JvdW5kICIjMTE2OGJkIgoJCQkJY29sb3IgIiNmZmZmZmYiCgkJCQlzdHJva2UgIiMwYjQ4ODQiCgkJCX0KCQkJZWxlbWVudCAiU3RvcmFnZSIgewoJCQkJc2hhcGUgQ3lsaW5kZXIKCQkJCWJhY2tncm91bmQgIiMxMTY4YmQiCgkJCQljb2xvciAiI2ZmZmZmZiIKCQkJCXN0cm9rZSAiIzBiNDg4NCIKCQkJfQoJCQllbGVtZW50ICJQcmlvcml0eTEiIHsKCQkJCWJhY2tncm91bmQgIiMxMTY4YmQiCgkJCX0KCQkJZWxlbWVudCAiUHJpb3JpdHkyIiB7CgkJCQliYWNrZ3JvdW5kICIjMTFiZDIyIgoJCQl9CgkJCWVsZW1lbnQgIlByaW9yaXR5MyIgewoJCQkJYmFja2dyb3VuZCAiI2JkODcxMSIKCQkJfQoJCQllbGVtZW50ICJQcmlvcml0eTQiIHsKCQkJCWJhY2tncm91bmQgIiNjMDViNWIiCgkJCX0KCQl9CgkJCgl9Cgljb25maWd1cmF0aW9uIHsKCQlzY29wZSBzb2Z0d2FyZXN5c3RlbQoJfQp9",
     "structurizr.inspection.info" : "0",
     "structurizr.inspection.ignore" : "0",
     "structurizr.inspection.warning" : "0"
   },
   "views" : {
+    "componentViews" : [ {
+      "automaticLayout" : {
+        "edgeSeparation" : 50,
+        "nodeSeparation" : 50,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 100,
+        "vertices" : true
+      },
+      "containerId" : "8",
+      "description" : "Data pipelines orchestrated by Dagster",
+      "elements" : [ {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "DagsterComponent",
+      "name" : "Component View: PAMHUB - Dagster Orchestration",
+      "order" : 3
+    } ],
     "configuration" : {
       "styles" : {
         "elements" : [ {
@@ -366,6 +472,18 @@
           "shape" : "Person",
           "stroke" : "#052d56",
           "tag" : "Person"
+        }, {
+          "background" : "#1168bd",
+          "tag" : "Priority1"
+        }, {
+          "background" : "#11bd22",
+          "tag" : "Priority2"
+        }, {
+          "background" : "#bd8711",
+          "tag" : "Priority3"
+        }, {
+          "background" : "#c05b5b",
+          "tag" : "Priority4"
         }, {
           "background" : "#1168bd",
           "color" : "#ffffff",
@@ -426,27 +544,35 @@
         "x" : 0,
         "y" : 0
       }, {
-        "id" : "9",
+        "id" : "13",
         "x" : 0,
         "y" : 0
       }, {
-        "id" : "10",
+        "id" : "14",
         "x" : 0,
         "y" : 0
       }, {
-        "id" : "11",
+        "id" : "15",
         "x" : 0,
         "y" : 0
       }, {
-        "id" : "26",
+        "id" : "16",
         "x" : 0,
         "y" : 0
       }, {
-        "id" : "27",
+        "id" : "17",
         "x" : 0,
         "y" : 0
       }, {
-        "id" : "28",
+        "id" : "31",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "32",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "33",
         "x" : 0,
         "y" : 0
       } ],
@@ -455,18 +581,6 @@
       "name" : "Container View: PAMHUB",
       "order" : 2,
       "relationships" : [ {
-        "id" : "12"
-      }, {
-        "id" : "13"
-      }, {
-        "id" : "14"
-      }, {
-        "id" : "15"
-      }, {
-        "id" : "16"
-      }, {
-        "id" : "17"
-      }, {
         "id" : "18"
       }, {
         "id" : "19"
@@ -483,15 +597,31 @@
       }, {
         "id" : "25"
       }, {
-        "id" : "34"
+        "id" : "26"
       }, {
-        "id" : "35"
+        "id" : "27"
       }, {
-        "id" : "36"
+        "id" : "28"
       }, {
-        "id" : "37"
+        "id" : "29"
       }, {
-        "id" : "38"
+        "id" : "30"
+      }, {
+        "id" : "39"
+      }, {
+        "id" : "40"
+      }, {
+        "id" : "41"
+      }, {
+        "id" : "42"
+      }, {
+        "id" : "43"
+      }, {
+        "id" : "44"
+      }, {
+        "id" : "45"
+      }, {
+        "id" : "46"
       } ],
       "softwareSystemId" : "3"
     } ],
@@ -517,15 +647,15 @@
         "x" : 0,
         "y" : 0
       }, {
-        "id" : "26",
+        "id" : "31",
         "x" : 0,
         "y" : 0
       }, {
-        "id" : "27",
+        "id" : "32",
         "x" : 0,
         "y" : 0
       }, {
-        "id" : "28",
+        "id" : "33",
         "x" : 0,
         "y" : 0
       } ],
@@ -534,15 +664,15 @@
       "name" : "System Context View: PAMHUB",
       "order" : 1,
       "relationships" : [ {
-        "id" : "29"
+        "id" : "34"
       }, {
-        "id" : "30"
+        "id" : "35"
       }, {
-        "id" : "31"
+        "id" : "36"
       }, {
-        "id" : "32"
+        "id" : "37"
       }, {
-        "id" : "33"
+        "id" : "38"
       } ],
       "softwareSystemId" : "3"
     } ]
