@@ -1,0 +1,23 @@
+site_name: PAMHUB 
+site_url: "https://asascience-open.github.io/pam-dac"
+site_author: PAMHUB Development Team
+
+
+
+nav:
+  - 'Home': 'index.md'
+  - 'System Architecture': # This becomes a section title
+    - 'Introduction': 'architecture/index.md'
+  - 'User Manual' : 
+    - 'Introduction' : 'user-manual/index.md'
+
+theme:
+  name: readthedocs
+   
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  
+plugins:
+  - search

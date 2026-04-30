@@ -1,0 +1,93 @@
+2026-04-30T09:33:09.108-04:00  INFO 38275 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-04-30T09:33:09.110-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :   _____ _                   _              _          
+2026-04-30T09:33:09.110-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  / ____| |                 | |            (_)         
+2026-04-30T09:33:09.110-04:00  INFO 38275 --- [main] com.structurizr.server.Local             : | (___ | |_ _ __ _   _  ___| |_ _   _ _ __ _ _____ __ 
+2026-04-30T09:33:09.110-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  \___ \| __| '__| | | |/ __| __| | | | '__| |_  / '__|
+2026-04-30T09:33:09.110-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  ____) | |_| |  | |_| | (__| |_| |_| | |  | |/ /| |   
+2026-04-30T09:33:09.110-04:00  INFO 38275 --- [main] com.structurizr.server.Local             : |_____/ \__|_|   \__,_|\___|\__|\__,_|_|  |_/___|_|   
+2026-04-30T09:33:09.110-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :                                                       
+2026-04-30T09:33:09.111-04:00  INFO 38275 --- [main] com.structurizr.server.Local             : Local v2026.04.19
+2026-04-30T09:33:09.111-04:00  INFO 38275 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-04-30T09:33:09.111-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.authentication: none
+2026-04-30T09:33:09.111-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.autorefreshinterval: 0
+2026-04-30T09:33:09.112-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.autosaveinterval: 5000
+2026-04-30T09:33:09.112-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.cache: none
+2026-04-30T09:33:09.112-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.data: file
+2026-04-30T09:33:09.112-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.datadirectory: /Users/derricksnowden/develop/pam-cloud/docs/.
+2026-04-30T09:33:09.112-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.debug: false
+2026-04-30T09:33:09.112-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.editable: true
+2026-04-30T09:33:09.112-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.logging.filename: /Users/derricksnowden/develop/pam-cloud/docs/./.structurizr/logs/structurizr.log
+2026-04-30T09:33:09.112-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.network.timeout: 60000
+2026-04-30T09:33:09.112-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.network.urls.allowed: .*
+2026-04-30T09:33:09.112-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.search: lucene
+2026-04-30T09:33:09.113-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.themes: /Users/derricksnowden/develop/pam-cloud/docs/./themes/
+2026-04-30T09:33:09.113-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.workspace.maxsize: 1MB
+2026-04-30T09:33:09.113-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.workspace.threads: 10
+2026-04-30T09:33:09.113-04:00  INFO 38275 --- [main] com.structurizr.server.Local             :  - structurizr.workspaces: 1
+2026-04-30T09:33:09.113-04:00  INFO 38275 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-04-30T09:33:09.113-04:00  INFO 38275 --- [main] com.structurizr.server.Local             : Themes:
+2026-04-30T09:33:09.113-04:00  INFO 38275 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-04-30T09:34:47.229-04:00  INFO 38275 --- [SpringApplicationShutdownHook] com.structurizr.server.AbstractServer    : ********************************************************
+2026-04-30T09:34:47.231-04:00  INFO 38275 --- [SpringApplicationShutdownHook] com.structurizr.server.AbstractServer    :  Stopping Structurizr
+2026-04-30T09:34:47.231-04:00  INFO 38275 --- [SpringApplicationShutdownHook] com.structurizr.server.AbstractServer    : ********************************************************
+2026-04-30T09:36:07.187-04:00  INFO 39261 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-04-30T09:36:07.191-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :   _____ _                   _              _          
+2026-04-30T09:36:07.191-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  / ____| |                 | |            (_)         
+2026-04-30T09:36:07.192-04:00  INFO 39261 --- [main] com.structurizr.server.Local             : | (___ | |_ _ __ _   _  ___| |_ _   _ _ __ _ _____ __ 
+2026-04-30T09:36:07.192-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  \___ \| __| '__| | | |/ __| __| | | | '__| |_  / '__|
+2026-04-30T09:36:07.192-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  ____) | |_| |  | |_| | (__| |_| |_| | |  | |/ /| |   
+2026-04-30T09:36:07.192-04:00  INFO 39261 --- [main] com.structurizr.server.Local             : |_____/ \__|_|   \__,_|\___|\__|\__,_|_|  |_/___|_|   
+2026-04-30T09:36:07.192-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :                                                       
+2026-04-30T09:36:07.192-04:00  INFO 39261 --- [main] com.structurizr.server.Local             : Local v2026.04.19
+2026-04-30T09:36:07.192-04:00  INFO 39261 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-04-30T09:36:07.193-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.authentication: none
+2026-04-30T09:36:07.193-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.autorefreshinterval: 0
+2026-04-30T09:36:07.193-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.autosaveinterval: 5000
+2026-04-30T09:36:07.193-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.cache: none
+2026-04-30T09:36:07.193-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.data: file
+2026-04-30T09:36:07.193-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.datadirectory: /Users/derricksnowden/develop/pam-cloud/docs/.
+2026-04-30T09:36:07.194-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.debug: false
+2026-04-30T09:36:07.194-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.editable: true
+2026-04-30T09:36:07.194-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.logging.filename: /Users/derricksnowden/develop/pam-cloud/docs/./.structurizr/logs/structurizr.log
+2026-04-30T09:36:07.194-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.network.timeout: 60000
+2026-04-30T09:36:07.194-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.network.urls.allowed: .*
+2026-04-30T09:36:07.194-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.search: lucene
+2026-04-30T09:36:07.194-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.themes: /Users/derricksnowden/develop/pam-cloud/docs/./themes/
+2026-04-30T09:36:07.194-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.workspace.maxsize: 1MB
+2026-04-30T09:36:07.194-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.workspace.threads: 10
+2026-04-30T09:36:07.194-04:00  INFO 39261 --- [main] com.structurizr.server.Local             :  - structurizr.workspaces: 1
+2026-04-30T09:36:07.194-04:00  INFO 39261 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-04-30T09:36:07.195-04:00  INFO 39261 --- [main] com.structurizr.server.Local             : Themes:
+2026-04-30T09:36:07.195-04:00  INFO 39261 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-04-30T12:03:37.592-04:00  INFO 39261 --- [SpringApplicationShutdownHook] com.structurizr.server.AbstractServer    : ********************************************************
+2026-04-30T12:03:37.600-04:00  INFO 39261 --- [SpringApplicationShutdownHook] com.structurizr.server.AbstractServer    :  Stopping Structurizr
+2026-04-30T12:03:37.600-04:00  INFO 39261 --- [SpringApplicationShutdownHook] com.structurizr.server.AbstractServer    : ********************************************************
+2026-04-30T12:34:20.697-04:00  INFO 65296 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-04-30T12:34:20.699-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :   _____ _                   _              _          
+2026-04-30T12:34:20.699-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  / ____| |                 | |            (_)         
+2026-04-30T12:34:20.699-04:00  INFO 65296 --- [main] com.structurizr.server.Local             : | (___ | |_ _ __ _   _  ___| |_ _   _ _ __ _ _____ __ 
+2026-04-30T12:34:20.699-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  \___ \| __| '__| | | |/ __| __| | | | '__| |_  / '__|
+2026-04-30T12:34:20.699-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  ____) | |_| |  | |_| | (__| |_| |_| | |  | |/ /| |   
+2026-04-30T12:34:20.699-04:00  INFO 65296 --- [main] com.structurizr.server.Local             : |_____/ \__|_|   \__,_|\___|\__|\__,_|_|  |_/___|_|   
+2026-04-30T12:34:20.699-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :                                                       
+2026-04-30T12:34:20.700-04:00  INFO 65296 --- [main] com.structurizr.server.Local             : Local v2026.04.19
+2026-04-30T12:34:20.700-04:00  INFO 65296 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-04-30T12:34:20.701-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.authentication: none
+2026-04-30T12:34:20.701-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.autorefreshinterval: 0
+2026-04-30T12:34:20.701-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.autosaveinterval: 5000
+2026-04-30T12:34:20.701-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.cache: none
+2026-04-30T12:34:20.701-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.data: file
+2026-04-30T12:34:20.701-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.datadirectory: /Users/derricksnowden/develop/pam-cloud/docs/architecture/.
+2026-04-30T12:34:20.701-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.debug: false
+2026-04-30T12:34:20.702-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.editable: true
+2026-04-30T12:34:20.702-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.logging.filename: /Users/derricksnowden/develop/pam-cloud/docs/architecture/./.structurizr/logs/structurizr.log
+2026-04-30T12:34:20.702-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.network.timeout: 60000
+2026-04-30T12:34:20.702-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.network.urls.allowed: .*
+2026-04-30T12:34:20.702-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.search: lucene
+2026-04-30T12:34:20.702-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.themes: /Users/derricksnowden/develop/pam-cloud/docs/architecture/./themes/
+2026-04-30T12:34:20.702-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.workspace.maxsize: 1MB
+2026-04-30T12:34:20.702-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.workspace.threads: 10
+2026-04-30T12:34:20.702-04:00  INFO 65296 --- [main] com.structurizr.server.Local             :  - structurizr.workspaces: 1
+2026-04-30T12:34:20.702-04:00  INFO 65296 --- [main] com.structurizr.server.Local             : ***********************************************************************************
+2026-04-30T12:34:20.702-04:00  INFO 65296 --- [main] com.structurizr.server.Local             : Themes:
+2026-04-30T12:34:20.703-04:00  INFO 65296 --- [main] com.structurizr.server.Local             : ***********************************************************************************

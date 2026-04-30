@@ -67,25 +67,3 @@ gantt
 ```
 
 ## Use Cases
-
-References and decomposition into standalone tasks.  Original [User Stories](./PAM_Cloud_stories.docx.md).  NOTE: This file is not maintained.  It has been decomposed into smaller stories or use cases below.
-
-| UC ID | Use Case write up  | Related Issues |
-|------|---------------------|----------------|
-| uc-001 | [Archive at NCEI](./uc-001-archive-pam-data-at-ncei.md) | NA|
-| uc-002 | [Calculate spectograms w PyPAM](./uc-002-calculate-spectrograms.md) | NA|
-| uc-003 | [Apply species detectors](./uc-003-detect-species-presence.md) | NA|
-| uc-004 | [Visualize climatology](./uc-004-visualize-spectrogram-climatology.md) | NA|
-| uc-005 | [Upload data](./uc-005-upload-raw-data-to-pamhub.md) | NA|
-| uc-006 | [Visualize other](./uc-006-visualizations-other.md) | NA|
-| uc-007 | [Quality control raw audio](./uc-007-quality-control-raw-audio.md) | NA|
-| uc-008 | [Publish detections to PACM and/or NCEI](./uc-008-publish-detections.md) | NA |
-| uc-009 | [Integrate internal SoundScope visualization](./uc-009-soundscope-integration.md) | NA |
-| uc-010 | [Provide analysis environment to external PIs/Data providers](./uc-010-external-investigator-analysis.md) | NA |
-| uc-011 | [QC check prior to data upload](./uc-011-pre-upload-integrity-check.md) | NA |
-
-Other use cases we have/are considering:
-
-1. Archive Spectograms/HMD files
-2. Quality control raw data as an automated process
-3. Archive detections
