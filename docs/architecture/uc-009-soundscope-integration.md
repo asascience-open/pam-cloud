@@ -1,16 +1,18 @@
-# Use Case: [Name of Use Case]
+# Use Case: Integrate SoundScope into PAMHUB for Visualization
 
-**ID:** UC-001  
-**Primary Actor:** [e.g., Customer, Admin]  
-**Goal:** [Summary of what the actor wants to achieve]  
+**ID:** UC-009  
+**Primary Actor:** PAM Analyst, Data Provider  
+**Goal:** Visualization and manual verification of detections. 
 
 ## 1. Descriptions
+
+TODO: Fill out use case from https://github.com/xaviermouy/SoundScope
 
 **Trigger:** The specific action or event that kicks off the process.
 **Pre-conditions:** Requirements that must be met before the user can start (e.g., "User is logged in").
 **Basic Flow:** The "Happy Path" where everything goes as expected.
 **Alternative Flows:** Scenarios where the user takes a different path or an error occurs.
-**Priority:** [High / Medium / Low]
+**Priority:** 4 (1-5)
 
 ## 2. Basic Flow (Happy Path)
 Actor [performs action].

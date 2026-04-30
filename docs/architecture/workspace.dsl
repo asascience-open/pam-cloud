@@ -113,6 +113,13 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 			autoLayout lr
 		}
 		
+		# Use Case 011 Pre Upload integrity check
+		dynamic acousticPlatform "uc-011-data-integrity" "Check data integrity prior to uploading" {
+			dataProvider -> data-integrity-checker "Provide local path to raw audio"
+			data-integrity-checker -> dataProvider "Run audio_qc_basics.py"
+			autolayout lr
+		}
+		
 		# TODO: (Pri1) dynamic view to perform analysis and QC uc-007-quality-control-raw-audio.md
 		# TODO: (Pri1) dynamic view to archive at NCEI uc-001-archive-pam-data-at-ncei.md
 		# TODO: (Pri1) dynamic view for creating HMD files uc-002-calculate-spectograms.md
