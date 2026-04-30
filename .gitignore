@@ -2,6 +2,6 @@
 *.DS_Store
 .vscode/
 /notes-scratchpad.md
-/docs/diagrams/architecture/.structurizr/
+/docs/diagrams/architecture/.structurizr
 ./d2_utils.sh 
 ./dev-cheatsheet.md
