@@ -1,7 +1,7 @@
-/pam-cloud.code-workspace
-*.DS_Store
+pam-cloud.code-workspace
+**/.DS_Store
 .vscode/
 notes-scratchpad.md
+**/.structurizr
 docs/diagrams/architecture/.structurizr
-./d2_utils.sh 
-./dev-cheatsheet.md
+/dev-cheatsheet.md
