@@ -3,5 +3,6 @@ pam-cloud.code-workspace
 .vscode/
 notes-scratchpad.md
 **/.structurizr/
-docs/diagrams/architecture/.structurizr/
+.structurizr/
+/docs/diagrams/architecture/.structurizr/
 /dev-cheatsheet.md
