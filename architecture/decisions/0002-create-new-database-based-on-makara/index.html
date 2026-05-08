@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="PAMHUB Development Team" /><link rel="canonical" href="https://asascience-open.github.io/pam-dac/architecture/decisions/0002-create-new-database-based-on-makara/" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>2. Create new database based on Makara - PAMHUB</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "2. Create new database based on Makara";
+        var mkdocs_page_input_path = "architecture/decisions/0002-create-new-database-based-on-makara.md";
+        var mkdocs_page_url = "/pam-dac/architecture/decisions/0002-create-new-database-based-on-makara/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> PAMHUB
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">System Architecture</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../">Introduction</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Manual</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../../user-manual/">Introduction</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">PAMHUB</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">2. Create new database based on Makara</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="2-create-new-database-based-on-makara">2. Create new database based on Makara</h1>
+<p>Date: 2026-04-30</p>
+<h2 id="status">Status</h2>
+<p>Accepted</p>
+<h2 id="context">Context</h2>
+<p>NOAA is unable to share the code behind Makara though we do have the database schema.  Therefore, we need to choose between a) building a new database based on the schema underlying Makara, b) use Tethys, c) build new database from scratch.</p>
+<h2 id="decision">Decision</h2>
+<p>Ue the database structure underlying Makara, but implement it in a different RDBMS (Postgres in AWS).</p>
+<h2 id="consequences">Consequences</h2>
+<p>What becomes easier or more difficult to do and any risks introduced by the change that will need to be mitigated.</p>
+<ul>
+<li>Rewrite all of the database read/write routines at each step of the workflow.</li>
+<li>Potentially diverge from Makara norms since we might interpret the schema differently.</li>
+</ul>
+<h2 id="notes">Notes</h2>
+<p>So I did a deep dive into Tethys and wanted to share my findings here since I don't see an internal call scheduled next week. Though I'd be happy to talk about it on our Monday call as well.</p>
+<p>The upshot is that I don't think we should use Tethys. Or if we do, we should run it in a Windows VM and not attempt to port it to Linux. The problem with Tethys is that it's built around an old XML database developed by Oracle called Berkely DB XML. The last major release of BDB XML was in 2014 and the last patch was in 2020. It's not technically end-of-life but it's well on it's way. There are also no binaries built for Linux and apparently it is notoriously difficult to build for modern Linux due to compiler incompatibilities, among other things. So it would likely be a ton of work to port it and in the end we'd still be running a 10-year-old XML database.</p>
+<p>Tethys is also a complex enough piece of software that I don't think it makes much sense to rip out BDB XML and try and slot in something more modern. The whole stack is fairly old at this point.</p>
+<p>What I would advocate for is a greenfield system that has better alignment with Makara's schema.
+Westendarp, Pedro identified some pretty significant inconsistencies between the schemas used by Makara and Tethys that would likely cause us issue later on. So to me it makes most sense to start fresh. The functionality we'd be trying to replicate is not terribly complex and there are plenty of modern options we could consider that would be infinitely more maintainable/upgradable.</p>
+<p>I chatted with
+Stone, Brian and another dev Josh about the asset metadata management system they're developing internally -- the same one that's already come up as a potential option here -- and I think that would be a good place to start. The backend is just PostgreSQL with PostgREST on top, and the frontend is a schema-driven admin UI built with React and TypeScript. All modern/reliable stuff. </p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
