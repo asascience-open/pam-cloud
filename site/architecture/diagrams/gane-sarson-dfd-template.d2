@@ -1,0 +1,320 @@
+# ============================================================
+# GANE-SARSON DATA FLOW DIAGRAM TEMPLATE (D2lang)
+# ============================================================
+# This template follows Gane-Sarson DFD conventions
+# Reference: https://online.visual-paradigm.com/knowledge/software-design/gane-sarson-dfd-tutorial
+#
+# CONVENTIONS:
+# - External Entities: Thick borders (stroke-width: 5) with "EXT:" prefix
+# - Processes: Rounded rectangles with process number and description
+# - Data Stores: stored_data shape with "D#:" identifier prefix
+# - Data Flows: Labeled arrows using noun phrases
+# ============================================================
+
+# ============================================================
+# SECTION 1: CONTEXT DIAGRAM (LEVEL 0)
+# ============================================================
+# Shows the entire system as a single process with external entities
+
+context_diagram: {
+  # External Entity Example
+  # Naming convention: EXT: Entity Name
+  # Use stroke-width: 5 for thick border (no color dependency)
+  customer: {
+    label: "EXT: Customer"
+    shape: rectangle
+    style: {
+      stroke-width: 5
+      font-size: 14
+    }
+  }
+
+  # Another External Entity
+  supplier: {
+    label: "EXT: Supplier"
+    shape: rectangle
+    style: {
+      stroke-width: 5
+      font-size: 14
+    }
+  }
+
+  # Central System Process (Level 0)
+  # Format: Process number on first line, then description
+  system: {
+    label: |md
+      **0**\n
+      System Name\n
+      Process Description
+    |
+    shape: rectangle
+    style: {
+      border-radius: 10
+      font-size: 14
+    }
+  }
+
+  # Data Flows (use noun phrases as labels)
+  customer -> system: Order Information
+  system -> customer: Order Confirmation
+  system -> supplier: Purchase Order
+  supplier -> system: Delivery Notice
+}
+
+# ============================================================
+# SECTION 2: LEVEL 1 DFD (DETAILED PROCESSES)
+# ============================================================
+# Shows major processes within the system
+
+level_1_dfd: {
+  # External Entities (repeated from context diagram)
+  customer: {
+    label: "EXT: Customer"
+    shape: rectangle
+    style: {
+      stroke-width: 5
+      font-size: 14
+    }
+  }
+
+  supplier: {
+    label: "EXT: Supplier"
+    shape: rectangle
+    style: {
+      stroke-width: 5
+      font-size: 14
+    }
+  }
+
+  # Process 1
+  # Use decimal numbering (1.0, 2.0, 3.0, etc.)
+  process_1: {
+    label: |md
+      **1.0**
+      Process Orders
+    |
+    shape: rectangle
+    style: {
+      border-radius: 10
+      font-size: 14
+    }
+  }
+
+  # Process 2
+  process_2: {
+    label: |md
+      **2.0**
+      Manage Inventory
+    |
+    shape: rectangle
+    style: {
+      border-radius: 10
+      font-size: 14
+    }
+  }
+
+  # Process 3
+  process_3: {
+    label: |md
+      **3.0**
+      Generate Reports
+    |
+    shape: rectangle
+    style: {
+      border-radius: 10
+      font-size: 14
+    }
+  }
+
+  # Data Store Examples
+  # Naming convention: D#: Data Store Name
+  order_db: {
+    label: "D1: Order Database"
+    shape: stored_data
+    style: {
+      font-size: 14
+    }
+  }
+
+  inventory_db: {
+    label: "D2: Inventory Database"
+    shape: stored_data
+    style: {
+      font-size: 14
+    }
+  }
+
+  # Data Flows between components
+  # Remember: All flows must begin and end at a process
+  customer -> process_1: Order Details
+  process_1 -> order_db: Order Record
+  order_db -> process_1: Order Status
+  process_1 -> customer: Confirmation
+
+  process_1 -> process_2: Item Request
+  process_2 -> inventory_db: Inventory Update
+  inventory_db -> process_2: Stock Level
+  process_2 -> process_1: Availability
+
+  process_2 -> supplier: Replenishment Order
+  supplier -> process_2: Shipment Details
+
+  inventory_db -> process_3: Inventory Data
+  order_db -> process_3: Order Data
+  process_3 -> customer: Reports
+}
+
+# ============================================================
+# SECTION 3: LEVEL 2 DFD (SUB-PROCESS DETAIL)
+# ============================================================
+# Shows detailed breakdown of a single Level 1 process
+
+level_2_dfd_process_1: {
+  # External Entity (if interacting with this sub-process)
+  customer: {
+    label: "EXT: Customer"
+    shape: rectangle
+    style: {
+      stroke-width: 5
+      font-size: 14
+    }
+  }
+
+  # Sub-process 1.1
+  # Use decimal notation: 1.1, 1.2, 1.3, etc.
+  subprocess_1_1: {
+    label: |md
+      **1.1**
+      Validate Order
+    |
+    shape: rectangle
+    style: {
+      border-radius: 10
+      font-size: 14
+    }
+  }
+
+  # Sub-process 1.2
+  subprocess_1_2: {
+    label: |md
+      **1.2**
+      Check Credit
+    |
+    shape: rectangle
+    style: {
+      border-radius: 10
+      font-size: 14
+    }
+  }
+
+  # Sub-process 1.3
+  subprocess_1_3: {
+    label: |md
+      **1.3**
+      Create Order
+    |
+    shape: rectangle
+    style: {
+      border-radius: 10
+      font-size: 14
+    }
+  }
+
+  # Data Stores
+  order_db: {
+    label: "D1: Order Database"
+    shape: stored_data
+    style: {
+      font-size: 14
+    }
+  }
+
+  customer_db: {
+    label: "D3: Customer Database"
+    shape: stored_data
+    style: {
+      font-size: 14
+    }
+  }
+
+  # Data Flows
+  customer -> subprocess_1_1: Order Information
+  subprocess_1_1 -> subprocess_1_2: Validated Order
+  subprocess_1_2 -> customer_db: Credit Query
+  customer_db -> subprocess_1_2: Credit Status
+  subprocess_1_2 -> subprocess_1_3: Approved Order
+  subprocess_1_3 -> order_db: New Order Record
+  subprocess_1_3 -> customer: Order Confirmation
+}
+
+# ============================================================
+# SECTION 4: STYLING REFERENCE
+# ============================================================
+# Common style patterns for Gane-Sarson elements
+
+styles_reference: {
+  # This section demonstrates styling options
+  # Remove or comment out when using template
+
+  external_entity_style: {
+    label: "EXT: Entity Example"
+    shape: rectangle
+    style: {
+      stroke-width: 5 # Thick border for external entities
+      font-size: 14
+      font: mono # Optional: use monospaced font
+    }
+  }
+
+  process_style: {
+    label: |md
+      **1.0**
+      Process Example
+    |
+    shape: rectangle
+    style: {
+      border-radius: 10 # Rounded corners for processes
+      font-size: 14
+    }
+  }
+
+  data_store_style: {
+    label: "D1: Data Store Example"
+    shape: stored_data
+    style: {
+      font-size: 14
+    }
+  }
+
+  # Data flow connections
+  external_entity_style -> process_style: Noun Phrase {
+    style: {
+      font-size: 12
+    }
+  }
+
+  process_style -> data_store_style: Data Description {
+    style: {
+      font-size: 12
+    }
+  }
+}
+
+# ============================================================
+# NOTES ON USAGE:
+# ============================================================
+# 1. Choose the appropriate section (context, level 1, or level 2)
+# 2. Modify entity/process/datastore names and labels
+# 3. Update process numbers according to your decomposition
+# 4. Ensure all data flows use noun phrases
+# 5. Remember: Data cannot flow directly between:
+#    - External entity to external entity
+#    - External entity to data store
+#    - Data store to data store
+#    All flows must pass through a process
+#
+# RENDERING:
+# To generate SVG: d2 gane-sarson-dfd-template.d2 output.svg
+# To watch for changes: d2 -w gane-sarson-dfd-template.d2 output.svg
+# To use a theme: d2 -t 1 gane-sarson-dfd-template.d2 output.svg
+# ============================================================

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="PAMHUB Development Team" /><link rel="canonical" href="https://asascience-open.github.io/pam-dac/roadmap/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>High Level PAMHUB Roadmap - PAMHUB</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "High Level PAMHUB Roadmap";
+        var mkdocs_page_input_path = "roadmap.md";
+        var mkdocs_page_url = "/pam-dac/roadmap/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> PAMHUB
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">System Architecture</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../architecture/">Introduction</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Manual</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../user-manual/">Introduction</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">PAMHUB</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">High Level PAMHUB Roadmap</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="high-level-pamhub-roadmap">High Level PAMHUB Roadmap</h1>
+<p>This document describes the high level roadmap for PAMHUB development and lists the use cases that will be supported.  Day to day project management will utilize Github Issues, Milestones, and Projects.</p>
+<div class="highlight"><pre><span></span><code>gantt
+    dateFormat  YYYY-MM-DD
+    title       IGNORE PAMHUB Development IGNORE
+    excludes    weekends
+    %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week (&quot;sunday&quot;) or &quot;weekends&quot;, but not the word &quot;weekdays&quot;.)
+
+    section Discovery and Design
+    Migrate static code                 :done,    dd1, 2025-08-06,2026-08-30
+    Identify software dependencies      :active,  dd2, 2025-09-01, 2025-12-31
+    Estimate storage needs              :active,  dd3, 2025-09-01, 2025-12-31
+    Track costs                         :active,  cost, 2025-09-01, 2026-07-31
+
+    section Stakeholder Engagement
+    Obtain data from providers : se1, 2026-01-06,14d
+    Define climatology visualization  : se4, 2026-01-06, 2026-01-31
+    ONR Programmatic Review           :milestone, 2026-01-14, 0d
+    Regional Coordination Workshop    : milestone, 2026-01-21, 0d
+    GMRI Engagement           : se5, 2026-03-01, 2026-07-31
+    Negotiate code/data sharing w NOAA  : se6, 2025-12-01, 2026-02-15
+
+    section MVP Manual Processing
+    Create pam-ww Windows workstation     :active, man1, after dd2, 30d
+    Upload test data          : man2, after man1  , 10d
+    Manual QC of raw audio    : man3, after man1  , 10d
+    Manual derivation of HMD  : man6, after man1, 30d
+    Process LFDCS detections  : man4, after man1, 20d
+    Test N detectors.         : man5, after man4, 30d
+
+    section Scaling and Automation
+    Design batch scaling orchestration             :s1, after doc1, 30d
+    Decide on Makara replacement      :milestone, 2026-01-30, 0d
+    Test automation against manual products : s3, after s1, 30d
+    Finalize batch-scaling    : s4, after s3, 30d
+
+    section Usability
+    Document architecture         : u1, 2025-08-06,2026-08-30
+    Document manual and batch operations. : u2, 2025-02-06,2026-08-30
+    Create training curriculum for users  : u3, 2026-02-06,2026-08-30
+
+    section Visualization
+    Create draft visualization website : v1, 2026-02-01, 2026-04-01
+    Determine website host : milestone, m2, 2026-01-05, 0d
+    Refine visualization website   : v2, after u3, 30d
+    Deploy visualization to host      : v3, 2026-03-01, 2026-03-30
+
+    section Interoperability
+    Define NCEI archive process : i1, 2026-02-01, 30d
+    Develop metadata export package for archive : i2, after i1, 30d
+    Archive N datasets/derived products  : i3, 2026-02-01, 2026-08-30
+    Visualize on PACM???   : 2026-04-01, 2026-08-30
+
+    section Transition
+    Determine long-term analyst role  : t1, 2026-10-01, 2027-06-30
+    Transition PAMHUB portal to GMRI  : t2, after v3, 60d
+    Transition Cloud Infrastructure to host : t3, after s3, 30d
+
+    section Contracting and Reporting
+    End ONR Period of Performance.  : milestone, 2027-07-31,0d
+    Development ends : vert, 2027-06-01
+</code></pre></div>
+<h2 id="use-case-sequencing">Use Case Sequencing</h2>
+<p>uc-011-pre-upload-integrity-check.md
+uc-005-upload-raw-data-to-pamhub.md</p>
+<p>uc-002-calculate-spectrograms.md
+uc-003-detect-species-presence.md
+uc-004-visualize-spectrogram-climatology.md
+uc-006-visualizations-other.md
+uc-007-quality-control-raw-audio.md
+uc-008-publish-detections.md
+uc-009-soundscope-integration.md
+uc-010-external-investigator-analysis.md</p>
+<p>Create: 
+uc-012-upload-new-project-metadata.md</p>
+<p>Towards a milestone plan.
+End of current period of performance 2027-07-31
+Budget will not carry through entire PoP.</p>
+<ol>
+<li>
+<p>Design milestone
+Ensure use cases are fully understood by the team and sequenced by priority and dependencies.
+Identify any outstanding information we need for subsequent stages.</p>
+</li>
+<li>
+<p>MVP Data upload
+Several data sets uploaded to the cloud and documentation has been written explaining the upload process and identifying any challenges experienced during the intial phase.  Basic metadata creation tool is complete and the uploaded metadata is loaded into the database.  Basic pre-upload QC implemented, possibly as a client side script.  </p>
+</li>
+<li>
+<p>MVP HMD Creation Pipeline</p>
+</li>
+</ol>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
