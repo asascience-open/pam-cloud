@@ -19,9 +19,11 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 			
 			# ── Containers ───────────────────────────────────────────────────────
 			
-			asset-manager = container "Asset Manager" "Accepts metadata file uploads, input/edit/validate metadata, and triggers ingestion workflow." "Web Application; FastAPI" "Web Page"
-			data-integrity-checker = container "Data Integrity Checker" "Inspect user files before upload for errors" "Pyodide/PAMHUB Tools" "Web Page"
-			ingest = container "Ingest Service" "Create user/project environment, accepts file uploads." "Web Application; REST API; CLI"
+			ingest = container "Ingest Service" "Create user/project environment, accepts file uploads." "Web Application; REST API; CLI" {
+				asset-manager = component "Asset Manager" "Accepts metadata file uploads, input/edit/validate metadata, and triggers ingestion workflow." "Web Application; FastAPI" "Web Page"
+				data-integrity-checker = component "Data Integrity Checker" "Inspect user files before upload for errors" "Pyodide/PAMHUB Tools" "Web Page"
+				upload-cli = component "Data Upload CLI" "Interface to AWS upload CLI" "AWS CLI" "Shell"
+			}
 			
 			rawBucket = container "Raw Data Bucket" "Stores raw acoustic files (wav, FLAC, mp3, other?) and associated metadata (fmt - TBD)." "Cloud Object Store" "Storage"
 			
@@ -47,9 +49,8 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 			# ── Container-to-container relationships ─────────────────────────────
 			
 			# Ingest
-			asset-manager  -> ingest           "Create/Update project environment." "?"
-			asset-manager  -> metadataDb        "Creat/Update metadata" "SQL"
-			ingest         -> rawBucket         "Write raw audio files" "AWS CLI; S3 PutObject; Other?"
+			ingest  -> metadataDb        "Create/Update metadata" "SQL"
+			ingest  -> rawBucket         "Create/Update data and products" "AWS CLI; S3 PutObject; Other?"
 			
 			# Direct interaction between JupyterHub and data
 			workstation       -> rawBucket         "Read raw files" "S3 GetObject/?"
@@ -66,11 +67,16 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 			deliveryApi       -> productsBucket    "Extracts and formats finalized products" "S3 GetObject"
 			deliveryApi       -> metadataDb        "Extracts and formats metadata for publication" "SQL"
 			
+			# ── Coomponent-to-component relationships ─────────────────────────────
+			asset-manager  -> metadataDb "Create/Update metadata" "SQL?"
+			asset-manager -> rawBucket "Create user partition for raw audio" "FastAPI"
+			upload-cli -> rawBucket "Upload raw audio" "AWS CLI"
+			
 		}
 		
 		ncei = softwareSystem "NCEI Archive" "National Centers for Environmental Information long-term data archive." "External System"
 		
-		pacm = softwareSystem "PACM" "Passive Acoustic Cetacean Monitor – species detection and reporting platform." "External System"
+		pacm = softwareSystem "PACM" "Passive Acoustic Cetacean Monitor – species detection and reporting platform." "External System, Priority4"
 		
 		visualizer = softwareSystem "Visualization Portal" "Interactive web application for exploring acoustic products and annotations." "External Web Page, Priority2"
 		
@@ -86,26 +92,26 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 		
 		dataProvider     -> asset-manager   "Create/upload/edit project metadata" ""
 		dataProvider     -> data-integrity-checker "Check files on user disk before upload" "Pyodide"
-		dataProvider     -> ingest   "Upload raw audio" "AWS CLI upload"
+		dataProvider     -> upload-cli   "Upload raw audio files (products?)" "AWS CLI upload"
 		analyst          -> workstation "Reviews detections, annotates, approves" "SSH / HTTPS"
 		deliveryApi      -> ncei                         "Pushes archive packages" "HTTPS / S3 "
 		deliveryApi      -> pacm                         "Provides detection reports" "UNKNOWN"
 		deliveryApi      -> visualizer                   "Publishes products & metadata" "REST API / S3 event"
 		
 		# This interaction is TBD based on cost
-		dataProvider -> workstation "Analyze PAM data and products TBD" "UNKNOWN/TBD"
+		dataProvider -> workstation "Analyze PAM data and products" "JupyterHub"
 	}
 	
 	views {
 		
 		systemContext acousticPlatform "c4-system-context" "System Context for the PAMHUB" {
 			include *
-			autoLayout lr
+			# autoLayout lr
 		}
 		
 		container acousticPlatform "c4-containers" "Containers within the PAMHUB" {
 			include *
-			autoLayout lr
+			# autoLayout lr
 		}
 		
 		component dagster-service "c4-component-dagster" "Data pipelines orchestrated by Dagster" {
@@ -113,23 +119,40 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 			autoLayout lr
 		}
 		
-		# Use Case 011 Pre Upload integrity check
-		dynamic acousticPlatform "uc-011-data-integrity" "Check data integrity prior to uploading" {
-			dataProvider -> data-integrity-checker "Provide local path to raw audio"
-			data-integrity-checker -> dataProvider "Run audio_qc_basics.py"
+		component ingest "c4-component-ingest" "Components of the Ingest Service" {
+			include *
 			autolayout lr
 		}
 		
+		# Use Case 012 Upload project metadata (and create user partition in bucket)
+		dynamic ingest "uc-012-create-project-and-metadata" "Create new project and upload metadata" {
+			dataProvider -> asset-manager "Enter or upload new project metadata"
+			asset-manager -> metadataDb "Load project metadata"
+			asset-manager -> rawBucket "Create project partition/directory"
+			asset-manager -> dataProvider "Provide user credentials and upload instructions"
+		}
+		
+		# Use Case 011 Pre Upload integrity check
+		dynamic ingest "uc-011-data-integrity" "Check data integrity prior to uploading" {
+			dataProvider -> data-integrity-checker "Provide local path to raw audio"
+			data-integrity-checker -> dataProvider "Run audio_qc_basics.py via Pyodide"
+			autolayout lr
+		}
+		
+		# Use Case Upload raw audio files
+		
+		
+		
 		# TODO: (Pri1) dynamic view to perform analysis and QC uc-007-quality-control-raw-audio.md
-		# TODO: (Pri1) dynamic view to archive at NCEI uc-001-archive-pam-data-at-ncei.md
 		# TODO: (Pri1) dynamic view for creating HMD files uc-002-calculate-spectograms.md
-		# TODO: (Pri3) dynamic view to run a species detector uc-003-detect-species-presence.md
-		# TODO: dynamic view to publish detections to PACM and/or NCEI uc-008-publish-detections.md
-		# TODO: Write use case on publishing detections to PACM and/or NCEI uc-008-publish-detections.md
+		# TODO: (Pri1) dynamic view to archive at NCEI uc-001-archive-pam-data-at-ncei.md
 		# TODO: (Pri2) dynamic view to update HMD climatology and publish to visualization server
 		# TODO: (Pri2) Write use case on extracting HMD metrics to publish to visualization server
-		# TODO: Analyze and understand SoundScope visualization use case
-		# TODO: Write use case defining external PI (data provider) interacting with the Jupyterhub. uc-010-external-investigator-analysis.md
+		# TODO: (Pri3) dynamic view to run a species detector uc-003-detect-species-presence.md
+		# TODO: (Pri3) Analyze and understand SoundScope visualization use case
+		# TODO: (Pri3) Write use case defining external PI (data provider) interacting with the Jupyterhub. uc-010-external-investigator-analysis.md
+		# TODO: (Pri4) dynamic view to publish detections to PACM and/or NCEI uc-008-publish-detections.md
+		# TODO: (Pri4) Write use case on publishing detections to PACM and/or NCEI uc-008-publish-detections.md
 		
 		styles {
 			element "Person" {
@@ -152,6 +175,18 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 			}
 			element "Web Page" {
 				shape WebBrowser
+				background "#1168bd"
+				color "#ffffff"
+				stroke "#0b4884"
+			}
+			element "Shell" {
+				shape Shell
+				background "#1168bd"
+				color "#ffffff"
+				stroke "#0b4884"
+			}
+			element "Terminal" {
+				shape Terminal
 				background "#1168bd"
 				color "#ffffff"
 				stroke "#0b4884"
