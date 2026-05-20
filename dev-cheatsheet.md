@@ -13,15 +13,21 @@ structurizr local .    # Defaults to localhost:8080
 ```bash
 # export svg/png
 cd docs/architecture
+# TODO: Does this recreate the workspace.json from workspace.dsl every time it runs?
 structurizr export --format svg --workspace ./workspace.json  --output ./images
 structurizr export --format png --workspace ./workspace.json  --output ./images
 ```
 
 ## Mkdocs
 
+- From project root, above ./docs
 edit mkdocs.yml
+
+```bash
 mkdocs serve
 mkdocs build
+# TODO: Research `clean` and `gh-publish`
+```
 
 ## D2
 
