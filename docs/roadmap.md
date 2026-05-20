@@ -66,4 +66,38 @@ gantt
 
 ```
 
-## Use Cases
+## Use Case Sequencing
+
+uc-011-pre-upload-integrity-check.md
+uc-005-upload-raw-data-to-pamhub.md
+
+uc-002-calculate-spectrograms.md
+uc-003-detect-species-presence.md
+uc-004-visualize-spectrogram-climatology.md
+uc-006-visualizations-other.md
+uc-007-quality-control-raw-audio.md
+uc-008-publish-detections.md
+uc-009-soundscope-integration.md
+uc-010-external-investigator-analysis.md
+
+Create: 
+uc-012-upload-new-project-metadata.md
+
+
+Towards a milestone plan.
+End of current period of performance 2027-07-31
+Budget will not carry through entire PoP.
+
+1. Design milestone
+Ensure use cases are fully understood by the team and sequenced by priority and dependencies.
+Identify any outstanding information we need for subsequent stages.
+
+2. MVP Data upload
+Several data sets uploaded to the cloud and documentation has been written explaining the upload process and identifying any challenges experienced during the intial phase.  Basic metadata creation tool is complete and the uploaded metadata is loaded into the database.  Basic pre-upload QC implemented, possibly as a client side script.  
+
+
+
+3. MVP HMD Creation Pipeline
+
+
+

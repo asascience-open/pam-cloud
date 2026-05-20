@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="PAMHUB Development Team" /><link rel="canonical" href="https://asascience-open.github.io/pam-dac/architecture/uc-003-detect-species-presence/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Use Case: Detect Species Presence - PAMHUB</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Use Case: Detect Species Presence";
+        var mkdocs_page_input_path = "architecture/uc-003-detect-species-presence.md";
+        var mkdocs_page_url = "/pam-dac/architecture/uc-003-detect-species-presence/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> PAMHUB
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">System Architecture</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../">Introduction</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">User Manual</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../user-manual/">Introduction</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">PAMHUB</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Use Case: Detect Species Presence</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="use-case-detect-species-presence">Use Case: Detect Species Presence</h1>
+<p><strong>ID:</strong> UC-003
+<strong>Goal:</strong> Run one or more species detection workflows on a stored raw dataset and distribute verified results to downstream portals</p>
+<hr />
+<h2 id="1-descriptions">1. Descriptions</h2>
+<p><strong>Primary Actor:</strong> PAM Analyst
+<strong>Trigger:</strong> Raw PAM data are available in PAMHUB storage and the PAM Analyst initiates a species detection workflow for one or more deployments.
+<strong>Pre-conditions:</strong> TBD
+<strong>Post-conditions:</strong> TBD
+<strong>Priority:</strong> High</p>
+<h2 id="2-basic-flow-happy-path">2. Basic Flow (Happy Path)</h2>
+<blockquote>
+<p><strong>Note:</strong> This section is pending completion. The basic flow will vary depending on which species detectors are in scope and which orchestration tool is confirmed. Two distinct sub-flows are anticipated and may need to be split into separate use cases:</p>
+<ul>
+<li><strong>Sub-flow A:</strong> Cross-platform, scriptable detectors integrated into the orchestration workflow (e.g., a Dagster pipeline)</li>
+<li><strong>Sub-flow B:</strong> Windows-only, GUI-driven detectors such as LFDCS that require a separate integration strategy (see Decision 2b)</li>
+</ul>
+<p>Do not consolidate these sub-flows until decision on detector architecture and metadata database are resolved.
+</p>
+</blockquote>
+<p>Draft steps from original user story which only focused on LFDCS.  Retained until this use case is fully revised.</p>
+<ul>
+<li>Create LFDCS Whale detections, archive at NCEI, and publish to PACM </li>
+<li>Create deployment metdata</li>
+<li>Upload raw audio and metadata to cloud via asset manager</li>
+<li>Launch pam-ww cloud workstation</li>
+<li>Quality control raw audio</li>
+<li>Run LFDCS detector<ul>
+<li>Create LFDCS config parameter file</li>
+<li>Run LFDCS detector on pam-ww cloud workstation</li>
+</ul>
+</li>
+<li>Quality control LFDCS output, approve detections</li>
+<li>Create LFDCS archive package</li>
+<li>Archive LFDCS archive package at NCEI</li>
+<li><em>Upload LFDCS detections to Makara and PACM (NOTE: To be verified)</em></li>
+</ul>
+<h2 id="3-alternative-exception-flows">3. Alternative / Exception Flows</h2>
+<h3 id="31-detector-produces-no-results-for-a-deployment">3.1 Detector produces no results for a deployment</h3>
+<blockquote>
+<p>TBD</p>
+</blockquote>
+<h3 id="32-manual-verification-fails-analyst-does-not-confirm-detections">3.2 Manual verification fails — analyst does not confirm detections</h3>
+<blockquote>
+<p>TBD</p>
+</blockquote>
+<h3 id="33-windows-only-detector-cannot-be-run-in-the-standard-orchestration-environment">3.3 Windows-only detector cannot be run in the standard orchestration environment</h3>
+<blockquote>
+<p>TBD — is this a true statement?</p>
+</blockquote>
+<h2 id="4-special-requirements">4. Special Requirements</h2>
+<blockquote>
+<p>TBD — Known considerations:</p>
+<ul>
+<li>Some detectors (e.g., LFDCS) are currently believed to run only on MS Windows and use GUI-driven interfaces. These cannot be integrated into a standard pipeline without additional infrastructure.</li>
+<li>Manual verification of detections is required before results are distributed to downstream portals such as PACM.</li>
+<li>Distribution targets include PACM and NCEI. Distribution format requirements for each are TBD.</li>
+</ul>
+</blockquote>
+<hr />
+<p><em>Status: Stub — intentionally incomplete. Do not begin implementation design against this document until Sections 2 and 3 are populated, Decision 2b is resolved, and the document is marked Ready for Review.</em></p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
