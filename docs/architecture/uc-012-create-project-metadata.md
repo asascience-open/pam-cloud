@@ -2,24 +2,20 @@
 
 **ID:** UC-012
 
-**Primary Actor:** Data Provider  
+## 1. Description
 
 **Goal:** Enter or upload project metadata into the system.  
 
-## 1. Descriptions
+**Primary Actor:** Data Provider  
 
 **Trigger:** Data Provider logs in to the system and selects "Create New Project"
 
-**Pre-conditions:** 
+**Pre-conditions:**
 
 - Data provider has recovered PAM deployments (moorings, gliders, ship-mounted, etc.), downloaded data from the recorders and performed data backup.
 - Data Provider has consulted [Makara Data Submission Guide](https://www.fisheries.noaa.gov/s3/2025-08/Makara-Data-Submission-Guide-508.pdf) and has all mandatory metadata (DEFINE THIS) available at their workstation.
 
-**Basic Flow:** The "Happy Path" where everything goes as expected.
-
-**Alternative Flows:** Scenarios where the user takes a different path or an error occurs.
-
-**Priority:** [1, 2, 3, 4] High -> Low
+**Priority:** 1 _([1, 2, 3, 4] High -> Low)_
 
 ## 2. Basic Flow (Happy Path)
 
@@ -27,12 +23,9 @@
 2. System provides metadata entry form.
 3. Actor types in mandatory project level metadata into the form.
 4. System validates metadata.
-5. Actor selects "Submit new project metadata"
+5. Actor selects "Submit new project metadata".
 6. System updates metadata database with the information provided.
 7. System creates new partition in the `raw-data-upload` bucket for the raw audio files from the newly created project.
-
-!!! QUESTION
-    Does the "create new partition" step belong here or in the [Upload Raw Data use case](./uc-005-upload-raw-data-to-pamhub.md)?
 
 !!! QUESTION
     What about uploading pregenerated metadata as validated CSV or JSON files?  Decide on this feature.
