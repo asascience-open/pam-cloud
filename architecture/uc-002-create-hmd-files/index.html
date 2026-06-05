@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="PAMHUB Development Team" /><link rel="canonical" href="https://asascience-open.github.io/pam-dac/architecture/uc-002-calculate-spectrograms/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="PAMHUB Development Team" /><link rel="canonical" href="https://asascience-open.github.io/pam-dac/architecture/uc-002-create-hmd-files/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Use Case: Calculate Spectrograms - PAMHUB</title>
+    <title>Use Case: Create HMD files - PAMHUB</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Use Case: Calculate Spectrograms";
-        var mkdocs_page_input_path = "architecture/uc-002-calculate-spectrograms.md";
-        var mkdocs_page_url = "/pam-dac/architecture/uc-002-calculate-spectrograms/";
+        var mkdocs_page_name = "Use Case: Create HMD files";
+        var mkdocs_page_input_path = "architecture/uc-002-create-hmd-files.md";
+        var mkdocs_page_url = "/pam-dac/architecture/uc-002-create-hmd-files/";
       </script>
     
     <!--[if lt IE 9]>
@@ -67,7 +67,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">Use Case: Calculate Spectrograms</li>
+      <li class="breadcrumb-item active">Use Case: Create HMD files</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -76,35 +76,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="use-case-calculate-spectrograms">Use Case: Calculate Spectrograms</h1>
+                <h1 id="use-case-create-hmd-files">Use Case: Create HMD files</h1>
 <p><strong>ID:</strong> UC-002
-<strong>Goal:</strong> Run spectrogram calculations on a stored raw dataset using the PyPAM workflow and package results for NCEI submission</p>
+<strong>Goal:</strong> Run HMD calculations on a stored raw dataset using the PyPAM workflow and package results for NCEI submission</p>
 <hr />
 <h2 id="1-descriptions">1. Descriptions</h2>
 <p><strong>Primary Actor:</strong> PAM Analyst
 <strong>Trigger:</strong> Raw PAM data and associated metadata are available in PAMHUB storage and the PAM Analyst initiates spectrogram processing for one or more deployments.
 <strong>Pre-conditions:</strong> TBD — depends in part on metadata database design (see Decision 0 in <code>scope-reframe-2026.md</code>)
-<strong>Post-conditions:</strong> TBD
+<strong>Post-conditions:</strong> TBD. TODO: What is the required output file and what can we do to ensure success for this calculation?<br />
 <strong>Priority:</strong> High</p>
 <h2 id="2-basic-flow-happy-path">2. Basic Flow (Happy Path)</h2>
-<blockquote>
-<p><strong>Note:</strong> This section is pending completion. A working PyPAM-based spectrogram workflow exists from a prior project and will serve as the starting point. The basic flow will be defined during first increment development as the workflow is integrated into the PAMHUB orchestration environment. The orchestration tool must be confirmed before this flow can be finalized.</p>
-</blockquote>
 <ul>
 <li>Create hybrid milli-decade (HMD) files and archive</li>
-<li>Create deployment metadata</li>
-<li>Upload raw audio to cloud</li>
-<li>Quality control raw audio</li>
-<li>Launch pam-ww cloud workstation</li>
 <li>Process raw audio with PyPAM<ul>
 <li>Create PyPAM config yaml files for deployment</li>
 <li>Trigger PyPAM processing</li>
 <li>Quality control PyPAM output</li>
-</ul>
-</li>
-<li>Archive HMD output at NCEI<ul>
-<li>Create HMD archive package</li>
-<li>Archive HMD package at NCEI</li>
 </ul>
 </li>
 </ul>

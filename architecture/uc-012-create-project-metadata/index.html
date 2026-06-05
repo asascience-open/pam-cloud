@@ -78,32 +78,26 @@
               
                 <h1 id="use-case-create-project-metadata">Use Case: Create project metadata</h1>
 <p><strong>ID:</strong> UC-012</p>
-<p><strong>Primary Actor:</strong> Data Provider  </p>
+<h2 id="1-description">1. Description</h2>
 <p><strong>Goal:</strong> Enter or upload project metadata into the system.  </p>
-<h2 id="1-descriptions">1. Descriptions</h2>
+<p><strong>Primary Actor:</strong> Data Provider  </p>
 <p><strong>Trigger:</strong> Data Provider logs in to the system and selects "Create New Project"</p>
-<p><strong>Pre-conditions:</strong> </p>
+<p><strong>Pre-conditions:</strong></p>
 <ul>
 <li>Data provider has recovered PAM deployments (moorings, gliders, ship-mounted, etc.), downloaded data from the recorders and performed data backup.</li>
 <li>Data Provider has consulted <a href="https://www.fisheries.noaa.gov/s3/2025-08/Makara-Data-Submission-Guide-508.pdf">Makara Data Submission Guide</a> and has all mandatory metadata (DEFINE THIS) available at their workstation.</li>
 </ul>
-<p><strong>Basic Flow:</strong> The "Happy Path" where everything goes as expected.</p>
-<p><strong>Alternative Flows:</strong> Scenarios where the user takes a different path or an error occurs.</p>
-<p><strong>Priority:</strong> [1, 2, 3, 4] High -&gt; Low</p>
+<p><strong>Priority:</strong> 1 <em>([1, 2, 3, 4] High -&gt; Low)</em></p>
 <h2 id="2-basic-flow-happy-path">2. Basic Flow (Happy Path)</h2>
 <ol>
 <li>Data Provider selects Create New Project.</li>
 <li>System provides metadata entry form.</li>
 <li>Actor types in mandatory project level metadata into the form.</li>
 <li>System validates metadata.</li>
-<li>Actor selects "Submit new project metadata"</li>
+<li>Actor selects "Submit new project metadata".</li>
 <li>System updates metadata database with the information provided.</li>
 <li>System creates new partition in the <code>raw-data-upload</code> bucket for the raw audio files from the newly created project.</li>
 </ol>
-<div class="admonition question">
-<p class="admonition-title">Question</p>
-<p>Does the "create new partition" step belong here or in the <a href="../uc-005-upload-raw-data-to-pamhub/">Upload Raw Data use case</a>?</p>
-</div>
 <div class="admonition question">
 <p class="admonition-title">Question</p>
 <p>What about uploading pregenerated metadata as validated CSV or JSON files?  Decide on this feature.</p>

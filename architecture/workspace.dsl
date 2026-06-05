@@ -44,7 +44,7 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 			deliveryApi = container "Delivery API" "Exposes processed products to downstream systems via authenticated endpoints." "REST API"
 			
 			# Repo for soundscope: https://github.com/xaviermouy/SoundScope
-			soundscopeVis = container "SoundScope Visualization" "Visualize using SoundScope TBD" "UNKNOWN" "Web Page, Priority3"
+			soundscopeVis = container "SoundScope Analysis/Visualization" "Visualize using SoundScope TBD" "UNKNOWN" "Web Page, Priority3"
 			
 			# ── Container-to-container relationships ─────────────────────────────
 			
@@ -76,16 +76,14 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 		
 		ncei = softwareSystem "NCEI Archive" "National Centers for Environmental Information long-term data archive." "External System"
 		
-		pacm = softwareSystem "PACM" "Passive Acoustic Cetacean Monitor – species detection and reporting platform." "External System, Priority4"
-		
 		visualizer = softwareSystem "Visualization Portal" "Interactive web application for exploring acoustic products and annotations." "External Web Page, Priority2"
 		
 		# ── System-level relationships (Level 1) ─────────────────────────────────
 		
-		dataProvider     -> acousticPlatform "Uploads raw acoustic files & metadata" "HTTPS / S3 presigned URL"
-		analyst          -> acousticPlatform "Reviews detections, annotates, performs QA/QC, approves products" "Virtual Machine/JupyterHub"
+		dataProvider     -> acousticPlatform "Uploads raw acoustic files & metadata, reviews detections" "HTTPS"
+		dataProvider     -> soundscopeVis "Analyzes raw audio, perform QC, review and approve detections" "JupyterHub"
+		analyst          -> acousticPlatform "Performs QA/QC, triggers workflow, approves products" "JupyterHub"
 		acousticPlatform -> ncei             "Delivers archived data packages" "HTTPS / SFTP"
-		acousticPlatform -> pacm             "Delivers species detection results & reports" "Manual CSV/API ???"
 		acousticPlatform -> visualizer       "Delivers processed spectrograms, annotations & metadata" "REST API / S3 event"
 		
 		# ── Container-to-actor / container-to-external relationships (Level 2) ───
@@ -95,11 +93,11 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 		dataProvider     -> upload-cli   "Upload raw audio files (products?)" "AWS CLI upload"
 		analyst          -> workstation "Reviews detections, annotates, approves" "SSH / HTTPS"
 		deliveryApi      -> ncei                         "Pushes archive packages" "HTTPS / S3 "
-		deliveryApi      -> pacm                         "Provides detection reports" "UNKNOWN"
 		deliveryApi      -> visualizer                   "Publishes products & metadata" "REST API / S3 event"
 		
 		# This interaction is TBD based on cost
 		dataProvider -> workstation "Analyze PAM data and products" "JupyterHub"
+		# It is sprobably better to include soundscope as a component of the JupyterHub workstation.
 	}
 	
 	views {

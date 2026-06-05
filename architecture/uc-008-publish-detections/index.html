@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="PAMHUB Development Team" /><link rel="canonical" href="https://asascience-open.github.io/pam-dac/architecture/uc-008-publish-detections/" />
       <link rel="shortcut icon" href="../../img/favicon.ico" />
-    <title>Use Case: [Name of Use Case] - PAMHUB</title>
+    <title>Use Case: Publish detections at PACM - PAMHUB</title>
     <link rel="stylesheet" href="../../css/theme.css" />
     <link rel="stylesheet" href="../../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Use Case: [Name of Use Case]";
+        var mkdocs_page_name = "Use Case: Publish detections at PACM";
         var mkdocs_page_input_path = "architecture/uc-008-publish-detections.md";
         var mkdocs_page_url = "/pam-dac/architecture/uc-008-publish-detections/";
       </script>
@@ -67,7 +67,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
-      <li class="breadcrumb-item active">Use Case: [Name of Use Case]</li>
+      <li class="breadcrumb-item active">Use Case: Publish detections at PACM</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -76,16 +76,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="use-case-name-of-use-case">Use Case: [Name of Use Case]</h1>
-<p><strong>ID:</strong> UC-001<br />
-<strong>Primary Actor:</strong> [e.g., Customer, Admin]<br />
-<strong>Goal:</strong> [Summary of what the actor wants to achieve]  </p>
+                <h1 id="use-case-publish-detections-at-pacm">Use Case: Publish detections at PACM</h1>
+<ul>
+<li><strong>ID:</strong> UC-008  </li>
+<li><strong>Primary Actor:</strong> Data Provider, or PAM Analyst on their behalf </li>
+<li><strong>Goal:</strong> Provide Cetacean detections to NOAA for publication on the <a href="https://passiveacoustics.fisheries.noaa.gov/pacm/#/narw">Passive Acoustics Cetacean Map (PACM)</a></li>
+</ul>
 <h2 id="1-descriptions">1. Descriptions</h2>
-<p><strong>Trigger:</strong> The specific action or event that kicks off the process.
-<strong>Pre-conditions:</strong> Requirements that must be met before the user can start (e.g., "User is logged in").
-<strong>Basic Flow:</strong> The "Happy Path" where everything goes as expected.
-<strong>Alternative Flows:</strong> Scenarios where the user takes a different path or an error occurs.
-<strong>Priority:</strong> [High / Medium / Low]</p>
+<ul>
+<li><strong>Trigger:</strong> The PI/data provider has analyzed and approved the detections calculated by a PAMHUB detector.  </li>
+<li><strong>Pre-conditions:</strong> Detector has run successfully and detections are analyzed by PI.</li>
+<li><strong>Priority:</strong> 4 Lowest</li>
+</ul>
+<p>See <a href="https://github.com/asascience-open/pam-cloud/issues/5">issue 5</a> for more detail.</p>
+<p>The workflow is sketched below:</p>
+<p><code>[Run Detector] --&gt; [PI Analyzes Detections] --&gt; [Script formats approved detections] -- [[PI Submits to PACM]</code></p>
+<p>Pushing data to <a href="https://passiveacoustics.fisheries.noaa.gov/pacm/#/narw">PACM</a> may be requested by users. It can be done manually done for the time being from the workstation. It consists of creating csv files in the format defined in their <a href="https://www.fisheries.noaa.gov/s3/2025-08/Makara-Data-Submission-Guide-508.pdf">guidelines (see Detections).</a></p>
+<p>The interaction with PACM is indirect as it is either by sending csv files to Jeff at NOAA, or uploading the csv files to their submission portal (when it is up and running).</p>
 <h2 id="2-basic-flow-happy-path">2. Basic Flow (Happy Path)</h2>
 <p>Actor [performs action].
 System [responds to action].
