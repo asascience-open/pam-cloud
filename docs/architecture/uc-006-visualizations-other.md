@@ -1,4 +1,4 @@
-# Use Case: [Name of Use Case]
+# Use Case: Placeholder to define future visualizations for pamhub
 
 **ID:** UC-006  
 **Primary Actor:** [e.g., Customer, Admin]  

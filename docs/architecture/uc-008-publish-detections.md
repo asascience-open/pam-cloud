@@ -6,11 +6,18 @@
 
 ## 1. Descriptions
 
-- **Trigger:** The specific action or event that kicks off the process.
-- **Pre-conditions:** Requirements that must be met before the user can start (e.g., "User is logged in").
-- **Priority:** 4
+- **Trigger:** The PI/data provider has analyzed and approved the detections calculated by a PAMHUB detector.  
+- **Pre-conditions:** Detector has run successfully and detections are analyzed by PI.
+- **Priority:** 4 Lowest
 
-Pushing data to [PACM](https://passiveacoustics.fisheries.noaa.gov/pacm/#/narw) may be requested by users. I can be done manually done for the time being from the workstation. It consists of creating csv files in the format defined in their [guidelines (see Detections).](https://www.fisheries.noaa.gov/s3/2025-08/Makara-Data-Submission-Guide-508.pdf)
+
+See [issue 5](https://github.com/asascience-open/pam-cloud/issues/5) for more detail.
+
+The workflow is sketched below:
+
+`[Run Detector] --> [PI Analyzes Detections] --> [Script formats approved detections] -- [[PI Submits to PACM]`
+
+Pushing data to [PACM](https://passiveacoustics.fisheries.noaa.gov/pacm/#/narw) may be requested by users. It can be done manually done for the time being from the workstation. It consists of creating csv files in the format defined in their [guidelines (see Detections).](https://www.fisheries.noaa.gov/s3/2025-08/Makara-Data-Submission-Guide-508.pdf)
 
 The interaction with PACM is indirect as it is either by sending csv files to Jeff at NOAA, or uploading the csv files to their submission portal (when it is up and running).
 

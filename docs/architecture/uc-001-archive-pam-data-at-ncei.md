@@ -4,6 +4,8 @@
 
 **Goal:** Submit a raw audio dataset and associated metadata for long-term archiving at NCEI
 
+TODO: 
+
 ---
 
 ## 1. Descriptions
@@ -32,7 +34,7 @@
 The exact steps are TBD.
 Relevant systems and decisions.
 1. metadata database
-2. PACE/PassivePacker installed in PAMHUB?
+2. PACE/PassivePacker are they required in PAMHUB or are we replicating that functionality elsewhere?
 3. Exact format of archive package.
 4. Role of ATRAC or other Archive tools (Send2NCEI)
 
@@ -55,3 +57,5 @@ Includes, data volumes are too large and therefore egress fees are too expensive
 
 !!! NOTE
     TBD — Requirements will be captured by the PAM Analyst during manual NCEI archiving interactions in the first increment and passed to the development team for incorporation here.
+
+TODO: Refine archiving use case based on PAM Analyst's review

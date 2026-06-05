@@ -26,20 +26,20 @@
       "order" : 1,
       "title" : ""
     }, {
-      "content" : "# Architecture of the PAMHUB System\n\n## System Context\n\n![System Context][pam-cloud-system-context]\n![System Context Key][pam-cloud-system-context-key]\n\n## Containers within PAMHUB\n\n![Containers in PAMHUB][pam-cloud-containers]\n![Containers in PAMHUB Key][pam-cloud-containers-key]\n\n## Dagster Components\n\n![Data pipelines in the Dagster service.][dagster-components]\n![Dagster components key][dagster-components-key]\n\n!!! NOTE \n    These diagrams follow the [C4 software diagramming](https://c4model.com) conventions.  Importantly, in these diagrams \"Containers\" are generic objects that \"contain\" functionality provided by software packages.  They are simply a level of abstraction that allows for showing different levels of detail in different diagrams.  THEY ARE NOT DOCKER CONTAINERS!\n\n## Use Cases\n\nTable of Use Cases\n\n!!! NOTE \n    Original [User Stories](./PAM_Cloud_stories.docx.md).  \n    This file is not maintained.  It has been decomposed into smaller stories or use cases below.\n\n| Implementation Priority | UC ID | Use Case write up  | Related Issues |  UC Completion Status | \n|-------------------------|------|---------------------|----------------|----------------------|\n| 1 | uc-012 | [Create project metadata ](./uc-012-create-project-metadata.md) | NA |  Incomplete |\n| 1 | uc-011 | [QC check prior to data upload](./uc-011-pre-upload-integrity-check.md) | NA | Incomplete |\n| 1 | uc-005 | [Upload raw audio](./uc-005-upload-raw-data-to-pamhub.md) | NA| Incomplete |\n| 1 | uc-002 | [Calculate spectograms and write to HMD files w PyPAM](./uc-002-calculate-spectrograms.md) | NA | Incomplete |\n| 1 | uc-007 | [Quality control raw audio](./uc-007-quality-control-raw-audio.md) | NA | Incomplete |\n| 1 | uc-001 | [Archive at NCEI](./uc-001-archive-pam-data-at-ncei.md) | NA| Incomplete |\n| 1 | uc-013 | [QC HMD files ](./uc-013-quality-control-HMD.md) | NA | Incomplete |\n| 2 | uc-004 | [Visualize climatology](./uc-004-visualize-spectrogram-climatology.md) | NA | Incomplete |\n| 3 | uc-003 | [Apply species detectors](./uc-003-detect-species-presence.md) | NA | Incomplete |\n| 3 | uc-009 | [Integrate internal SoundScope visualization](./uc-009-soundscope-integration.md) | NA | Incomplete |\n| 3 | uc-014 | [Archive spectogram/HMD files at NCEI](./uc-014-archive-HMD-at-NCEI.md) | NA |  Incomplete |\n| 4 | uc-006 | [Visualize other](./uc-006-visualizations-other.md) | NA| Incomplete |\n| 4 | uc-008 | [Publish detections to PACM and/or NCEI](./uc-008-publish-detections.md) | NA  |\n| 4 | uc-010 | [Provide analysis environment to external PIs/Data providers](./uc-010-external-investigator-analysis.md) | NA | Incomplete |\n\n\n\nData flow diagrams or other dynamic diagrams describing the use cases PAMHUB will address.\n\n## Architecture Decision Records\n\nADR [Table of Contents](adr-decisions.md)\n\n\n---\n[pam-cloud-system-context]: images/c4-system-context.svg\n[pam-cloud-system-context-key]: images/c4-system-context-key.svg\n[pam-cloud-containers]: images/c4-containers.svg\n[pam-cloud-containers-key]: images/c4-containers-key.svg\n[dagster-components]: images/c4-component-dagster.svg\n[dagster-components-key]: images/c4-component-dagster-key.svg",
+      "content" : "# Architecture of the PAMHUB System\n\n## System Context\n\n![System Context][pam-cloud-system-context]\n![System Context Key][pam-cloud-system-context-key]\n\n## Containers within PAMHUB\n\n![Containers in PAMHUB][pam-cloud-containers]\n![Containers in PAMHUB Key][pam-cloud-containers-key]\n\n## Dagster Components\n\n![Data pipelines in the Dagster service.][dagster-components]\n![Dagster components key][dagster-components-key]\n\n!!! NOTE \n    These diagrams follow the [C4 software diagramming](https://c4model.com) conventions.  Importantly, in these diagrams \"Containers\" are generic objects that \"contain\" functionality provided by software packages.  They are simply a level of abstraction that allows for showing different levels of detail in different diagrams.  THEY ARE NOT DOCKER CONTAINERS!\n\n## Use Cases\n\nTable of Use Cases\n\n!!! NOTE \n    Original [User Stories](./PAM_Cloud_stories.docx.md).  \n    This file is not maintained.  It has been decomposed into smaller stories or use cases below.\n\n| Implementation Priority | UC ID | Use Case write up  | Related Issues |  UC Completion Status | \n|-------------------------|-------|--------------------|----------------|-----------------------|\n| 1 | uc-012 | [Create project metadata](./uc-012-create-project-metadata.md) | NA | Incomplete |\n| 1 | uc-011 | [QC check prior to data upload](./uc-011-pre-upload-integrity-check.md) | NA | Incomplete |\n| 1 | uc-005 | [Upload raw audio](./uc-005-upload-raw-data-to-pamhub.md) | NA | Incomplete |\n| 1 | uc-002 | [Create HMD files w PyPAM](./uc-002-create-hmd-files.md) | NA | Incomplete |\n| 1 | uc-007 | [Quality control raw audio](./uc-007-quality-control-raw-audio.md) | NA | Incomplete |\n| 1 | uc-001 | [Archive at NCEI](./uc-001-archive-pam-data-at-ncei.md) | NA | Incomplete |\n| 1 | uc-013 | [QC HMD files](./uc-013-quality-control-HMD.md) | NA | Incomplete |\n| 2 | uc-004 | [Visualize climatology](./uc-004-visualize-climatology.md) | NA | Incomplete |\n| 3 | uc-003 | [Apply species detectors](./uc-003-detect-species-presence.md) | NA | Incomplete |\n| 3 | uc-009 | [Integrate internal SoundScope visualization](./uc-009-soundscope-integration.md) | NA | Incomplete |\n| 3 | uc-014 | [Archive HMD files at NCEI](./uc-014-archive-HMD-at-NCEI.md) | NA | Incomplete |\n| 4 | uc-006 | [Visualize other](./uc-006-visualizations-other.md) | NA| On hold |\n| 4 | uc-008 | [Publish detections to PACM and/or NCEI](./uc-008-publish-detections.md) | NA | Incomplete |\n| 4 | uc-010 | [Provide analysis environment to external PIs/Data providers](./uc-010-external-investigator-analysis.md) | NA | Incomplete |\n\n\nData flow diagrams or other dynamic diagrams describing the use cases PAMHUB will address.\n\n## Architecture Decision Records\n\nADR [Table of Contents](adr-decisions.md)\n\n\n---\n[pam-cloud-system-context]: images/c4-system-context.svg\n[pam-cloud-system-context-key]: images/c4-system-context-key.svg\n[pam-cloud-containers]: images/c4-containers.svg\n[pam-cloud-containers-key]: images/c4-containers-key.svg\n[dagster-components]: images/c4-component-dagster.svg\n[dagster-components-key]: images/c4-component-dagster-key.svg",
       "filename" : "index.md",
       "format" : "Markdown",
       "order" : 2,
       "title" : ""
     }, {
-      "content" : "# Use Case: Archive Raw PAM Data with NCEI\n\n**ID:** UC-001\n\n**Goal:** Submit a raw audio dataset and associated metadata for long-term archiving at NCEI\n\n---\n\n## 1. Descriptions\n\n**Primary Actor:** PAM Data Provider (or PAM Analyst on their behalf)\n\n**Trigger:** A data provider has uploaded PAM acoustic data, and is ready to begin the archiving process.\n\n**Pre-conditions:**\n\n- To be refined based on resources and references provided by [NCEI](https://www.ncei.noaa.gov/products/passive-acoustic-data)\n- Sufficient metadata exists and is properly formatted\n- Data files comply with NCEI standards\n\n**Post-conditions:** \n\n- Accession number has been created\n- DOI has been created\n- Data from the data provider are publicly available on the NCEI PAD Google bucket ([https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic](https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic)) and discoverable on the NCEI Passive Acoustic Data Map ([https://www.ncei.noaa.gov/maps/passive-acoustic-data](https://www.ncei.noaa.gov/maps/passive-acoustic-data))\n- Data is publicly accessible on the NOAA Open Data Dissemination (NODD) website and cloud buckets (the specific cloud and access method is determined at the time of archiving.)\n\n**Priority:** High\n\n## 2. Basic Flow (Happy Path)\n\nThe exact steps are TBD.\nRelevant systems and decisions.\n1. metadata database\n2. PACE/PassivePacker installed in PAMHUB?\n3. Exact format of archive package.\n4. Role of ATRAC or other Archive tools (Send2NCEI)\n\n\n## 3. Alternative / Exception Flows\n\n### 3.1 Data volume too large for internet transfer\n\nIncludes, data volumes are too large and therefore egress fees are too expensive for cloud to cloud transfer.\n\n### 3.2 Other\n\n> TBD\n\n### 3.3 Other TBD failure\n\n> TBD\n\n## 4. Special Requirements\n\n!!! NOTE\n    TBD — Requirements will be captured by the PAM Analyst during manual NCEI archiving interactions in the first increment and passed to the development team for incorporation here.\n",
+      "content" : "# Use Case: Archive Raw PAM Data with NCEI\n\n**ID:** UC-001\n\n**Goal:** Submit a raw audio dataset and associated metadata for long-term archiving at NCEI\n\nTODO: \n\n---\n\n## 1. Descriptions\n\n**Primary Actor:** PAM Data Provider (or PAM Analyst on their behalf)\n\n**Trigger:** A data provider has uploaded PAM acoustic data, and is ready to begin the archiving process.\n\n**Pre-conditions:**\n\n- To be refined based on resources and references provided by [NCEI](https://www.ncei.noaa.gov/products/passive-acoustic-data)\n- Sufficient metadata exists and is properly formatted\n- Data files comply with NCEI standards\n\n**Post-conditions:**\n\n- Accession number has been created\n- DOI has been created\n- Data from the data provider are publicly available on the NCEI PAD Google bucket ([https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic](https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic)) and discoverable on the NCEI Passive Acoustic Data Map ([https://www.ncei.noaa.gov/maps/passive-acoustic-data](https://www.ncei.noaa.gov/maps/passive-acoustic-data))\n- Data is publicly accessible on the NOAA Open Data Dissemination (NODD) website and cloud buckets (the specific cloud and access method is determined at the time of archiving.)\n\n**Priority:** High\n\n## 2. Basic Flow (Happy Path)\n\nThe exact steps are TBD.\nRelevant systems and decisions.\n1. metadata database\n2. PACE/PassivePacker are they required in PAMHUB or are we replicating that functionality elsewhere?\n3. Exact format of archive package.\n4. Role of ATRAC or other Archive tools (Send2NCEI)\n\n\n## 3. Alternative / Exception Flows\n\n### 3.1 Data volume too large for internet transfer\n\nIncludes, data volumes are too large and therefore egress fees are too expensive for cloud to cloud transfer.\n\n### 3.2 Other\n\n> TBD\n\n### 3.3 Other TBD failure\n\n> TBD\n\n## 4. Special Requirements\n\n!!! NOTE\n    TBD — Requirements will be captured by the PAM Analyst during manual NCEI archiving interactions in the first increment and passed to the development team for incorporation here.\n\nTODO: Refine archiving use case based on PAM Analyst's review",
       "filename" : "uc-001-archive-pam-data-at-ncei.md",
       "format" : "Markdown",
       "order" : 3,
       "title" : ""
     }, {
-      "content" : "# Use Case: Calculate Spectrograms\n\n**ID:** UC-002\n**Goal:** Run spectrogram calculations on a stored raw dataset using the PyPAM workflow and package results for NCEI submission\n\n---\n\n## 1. Descriptions\n\n**Primary Actor:** PAM Analyst\n**Trigger:** Raw PAM data and associated metadata are available in PAMHUB storage and the PAM Analyst initiates spectrogram processing for one or more deployments.\n**Pre-conditions:** TBD — depends in part on metadata database design (see Decision 0 in `scope-reframe-2026.md`)\n**Post-conditions:** TBD\n**Priority:** High\n\n## 2. Basic Flow (Happy Path)\n\n> **Note:** This section is pending completion. A working PyPAM-based spectrogram workflow exists from a prior project and will serve as the starting point. The basic flow will be defined during first increment development as the workflow is integrated into the PAMHUB orchestration environment. The orchestration tool must be confirmed before this flow can be finalized.\n\n- Create hybrid milli-decade (HMD) files and archive\n  - Create deployment metadata\n  - Upload raw audio to cloud\n  - Quality control raw audio\n  - Launch pam-ww cloud workstation\n  - Process raw audio with PyPAM\n    - Create PyPAM config yaml files for deployment\n    - Trigger PyPAM processing\n    - Quality control PyPAM output\n  - Archive HMD output at NCEI\n    - Create HMD archive package\n    - Archive HMD package at NCEI\n\n## 3. Alternative / Exception Flows\n\n### 3.1 Processing fails for one or more deployments in a batch\n\n> TBD\n\n### 3.2 Output files fail QA/QC verification\n\n> TBD\n\n## 4. Special Requirements\n\n> TBD — Known consideration: multiple deployments must be processable simultaneously. Performance and compute requirements will be informed by first increment integration work.\n\n## Prior user story retained for editing or further analysis\n1. Data provider has already been through the QA/QC process through IOOS, has metadata entered in Makara and has raw PAM data available on the NCEI public repository (option 1 – solid red arrow in diagram above) or on a provide temporary data provider data bucket (option 2 – dashed red arrow in the diagram above)  \n2. If option 1, IOOS creates a temporary data bucket and cloud workstation of the data provider. If option 2, the data provider will already have access to a cloud workstation and data bucket.  \n3. IOOS analyst creates config files for each deployment to be processed by pypam. It involves a custom python script that queries Makara with BigQuery and automatically creates yaml files.  \n4. IOOS analyst uploads yaml files to a dedicated pypam data bucket and starts the processing by triggering the pypam process on Google Cloud Composer (Airflow interface). Several deployments can be processed at once. For option 1, the processing will be done using raw data from the NCEI data bucket. For option 2, the data processing will be done using raw data from the temporary data provider bucket.  \n5. IOOS manually verifies that all daily netcdf files have been created, performs QA/QC (scanning through daily Long Term Spectral Averages, etc), and places all results on the data provider temporary data bucket.  \n6. Data provider uses temporary cloud workstation to verify HMD results  \n7. IOOS packages netcdf files to NCEI format using PACE/Passive Packer, includes QA/QC mask, and uploads to temporary NCEI data bucket.  \n8. NCEI downloads data from the NCEI data bucket and integrates it to the PAD repository  \n9. HMD data product from the data provider are publicly available on the NCEI PAD Google bucket ([https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic](https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic)) and discoverable on the NCEI Passive Acoustic Data Map ([https://www.ncei.noaa.gov/maps/passive-acoustic-data](https://www.ncei.noaa.gov/maps/passive-acoustic-data))  \n10. If the data provider is not interested in pursuing more data analysis, IOOS terminates the data provider’s temporary cloud data bucket and the cloud workstation.  \n---\n\n*Status: Stub — intentionally incomplete. Do not begin implementation design against this document until Sections 2 and 3 are populated and the document is marked Ready for Review.*\n",
-      "filename" : "uc-002-calculate-spectrograms.md",
+      "content" : "# Use Case: Create HMD files\n\n**ID:** UC-002\n**Goal:** Run HMD calculations on a stored raw dataset using the PyPAM workflow and package results for NCEI submission\n\n---\n\n## 1. Descriptions\n\n**Primary Actor:** PAM Analyst\n**Trigger:** Raw PAM data and associated metadata are available in PAMHUB storage and the PAM Analyst initiates spectrogram processing for one or more deployments.\n**Pre-conditions:** TBD — depends in part on metadata database design (see Decision 0 in `scope-reframe-2026.md`)\n**Post-conditions:** TBD. TODO: What is the required output file and what can we do to ensure success for this calculation?  \n**Priority:** High\n\n## 2. Basic Flow (Happy Path)\n\n\n- Create hybrid milli-decade (HMD) files and archive\n  - Process raw audio with PyPAM\n    - Create PyPAM config yaml files for deployment\n    - Trigger PyPAM processing\n    - Quality control PyPAM output\n\n## 3. Alternative / Exception Flows\n\n### 3.1 Processing fails for one or more deployments in a batch\n\n> TBD\n\n### 3.2 Output files fail QA/QC verification\n\n> TBD\n\n## 4. Special Requirements\n\n> TBD — Known consideration: multiple deployments must be processable simultaneously. Performance and compute requirements will be informed by first increment integration work.\n\n## Prior user story retained for editing or further analysis\n1. Data provider has already been through the QA/QC process through IOOS, has metadata entered in Makara and has raw PAM data available on the NCEI public repository (option 1 – solid red arrow in diagram above) or on a provide temporary data provider data bucket (option 2 – dashed red arrow in the diagram above)  \n2. If option 1, IOOS creates a temporary data bucket and cloud workstation of the data provider. If option 2, the data provider will already have access to a cloud workstation and data bucket.  \n3. IOOS analyst creates config files for each deployment to be processed by pypam. It involves a custom python script that queries Makara with BigQuery and automatically creates yaml files.  \n4. IOOS analyst uploads yaml files to a dedicated pypam data bucket and starts the processing by triggering the pypam process on Google Cloud Composer (Airflow interface). Several deployments can be processed at once. For option 1, the processing will be done using raw data from the NCEI data bucket. For option 2, the data processing will be done using raw data from the temporary data provider bucket.  \n5. IOOS manually verifies that all daily netcdf files have been created, performs QA/QC (scanning through daily Long Term Spectral Averages, etc), and places all results on the data provider temporary data bucket.  \n6. Data provider uses temporary cloud workstation to verify HMD results  \n7. IOOS packages netcdf files to NCEI format using PACE/Passive Packer, includes QA/QC mask, and uploads to temporary NCEI data bucket.  \n8. NCEI downloads data from the NCEI data bucket and integrates it to the PAD repository  \n9. HMD data product from the data provider are publicly available on the NCEI PAD Google bucket ([https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic](https://console.cloud.google.com/storage/browser/noaa-passive-bioacoustic)) and discoverable on the NCEI Passive Acoustic Data Map ([https://www.ncei.noaa.gov/maps/passive-acoustic-data](https://www.ncei.noaa.gov/maps/passive-acoustic-data))  \n10. If the data provider is not interested in pursuing more data analysis, IOOS terminates the data provider’s temporary cloud data bucket and the cloud workstation.  \n---\n\n*Status: Stub — intentionally incomplete. Do not begin implementation design against this document until Sections 2 and 3 are populated and the document is marked Ready for Review.*\n",
+      "filename" : "uc-002-create-hmd-files.md",
       "format" : "Markdown",
       "order" : 4,
       "title" : ""
@@ -51,18 +51,18 @@
       "title" : ""
     }, {
       "content" : "# Use Case: Visualize Spectrogram Climatology\n\n**ID:** UC-004\n**Goal:** Explore and visualize aggregated spectrogram data across select geographic regions using the PAMHUB web portal\n\n---\n\n> **Important:** The primary actor for this use case has not been defined. We know this capability is desired but we do not yet have sufficient detail on who will use it, what questions they are trying to answer, or what geographic regions and time ranges are relevant. This use case must not be developed further until the customer engagement work package defined in Decision 4 is complete and produces a written summary of the intended user, their goals, and their technical context.\n\n---\n\n## 1. Descriptions\n\n**Primary Actor:** TBD — pending customer engagement (either Data Provider, PAM Analyst, or new role for external PI)\n**Trigger:** TBD\n**Pre-conditions:** TBD\n**Post-conditions:** TBD\n**Priority:** High — capability is confirmed as desired, but detail is insufficient to begin design\n\n## 2. Basic Flow (Happy Path)\n\n> TBD — pending customer engagement work package (Decision 4).\n\n## 3. Alternative / Exception Flows\n\n> TBD\n\n## 4. Special Requirements\n\n> TBD — Known consideration: this use case depends on spectrogram data being available in PAMHUB storage. UC-002 (Calculate Spectrograms) is therefore a prerequisite. The geographic scope of \"select regions\" has not been defined.\n\n---\n\n*Status: Stub — intentionally incomplete. This use case must not advance beyond stub status until the customer engagement work package in Decision 4 is complete and its outputs are incorporated here.*\n",
-      "filename" : "uc-004-visualize-spectrogram-climatology.md",
+      "filename" : "uc-004-visualize-climatology.md",
       "format" : "Markdown",
       "order" : 6,
       "title" : ""
     }, {
-      "content" : "# Use Case: Upload raw data to PAMHUB\n\n**ID:** UC-005  \n**Primary Actor:** PAM Data Provider (or PAM Analys on their behalf)  \n**Goal:** Upload any relevant data file to the PAMHUB cloud environment for subsequent processing.  \n\n## 1. Descriptions\n\n**Trigger:** A data provider has recovered PAM observation platfomr (e.g. mooring, glider), downloaded data from the recorders, and is ready to share data with PAMHUB.\n\n**Pre-conditions:**\n\n- Data Provider has an account in Asset Manager and a storage bucket has been created to receive input data.\n- Data Provider has assembled and formatted metadata that follows the guidance form NOAA/NMFS Northeast Fisheries Science Center's [Makara Data Submission Guide](https://www.fisheries.noaa.gov/s3/2025-08/Makara-Data-Submission-Guide-508.pdf)\n\n**Basic Flow:** The \"Happy Path\" where everything goes as expected.\n**Alternative Flows:** Scenarios where the user takes a different path or an error occurs.\n**Priority:** High\n\nThere are 3 types of data \"packages\" that might be provided.\n\n1. **Raw unprocessed**:  Raw audio data with minimal metadata.  All processing will be done in the PAMHUB environment.\n2. **Raw processed**: Raw audio data that has been QC'd by the data provider.  Data files are organized according to TBD standard and metadata complies with the [Makara Data Submission Guide](https://www.fisheries.noaa.gov/s3/2025-08/Makara-Data-Submission-Guide-508.pdf)\n3. **Products**: In addition to, or instead of providing raw audio files, the data provider will provide processed data prodcuts such as Species Detections, computed Spectogram files (TODO: HMD file format reference needed here.)\n\n## 2. Basic Flow (Happy Path)\n\n> ![NOTE] As written, the Basic Flow path pertains to item 2 above, \"Raw processed data package.\"\n\n- Data Provider successfully logs in to Asset Manager web application\n- Asset Manager prompts for dataset information to determine what type of data package will be provided\n- Data Provider either:\n  - Manually enters deployment metadata (e.g., deployment locations, instrument specifications and recording cycles) into the PAMHUB Asset Manager interface ([TBD URL]()). At this stage the data provider also defines data sharing permissions (PACM visibility, accessibility from other users, etc.).\n  - OR, Uploads standardized metadata conatining all of the aforementioned metadata (TBD Exact format and minimal data content required)\n- Asset Manager loads metadata into database\n- Asset Manager provisions a storage location, with appropriate permissions, for upload and provides instructions to data provider\n- Data provider\n  - For small data sets, provider uploads data directly into PAMHUB (e.g. drag and drop). Transferring compressed files (e.g. .sud files from SoundTrap recorders) should be preferred when possible.\n  - For large data sets, provider follows instructions provided to upload via command line interface tools or other methods\n\n> ![QUESTION] What other notifications or verifications should be here to ensure complete upload?\n\n## 3. Alternative / Exception Flows\n\n### 3.1 [Condition A] (e.g., Invalid Login)\nSystem displays error message.\nUse case returns to Step 1 of Basic Flow.\n\n### 3.2 [Condition B] (e.g., Out of Stock)\nSystem suggests alternative products.\nUse case terminates.\n\n## 4. Special Requirements\n\n[e.g., Response time must be under 2 seconds]\n[e.g., Mobile responsive layout required]\n",
+      "content" : "# Use Case: Upload raw data to PAMHUB\n\n**ID:** UC-005  \n\n**Primary Actor:** PAM Data Provider (or PAM Analys on their behalf)  \n\n**Goal:** Upload any relevant data file to the PAMHUB cloud environment for subsequent processing.  \n\n## 1. Descriptions\n\n**Trigger:** A data provider has recovered PAM observation platfomr (e.g. mooring, glider), downloaded data from the recorders, and is ready to share data with PAMHUB.\n\n**Pre-conditions:**\n\n- Data Provider has an account in Asset Manager and a storage bucket has been created to receive input data.\n- Data Provider has assembled and formatted metadata that follows the guidance form NOAA/NMFS Northeast Fisheries Science Center's [Makara Data Submission Guide](https://www.fisheries.noaa.gov/s3/2025-08/Makara-Data-Submission-Guide-508.pdf)\n\n\nThere are 3 types of data \"packages\" that might be provided.\n\n1. **Raw unprocessed**:  Raw audio data with minimal metadata.  All processing will be done in the PAMHUB environment.\n2. **Raw processed**: Raw audio data that has been QC'd by the data provider.  Data files are organized according to TBD standard and metadata complies with the [Makara Data Submission Guide](https://www.fisheries.noaa.gov/s3/2025-08/Makara-Data-Submission-Guide-508.pdf)\n3. **Products**: In addition to, or instead of providing raw audio files, the data provider will provide processed data prodcuts such as Species Detections, computed Spectogram files (TODO: HMD file format reference needed here.)\n\n## 2. Basic Flow (Happy Path)\n\n!!! NOTE \n    As written, the Basic Flow path pertains to item 1 above, \"Raw processed data package.\"\n\n- Data Provider successfully logs in to Asset Manager web application\n- Asset Manager prompts for dataset information to determine what type of data package will be provided\n\n- Data provider\n  - For small data sets, provider uploads data directly into PAMHUB (e.g. drag and drop). Transferring compressed files (e.g. .sud files from SoundTrap recorders) should be preferred when possible.\n  - For large data sets, provider follows instructions provided to upload via command line interface tools or other methods. See [How To Upload](../user-manual/index.md)\n\n> ![QUESTION] What other notifications or verifications should be here to ensure complete upload?\n\n## 3. Alternative / Exception Flows\n\n### 3.1 [Condition A] (e.g., Invalid Login)\nSystem displays error message.\nUse case returns to Step 1 of Basic Flow.\n\n### 3.2 [Condition B] (e.g., Out of Stock)\nSystem suggests alternative products.\nUse case terminates.\n\n## 4. Special Requirements\n\n[e.g., Response time must be under 2 seconds]\n[e.g., Mobile responsive layout required]\n",
       "filename" : "uc-005-upload-raw-data-to-pamhub.md",
       "format" : "Markdown",
       "order" : 7,
       "title" : ""
     }, {
-      "content" : "# Use Case: [Name of Use Case]\n\n**ID:** UC-006  \n**Primary Actor:** [e.g., Customer, Admin]  \n**Goal:** [Summary of what the actor wants to achieve]  \n\n## 1. Descriptions\n\n**Trigger:** The specific action or event that kicks off the process.\n**Pre-conditions:** Requirements that must be met before the user can start (e.g., \"User is logged in\").\n**Basic Flow:** The \"Happy Path\" where everything goes as expected.\n**Alternative Flows:** Scenarios where the user takes a different path or an error occurs.\n**Priority:** [High / Medium / Low]\n\n## 2. Basic Flow (Happy Path)\nActor [performs action].\nSystem [responds to action].\nActor [next step].\nSystem [confirms goal is met].\n\n## 3. Alternative / Exception Flows\n\n### 3.1 [Condition A] (e.g., Invalid Login)\nSystem displays error message.\nUse case returns to Step 1 of Basic Flow.\n\n### 3.2 [Condition B] (e.g., Out of Stock)\nSystem suggests alternative products.\nUse case terminates. \n\n## 4. Special Requirements\n[e.g., Response time must be under 2 seconds]\n[e.g., Mobile responsive layout required]\n",
+      "content" : "# Use Case: Placeholder to define future visualizations for pamhub\n\n**ID:** UC-006  \n**Primary Actor:** [e.g., Customer, Admin]  \n**Goal:** [Summary of what the actor wants to achieve]  \n\n## 1. Descriptions\n\n**Trigger:** The specific action or event that kicks off the process.\n**Pre-conditions:** Requirements that must be met before the user can start (e.g., \"User is logged in\").\n**Basic Flow:** The \"Happy Path\" where everything goes as expected.\n**Alternative Flows:** Scenarios where the user takes a different path or an error occurs.\n**Priority:** [High / Medium / Low]\n\n## 2. Basic Flow (Happy Path)\nActor [performs action].\nSystem [responds to action].\nActor [next step].\nSystem [confirms goal is met].\n\n## 3. Alternative / Exception Flows\n\n### 3.1 [Condition A] (e.g., Invalid Login)\nSystem displays error message.\nUse case returns to Step 1 of Basic Flow.\n\n### 3.2 [Condition B] (e.g., Out of Stock)\nSystem suggests alternative products.\nUse case terminates. \n\n## 4. Special Requirements\n[e.g., Response time must be under 2 seconds]\n[e.g., Mobile responsive layout required]\n",
       "filename" : "uc-006-visualizations-other.md",
       "format" : "Markdown",
       "order" : 8,
@@ -74,7 +74,7 @@
       "order" : 9,
       "title" : ""
     }, {
-      "content" : "# Use Case: [Name of Use Case]\n\n**ID:** UC-001  \n**Primary Actor:** [e.g., Customer, Admin]  \n**Goal:** [Summary of what the actor wants to achieve]  \n\n## 1. Descriptions\n\n**Trigger:** The specific action or event that kicks off the process.\n**Pre-conditions:** Requirements that must be met before the user can start (e.g., \"User is logged in\").\n**Basic Flow:** The \"Happy Path\" where everything goes as expected.\n**Alternative Flows:** Scenarios where the user takes a different path or an error occurs.\n**Priority:** [High / Medium / Low]\n\n## 2. Basic Flow (Happy Path)\nActor [performs action].\nSystem [responds to action].\nActor [next step].\nSystem [confirms goal is met].\n\n## 3. Alternative / Exception Flows\n\n### 3.1 [Condition A] (e.g., Invalid Login)\nSystem displays error message.\nUse case returns to Step 1 of Basic Flow.\n\n### 3.2 [Condition B] (e.g., Out of Stock)\nSystem suggests alternative products.\nUse case terminates. \n\n## 4. Special Requirements\n[e.g., Response time must be under 2 seconds]\n[e.g., Mobile responsive layout required]\n",
+      "content" : "# Use Case: Publish detections at PACM\n\n- **ID:** UC-008  \n- **Primary Actor:** Data Provider, or PAM Analyst on their behalf \n- **Goal:** Provide Cetacean detections to NOAA for publication on the [Passive Acoustics Cetacean Map (PACM)](https://passiveacoustics.fisheries.noaa.gov/pacm/#/narw)\n\n## 1. Descriptions\n\n- **Trigger:** The PI/data provider has analyzed and approved the detections calculated by a PAMHUB detector.  \n- **Pre-conditions:** Detector has run successfully and detections are analyzed by PI.\n- **Priority:** 4 Lowest\n\n\nSee [issue 5](https://github.com/asascience-open/pam-cloud/issues/5) for more detail.\n\nThe workflow is sketched below:\n\n`[Run Detector] --> [PI Analyzes Detections] --> [Script formats approved detections] -- [[PI Submits to PACM]`\n\nPushing data to [PACM](https://passiveacoustics.fisheries.noaa.gov/pacm/#/narw) may be requested by users. It can be done manually done for the time being from the workstation. It consists of creating csv files in the format defined in their [guidelines (see Detections).](https://www.fisheries.noaa.gov/s3/2025-08/Makara-Data-Submission-Guide-508.pdf)\n\nThe interaction with PACM is indirect as it is either by sending csv files to Jeff at NOAA, or uploading the csv files to their submission portal (when it is up and running).\n\n## 2. Basic Flow (Happy Path)\nActor [performs action].\nSystem [responds to action].\nActor [next step].\nSystem [confirms goal is met].\n\n## 3. Alternative / Exception Flows\n\n### 3.1 [Condition A] (e.g., Invalid Login)\nSystem displays error message.\nUse case returns to Step 1 of Basic Flow.\n\n### 3.2 [Condition B] (e.g., Out of Stock)\nSystem suggests alternative products.\nUse case terminates. \n\n## 4. Special Requirements\n[e.g., Response time must be under 2 seconds]\n[e.g., Mobile responsive layout required]\n",
       "filename" : "uc-008-publish-detections.md",
       "format" : "Markdown",
       "order" : 10,
@@ -92,13 +92,13 @@
       "order" : 12,
       "title" : ""
     }, {
-      "content" : "# Use Case: Pre-upload Data Integrity Check\n\n**ID:** UC-011  \n\n**Primary Actor:** Data provider\n\n**Goal:** Ensure all files on local disk are present prior to upload.  Identify suspect temporal gaps in record.\n\n## 1. Descriptions\n\n- **Trigger:** Data Provider intends to upload a directory full of raw audio files.\n- **Pre-conditions:** User is logged in to Asset Manager or Upload Checker webapp. All files are available in local disk.\n- **Basic Flow:** The \"Happy Path\" where everything goes as expected.\n- **Alternative Flows:** Identify gaps and rectify, rerun checker\n- **Priority:** Low\n\n## 2. Basic Flow (Happy Path)\n\n1. Data Provider logs in to Asset Manager (or Pyiodide webapp)\n1. Select \"Upload Data\"\n1. System prompts user to run data integrity check prior to upload.\n1. Data Provider initiates integrity check and provides local path to directory of raw auido files.\n1. System runs tests to identify common errors (long gaps in the middle of a deployment.)\n1. System provides report of findings.\n1. Data Provider addresses issues, reruns tests. (Repeat as needed)\n1. When satisfied, Data Provider proceeds to Upload Data step.\n  \n!!! EXAMPLE\n    An example of basic data integrity tool that can be run in a web browser on the client side is available in the [GitHub repo here.](https://github.com/xaviermouy/PAMHub_tools).  It performs a basic check of data gaps based on file names and duration. The script of interest is audio_qc_basics_UI.py. It can be deployed [online serverless using Pyodide.](https://xaviermouy.github.io/PAMHub_tools/audio_qc_basics_UI.html)\n\n\n## 3. Alternative / Exception Flows\n\nWhat conditions would lead to the user choosing to download \"PAMHUB Tools\" and running integrity checks locally?\n\n### 3.1 Pyodide integrity checker won't run\nSystem displays error message.\nUse case returns to Step 1 of Basic Flow.\n\n!!! NOTE \n    Consider deploying PAMHUB_tools as a client application run locally, not through webapp.\n\n### 3.2 [Condition B] (e.g., Out of Stock)\nSystem suggests alternative products.\nUse case terminates. \n\n## 4. Special Requirements\n[e.g., Response time must be under 2 seconds]\n[e.g., Mobile responsive layout required]\n\n\n## 5. Diagrams and references\nUse these resources to elaborate the use case and clarify the intent before diving in to the solutions.\n\nSimple diagram.\n![Simple Diagram][integrity-check]\n![Simple Diagram Key][integrity-check-key]\n\n---\n\n[integrity-check]: ./images/uc-011-data-integrity.svg\n[integrity-check-key]: ./images/uc-011-data-integrity-key.svg",
+      "content" : "# Use Case: Pre-upload Data Integrity Check\n\n**ID:** UC-011  \n\n**Primary Actor:** Data provider\n\n**Goal:** Ensure all files on local disk are present prior to upload.  Identify suspect temporal gaps in record.\n\n## 1. Descriptions\n\n- **Trigger:** Data Provider intends to upload a directory full of raw audio files.\n- **Pre-conditions:** User is logged in to Asset Manager or Upload Checker webapp. All files are available in local disk.\n- **Basic Flow:** The \"Happy Path\" where everything goes as expected.\n- **Alternative Flows:** Identify gaps and rectify, rerun checker\n- **Priority:** Low\n\n## 2. Basic Flow (Happy Path)\n\n1. Data Provider logs in to Asset Manager (or Pyiodide webapp)\n1. Select \"Upload Data\"\n1. System prompts user to run data integrity check prior to upload.\n1. Data Provider initiates integrity check and provides local path to directory of raw auido files.\n1. System runs tests to identify common errors (long gaps in the middle of a deployment.)\n1. System provides report of findings.\n1. Data Provider addresses issues, reruns tests. (Repeat as needed)\n1. When satisfied, Data Provider proceeds to Upload Data step.\n  \n!!! EXAMPLE\n    An example of basic data integrity tool that can be run in a web browser on the client side is available in the [GitHub repo here.](https://github.com/xaviermouy/PAMHub_tools).  It performs a basic check of data gaps based on file names and duration. The script of interest is audio_qc_basics_UI.py. It can be deployed [online serverless using Pyodide.](https://xaviermouy.github.io/PAMHub_tools/audio_qc_basics_UI.html)\n\n## 3. Alternative / Exception Flows\n\nWhat conditions would lead to the user choosing to download \"PAMHUB Tools\" and running integrity checks locally?\n\n### 3.1 Pyodide integrity checker won't run\n\nSystem displays error message.\nUse case returns to Step 1 of Basic Flow.\n\n!!! NOTE \n    Consider deploying PAMHUB_tools as a client application run locally, not through webapp.\n\n### 3.2 [Condition B] (e.g., Out of Stock)\nSystem suggests alternative products.\nUse case terminates. \n\n## 4. Special Requirements\n[e.g., Response time must be under 2 seconds]\n[e.g., Mobile responsive layout required]\n\n\n## 5. Diagrams and references\nUse these resources to elaborate the use case and clarify the intent before diving in to the solutions.\n\nSimple diagram.\n![Simple Diagram][integrity-check]\n![Simple Diagram Key][integrity-check-key]\n\n---\n\n[integrity-check]: ./images/uc-011-data-integrity.svg\n[integrity-check-key]: ./images/uc-011-data-integrity-key.svg",
       "filename" : "uc-011-pre-upload-integrity-check.md",
       "format" : "Markdown",
       "order" : 13,
       "title" : ""
     }, {
-      "content" : "# Use Case: Create project metadata\n\n**ID:** UC-012\n\n**Primary Actor:** Data Provider  \n\n**Goal:** Enter or upload project metadata into the system.  \n\n## 1. Descriptions\n\n**Trigger:** Data Provider logs in to the system and selects \"Create New Project\"\n\n**Pre-conditions:** \n\n- Data provider has recovered PAM deployments (moorings, gliders, ship-mounted, etc.), downloaded data from the recorders and performed data backup.\n- Data Provider has consulted [Makara Data Submission Guide](https://www.fisheries.noaa.gov/s3/2025-08/Makara-Data-Submission-Guide-508.pdf) and has all mandatory metadata (DEFINE THIS) available at their workstation.\n\n**Basic Flow:** The \"Happy Path\" where everything goes as expected.\n\n**Alternative Flows:** Scenarios where the user takes a different path or an error occurs.\n\n**Priority:** [1, 2, 3, 4] High -> Low\n\n## 2. Basic Flow (Happy Path)\n\n1. Data Provider selects Create New Project.\n2. System provides metadata entry form.\n3. Actor types in mandatory project level metadata into the form.\n4. System validates metadata.\n5. Actor selects \"Submit new project metadata\"\n6. System updates metadata database with the information provided.\n7. System creates new partition in the `raw-data-upload` bucket for the raw audio files from the newly created project.\n\n!!! QUESTION\n    Does the \"create new partition\" step belong here or in the [Upload Raw Data use case](./uc-005-upload-raw-data-to-pamhub.md)?\n\n!!! QUESTION\n    What about uploading pregenerated metadata as validated CSV or JSON files?  Decide on this feature.\n\n![Create project and upload metadata](./images/uc-012-create-project-and-metadata.svg)\n![Key](./images/uc-012-create-project-and-metadata-key.svg)\n\n## 3. Alternative / Exception Flows\n\n### 3.1 [Condition A] (e.g., Invalid Login)\n\n1. System displays error message.\n2. Use case returns to Step 1 of Basic Flow.\n\n### 3.2 [Condition B] (e.g., Out of Stock)\n\n1. System suggests alternative products.\n2. Use case terminates.\n\n## 4. Special Requirements\n[e.g., Response time must be under 2 seconds]\n[e.g., Mobile responsive layout required]\n",
+      "content" : "# Use Case: Create project metadata\n\n**ID:** UC-012\n\n## 1. Description\n\n**Goal:** Enter or upload project metadata into the system.  \n\n**Primary Actor:** Data Provider  \n\n**Trigger:** Data Provider logs in to the system and selects \"Create New Project\"\n\n**Pre-conditions:**\n\n- Data provider has recovered PAM deployments (moorings, gliders, ship-mounted, etc.), downloaded data from the recorders and performed data backup.\n- Data Provider has consulted [Makara Data Submission Guide](https://www.fisheries.noaa.gov/s3/2025-08/Makara-Data-Submission-Guide-508.pdf) and has all mandatory metadata (DEFINE THIS) available at their workstation.\n\n**Priority:** 1 _([1, 2, 3, 4] High -> Low)_\n\n## 2. Basic Flow (Happy Path)\n\n1. Data Provider selects Create New Project.\n2. System provides metadata entry form.\n3. Actor types in mandatory project level metadata into the form.\n4. System validates metadata.\n5. Actor selects \"Submit new project metadata\".\n6. System updates metadata database with the information provided.\n7. System creates new partition in the `raw-data-upload` bucket for the raw audio files from the newly created project.\n\n!!! QUESTION\n    What about uploading pregenerated metadata as validated CSV or JSON files?  Decide on this feature.\n\n![Create project and upload metadata](./images/uc-012-create-project-and-metadata.svg)\n![Key](./images/uc-012-create-project-and-metadata-key.svg)\n\n## 3. Alternative / Exception Flows\n\n### 3.1 [Condition A] (e.g., Invalid Login)\n\n1. System displays error message.\n2. Use case returns to Step 1 of Basic Flow.\n\n### 3.2 [Condition B] (e.g., Out of Stock)\n\n1. System suggests alternative products.\n2. Use case terminates.\n\n## 4. Special Requirements\n[e.g., Response time must be under 2 seconds]\n[e.g., Mobile responsive layout required]\n",
       "filename" : "uc-012-create-project-metadata.md",
       "format" : "Markdown",
       "order" : 14,
@@ -116,7 +116,7 @@
       "order" : 16,
       "title" : ""
     }, {
-      "content" : "# Use Case: [Name of Use Case]\n\n**ID:** UC-001  \n**Primary Actor:** [e.g., Customer, Admin]  \n**Goal:** [Summary of what the actor wants to achieve]  \n\n## 1. Descriptions\n\n- **Trigger:** The specific action or event that kicks off the process.\n- **Pre-conditions:** Requirements that must be met before the user can start (e.g., \"User is logged in\").\n- **Basic Flow:** The \"Happy Path\" where everything goes as expected.\n- **Alternative Flows:** Scenarios where the user takes a different path or an error occurs.\n- **Priority:** [1, 2, 3, 4] High -> Low\n\n## 2. Basic Flow (Happy Path)\n\n1. Actor [performs action].\n2. System [responds to action].\n3. Actor [next step].\n4. System [confirms goal is met].\n\n## 3. Alternative / Exception Flows\n\n### 3.1 [Condition A] (e.g., Invalid Login)\n\n1. System displays error message.\n2. Use case returns to Step 1 of Basic Flow.\n\n### 3.2 [Condition B] (e.g., Out of Stock)\n\n1. System suggests alternative products.\n2. Use case terminates. \n\n## 4. Special Requirements\n[e.g., Response time must be under 2 seconds]\n[e.g., Mobile responsive layout required]\n",
+      "content" : "# Use Case: [Name of Use Case]\n\n**ID:** UC-NNN  \n\n## 1. Descriptions\n\n- **Goal:** [Summary of what the actor wants to achieve]  \n- **Primary Actor:** [e.g., Customer, Admin]  \n- **Trigger:** The specific action or event that kicks off the process.\n- **Pre-conditions:** Requirements that must be met before the user can start (e.g., \"User is logged in\").\n- **Priority:** 1 _([1, 2, 3, 4] High -> Low)_\n\n## 2. Basic Flow (Happy Path)\n\n1. Actor [performs action].\n2. System [responds to action].\n3. Actor [next step].\n4. System [confirms goal is met].\n\n## 3. Alternative / Exception Flows\n\n### 3.1 [Condition A] (e.g., Invalid Login)\n\n1. System displays error message.\n2. Use case returns to Step 1 of Basic Flow.\n\n### 3.2 [Condition B] (e.g., Out of Stock)\n\n1. System suggests alternative products.\n2. Use case terminates.\n\n## 4. Special Requirements\n\n[e.g., Response time must be under 2 seconds]\n[e.g., Mobile responsive layout required]\n",
       "filename" : "uc-NNN-TEMPLATE.md",
       "format" : "Markdown",
       "order" : 17,
@@ -124,7 +124,7 @@
     } ]
   },
   "id" : 1,
-  "lastModifiedDate" : "2026-05-08T22:08:35Z",
+  "lastModifiedDate" : "2026-06-05T21:45:19Z",
   "model" : {
     "people" : [ {
       "description" : "Submits acoustic recordings, metadata, and derived products.",
@@ -134,42 +134,49 @@
         "structurizr.dsl.identifier" : "dataProvider"
       },
       "relationships" : [ {
-        "description" : "Uploads raw acoustic files & metadata",
+        "description" : "Uploads raw acoustic files & metadata, reviews detections",
         "destinationId" : "3",
+        "id" : "36",
+        "sourceId" : "1",
+        "tags" : "Relationship",
+        "technology" : "HTTPS"
+      }, {
+        "description" : "Analyzes raw audio, perform QC, review and approve detections",
+        "destinationId" : "18",
         "id" : "37",
         "sourceId" : "1",
         "tags" : "Relationship",
-        "technology" : "HTTPS / S3 presigned URL"
+        "technology" : "JupyterHub"
       }, {
         "description" : "Create/upload/edit project metadata",
         "destinationId" : "5",
-        "id" : "42",
+        "id" : "41",
         "sourceId" : "1",
         "tags" : "Relationship"
       }, {
         "description" : "Create/upload/edit project metadata",
         "destinationId" : "4",
-        "id" : "43",
-        "linkedRelationshipId" : "42",
+        "id" : "42",
+        "linkedRelationshipId" : "41",
         "sourceId" : "1"
       }, {
         "description" : "Check files on user disk before upload",
         "destinationId" : "6",
-        "id" : "44",
+        "id" : "43",
         "sourceId" : "1",
         "tags" : "Relationship",
         "technology" : "Pyodide"
       }, {
         "description" : "Upload raw audio files (products?)",
         "destinationId" : "7",
-        "id" : "45",
+        "id" : "44",
         "sourceId" : "1",
         "tags" : "Relationship",
         "technology" : "AWS CLI upload"
       }, {
         "description" : "Analyze PAM data and products",
         "destinationId" : "14",
-        "id" : "50",
+        "id" : "48",
         "sourceId" : "1",
         "tags" : "Relationship",
         "technology" : "JupyterHub"
@@ -183,16 +190,16 @@
         "structurizr.dsl.identifier" : "analyst"
       },
       "relationships" : [ {
-        "description" : "Reviews detections, annotates, performs QA/QC, approves products",
+        "description" : "Performs QA/QC, triggers workflow, approves products",
         "destinationId" : "3",
         "id" : "38",
         "sourceId" : "2",
         "tags" : "Relationship",
-        "technology" : "Virtual Machine/JupyterHub"
+        "technology" : "JupyterHub"
       }, {
         "description" : "Reviews detections, annotates, approves",
         "destinationId" : "14",
-        "id" : "46",
+        "id" : "45",
         "sourceId" : "2",
         "tags" : "Relationship",
         "technology" : "SSH / HTTPS"
@@ -453,21 +460,14 @@
         }, {
           "description" : "Pushes archive packages",
           "destinationId" : "34",
-          "id" : "47",
+          "id" : "46",
           "sourceId" : "17",
           "tags" : "Relationship",
           "technology" : "HTTPS / S3 "
         }, {
-          "description" : "Provides detection reports",
-          "destinationId" : "35",
-          "id" : "48",
-          "sourceId" : "17",
-          "tags" : "Relationship",
-          "technology" : "UNKNOWN"
-        }, {
           "description" : "Publishes products & metadata",
-          "destinationId" : "36",
-          "id" : "49",
+          "destinationId" : "35",
+          "id" : "47",
           "sourceId" : "17",
           "tags" : "Relationship",
           "technology" : "REST API / S3 event"
@@ -478,7 +478,7 @@
         "description" : "Visualize using SoundScope TBD",
         "documentation" : { },
         "id" : "18",
-        "name" : "SoundScope Visualization",
+        "name" : "SoundScope Analysis/Visualization",
         "properties" : {
           "structurizr.dsl.identifier" : "soundscopeVis"
         },
@@ -500,16 +500,9 @@
         "tags" : "Relationship",
         "technology" : "HTTPS / SFTP"
       }, {
-        "description" : "Delivers species detection results & reports",
+        "description" : "Delivers processed spectrograms, annotations & metadata",
         "destinationId" : "35",
         "id" : "40",
-        "sourceId" : "3",
-        "tags" : "Relationship",
-        "technology" : "Manual CSV/API ???"
-      }, {
-        "description" : "Delivers processed spectrograms, annotations & metadata",
-        "destinationId" : "36",
-        "id" : "41",
         "sourceId" : "3",
         "tags" : "Relationship",
         "technology" : "REST API / S3 event"
@@ -525,18 +518,9 @@
       },
       "tags" : "Element,Software System,External System"
     }, {
-      "description" : "Passive Acoustic Cetacean Monitor – species detection and reporting platform.",
-      "documentation" : { },
-      "id" : "35",
-      "name" : "PACM",
-      "properties" : {
-        "structurizr.dsl.identifier" : "pacm"
-      },
-      "tags" : "Element,Software System,External System,Priority4"
-    }, {
       "description" : "Interactive web application for exploring acoustic products and annotations.",
       "documentation" : { },
-      "id" : "36",
+      "id" : "35",
       "name" : "Visualization Portal",
       "properties" : {
         "structurizr.dsl.identifier" : "visualizer"
@@ -546,7 +530,7 @@
   },
   "name" : "PAMHUB",
   "properties" : {
-    "structurizr.inspection.error" : "9",
+    "structurizr.inspection.error" : "8",
     "structurizr.inspection.info" : "0",
     "structurizr.inspection.ignore" : "0",
     "structurizr.inspection.warning" : "0"
@@ -629,11 +613,11 @@
       }, {
         "id" : "33"
       }, {
-        "id" : "42"
+        "id" : "41"
+      }, {
+        "id" : "43"
       }, {
         "id" : "44"
-      }, {
-        "id" : "45"
       } ]
     } ],
     "configuration" : {
@@ -773,10 +757,6 @@
         "y" : 2435
       }, {
         "id" : "35",
-        "x" : 2570,
-        "y" : 2435
-      }, {
-        "id" : "36",
         "x" : 3115,
         "y" : 2430
       } ],
@@ -881,37 +861,33 @@
           "y" : 1640
         } ]
       }, {
-        "id" : "43",
+        "id" : "37"
+      }, {
+        "id" : "42",
         "vertices" : [ {
           "x" : 769,
           "y" : 343
         } ]
       }, {
-        "id" : "46",
+        "id" : "45",
         "vertices" : [ {
           "x" : 960,
           "y" : 1210
         } ]
       }, {
-        "id" : "47",
+        "id" : "46",
         "vertices" : [ {
           "x" : 2530,
           "y" : 2125
         } ]
       }, {
-        "id" : "48",
-        "vertices" : [ {
-          "x" : 2794,
-          "y" : 2165
-        } ]
-      }, {
-        "id" : "49",
+        "id" : "47",
         "vertices" : [ {
           "x" : 3189,
           "y" : 2043
         } ]
       }, {
-        "id" : "50",
+        "id" : "48",
         "vertices" : [ {
           "x" : 769,
           "y" : 788
@@ -948,7 +924,7 @@
       "order" : 5,
       "relationships" : [ {
         "description" : "Enter or upload new project metadata",
-        "id" : "42",
+        "id" : "41",
         "order" : "1",
         "response" : false
       }, {
@@ -963,7 +939,7 @@
         "response" : false
       }, {
         "description" : "Provide user credentials and upload instructions",
-        "id" : "42",
+        "id" : "41",
         "order" : "4",
         "response" : true
       } ]
@@ -992,12 +968,12 @@
       "order" : 6,
       "relationships" : [ {
         "description" : "Provide local path to raw audio",
-        "id" : "44",
+        "id" : "43",
         "order" : "1",
         "response" : false
       }, {
         "description" : "Run audio_qc_basics.py via Pyodide",
-        "id" : "44",
+        "id" : "43",
         "order" : "2",
         "response" : true
       } ]
@@ -1024,25 +1000,19 @@
         "id" : "35",
         "x" : 0,
         "y" : 0
-      }, {
-        "id" : "36",
-        "x" : 0,
-        "y" : 0
       } ],
       "enterpriseBoundaryVisible" : true,
       "key" : "c4-system-context",
       "name" : "System Context View: PAMHUB",
       "order" : 1,
       "relationships" : [ {
-        "id" : "37"
+        "id" : "36"
       }, {
         "id" : "38"
       }, {
         "id" : "39"
       }, {
         "id" : "40"
-      }, {
-        "id" : "41"
       } ],
       "softwareSystemId" : "3"
     } ]

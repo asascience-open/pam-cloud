@@ -31,16 +31,16 @@ Table of Use Cases
 | 1 | uc-012 | [Create project metadata](./uc-012-create-project-metadata.md) | NA | Incomplete |
 | 1 | uc-011 | [QC check prior to data upload](./uc-011-pre-upload-integrity-check.md) | NA | Incomplete |
 | 1 | uc-005 | [Upload raw audio](./uc-005-upload-raw-data-to-pamhub.md) | NA | Incomplete |
-| 1 | uc-002 | [Calculate spectograms and write to HMD files w PyPAM](./uc-002-calculate-spectrograms.md) | NA | Incomplete |
+| 1 | uc-002 | [Create HMD files w PyPAM](./uc-002-create-hmd-files.md) | NA | Incomplete |
 | 1 | uc-007 | [Quality control raw audio](./uc-007-quality-control-raw-audio.md) | NA | Incomplete |
 | 1 | uc-001 | [Archive at NCEI](./uc-001-archive-pam-data-at-ncei.md) | NA | Incomplete |
 | 1 | uc-013 | [QC HMD files](./uc-013-quality-control-HMD.md) | NA | Incomplete |
-| 2 | uc-004 | [Visualize climatology](./uc-004-visualize-spectrogram-climatology.md) | NA | Incomplete |
+| 2 | uc-004 | [Visualize climatology](./uc-004-visualize-climatology.md) | NA | Incomplete |
 | 3 | uc-003 | [Apply species detectors](./uc-003-detect-species-presence.md) | NA | Incomplete |
 | 3 | uc-009 | [Integrate internal SoundScope visualization](./uc-009-soundscope-integration.md) | NA | Incomplete |
-| 3 | uc-014 | [Archive spectogram/HMD files at NCEI](./uc-014-archive-HMD-at-NCEI.md) | NA | Incomplete |
-| 4 | uc-006 | [Visualize other](./uc-006-visualizations-other.md) | NA| Incomplete |
-| 4 | uc-008 | [Publish detections to PACM and/or NCEI](./uc-008-publish-detections.md) | NA |
+| 3 | uc-014 | [Archive HMD files at NCEI](./uc-014-archive-HMD-at-NCEI.md) | NA | Incomplete |
+| 4 | uc-006 | [Visualize other](./uc-006-visualizations-other.md) | NA| On hold |
+| 4 | uc-008 | [Publish detections to PACM and/or NCEI](./uc-008-publish-detections.md) | NA | Incomplete |
 | 4 | uc-010 | [Provide analysis environment to external PIs/Data providers](./uc-010-external-investigator-analysis.md) | NA | Incomplete |
 
 

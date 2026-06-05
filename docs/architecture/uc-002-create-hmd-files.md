@@ -1,7 +1,7 @@
-# Use Case: Calculate Spectrograms
+# Use Case: Create HMD files
 
 **ID:** UC-002
-**Goal:** Run spectrogram calculations on a stored raw dataset using the PyPAM workflow and package results for NCEI submission
+**Goal:** Run HMD calculations on a stored raw dataset using the PyPAM workflow and package results for NCEI submission
 
 ---
 
@@ -10,25 +10,17 @@
 **Primary Actor:** PAM Analyst
 **Trigger:** Raw PAM data and associated metadata are available in PAMHUB storage and the PAM Analyst initiates spectrogram processing for one or more deployments.
 **Pre-conditions:** TBD — depends in part on metadata database design (see Decision 0 in `scope-reframe-2026.md`)
-**Post-conditions:** TBD
+**Post-conditions:** TBD. TODO: What is the required output file and what can we do to ensure success for this calculation?  
 **Priority:** High
 
 ## 2. Basic Flow (Happy Path)
 
-> **Note:** This section is pending completion. A working PyPAM-based spectrogram workflow exists from a prior project and will serve as the starting point. The basic flow will be defined during first increment development as the workflow is integrated into the PAMHUB orchestration environment. The orchestration tool must be confirmed before this flow can be finalized.
 
 - Create hybrid milli-decade (HMD) files and archive
-  - Create deployment metadata
-  - Upload raw audio to cloud
-  - Quality control raw audio
-  - Launch pam-ww cloud workstation
   - Process raw audio with PyPAM
     - Create PyPAM config yaml files for deployment
     - Trigger PyPAM processing
     - Quality control PyPAM output
-  - Archive HMD output at NCEI
-    - Create HMD archive package
-    - Archive HMD package at NCEI
 
 ## 3. Alternative / Exception Flows
 
