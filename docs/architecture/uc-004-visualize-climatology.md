@@ -1,13 +1,9 @@
-# Use Case: Visualize Spectrogram Climatology
+# Use Case: Visualize HMD Climatology
 
 **ID:** UC-004
+
 **Goal:** Explore and visualize aggregated spectrogram data across select geographic regions using the PAMHUB web portal
 
----
-
-> **Important:** The primary actor for this use case has not been defined. We know this capability is desired but we do not yet have sufficient detail on who will use it, what questions they are trying to answer, or what geographic regions and time ranges are relevant. This use case must not be developed further until the customer engagement work package defined in Decision 4 is complete and produces a written summary of the intended user, their goals, and their technical context.
-
----
 
 ## 1. Descriptions
 
