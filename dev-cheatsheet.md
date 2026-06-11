@@ -26,12 +26,7 @@ edit mkdocs.yml
 ```bash
 mkdocs serve
 mkdocs build
-<<<<<<< HEAD
-# TODO: Research `clean` and `gh-publish`
-```
-=======
 mkdocs gh-deploy
->>>>>>> 275f8bb4648dd4d35f338b2628e270798540b5a5
 
 ## D2
 
