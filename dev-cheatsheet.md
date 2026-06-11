@@ -27,6 +27,7 @@ edit mkdocs.yml
 mkdocs serve
 mkdocs build
 mkdocs gh-deploy
+```
 
 ## D2
 
