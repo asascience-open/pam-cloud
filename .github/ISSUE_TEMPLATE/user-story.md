@@ -1,7 +1,7 @@
 
 ---
 name: User Story
-description: Propose a new end-user feature for PAMHUB.
+about: Propose a new end-user feature for PAMHUB.
 title: 'feat: [Short Description]'
 labels: ['user-story', 'enhancement']
 assignees: ''
