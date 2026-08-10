@@ -29,7 +29,7 @@ s3://neracoos-pam-data-ingest/dataset_config/
 
 Configuration files are organized by project:
 
-<CONFIG_DIR>/<project>/<deployment>.json
+s3://neracoos-pam-data-ingest/dataset_config/<project>/<deployment>.json
 
 For example:
 
