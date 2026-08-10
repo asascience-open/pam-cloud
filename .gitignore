@@ -1,6 +1,7 @@
 pam-cloud.code-workspace
 .DS_Store
 .vscode/
+dagster-pypam/.tmp_dagster*
 notes-scratchpad.md
 **/.structurizr/
 .structurizr/

@@ -1,0 +1,19 @@
+[project]
+name = "dagster_pypam"
+version = "0.1.0"
+description = "Dagster processing application"
+requires-python = ">=3.10,<3.12"
+
+dependencies = [
+    "dagster==1.13.14",
+    "dagster-graphql==1.13.14",
+    "dagster-postgres==0.29.14",
+    "s3fs",
+    "mbari-pbp>=1.8.74",
+    "netcdf4",
+    "xarray",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
