@@ -49,11 +49,13 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#system-context">System Context</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#containers-within-pamhub">Containers within PAMHUB</a>
+    <li class="toctree-l2"><a class="reference internal" href="#decompose-pamhub-into-high-level-functions-containers">Decompose PAMHUB into High level functions (Containers)</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#dagster-components">Dagster Components</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#use-cases">Use Cases</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#complete-list-of-detectors-to-be-supported">Complete List of Detectors to be supported</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#architecture-decision-records">Architecture Decision Records</a>
     </li>
@@ -93,7 +95,7 @@
 <h2 id="system-context">System Context</h2>
 <p><img alt="System Context" src="images/c4-system-context.svg" />
 <img alt="System Context Key" src="images/c4-system-context-key.svg" /></p>
-<h2 id="containers-within-pamhub">Containers within PAMHUB</h2>
+<h2 id="decompose-pamhub-into-high-level-functions-containers">Decompose PAMHUB into High level functions (Containers)</h2>
 <p><img alt="Containers in PAMHUB" src="images/c4-containers.svg" />
 <img alt="Containers in PAMHUB Key" src="images/c4-containers-key.svg" /></p>
 <h2 id="dagster-components">Dagster Components</h2>
@@ -105,11 +107,6 @@
 </div>
 <h2 id="use-cases">Use Cases</h2>
 <p>Table of Use Cases</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Original <a href="./PAM_Cloud_stories.docx.md">User Stories</a>.<br />
-This file is not maintained.  It has been decomposed into smaller stories or use cases below.</p>
-</div>
 <table>
 <thead>
 <tr>
@@ -222,6 +219,33 @@ This file is not maintained.  It has been decomposed into smaller stories or use
 </tbody>
 </table>
 <p>Data flow diagrams or other dynamic diagrams describing the use cases PAMHUB will address.</p>
+<h2 id="complete-list-of-detectors-to-be-supported">Complete List of Detectors to be supported</h2>
+<p>See also <a href="https://github.com/asascience-open/pam-cloud/issues/4">Issue 4</a></p>
+<p><strong>General Tools:</strong>
+- PAMGuard detectors: (included with the PAMGuard install)</p>
+<p><strong>Multispecies Baleen Whales:</strong>
+- LFDCS</p>
+<p><strong>North Atlantic Minke whale pulse-train detector:</strong></p>
+<ul>
+<li>CNN-based detector for detecting pulse trains from N-A minke whale. It is has been used along the US east coast from the Gulf of Maine , down to the Caribbeans and Mexico. It has mostly been used on fixed mooring, but a student from USVI used it successfully on glider data.</li>
+<li>The version most people use is on the repo here: https://github.com/xaviermouy/minke-whale-detector. The repo includes a word document with documentation/instructions.</li>
+<li>There is also a linux version to help batch processing on the NEFSC containers they run locally (i.e. not on their cloud environment). It is the same thing as above but with a few more sh scripts and wrapers to facilitate queuing processing tasks, etc. This was very specific for NEFSC's needs, so using the version above may be more appropriate. Repo here: https://github.com/xaviermouy/minke-whale-detector_batch-processing_linux</li>
+</ul>
+<p><strong>General fish detector:</strong></p>
+<p>A generic fish sound detector
+- GitHub repo here: https://github.com/xaviermouy/FishSound_Finder
+- Documentation and tutorial here: https://fishsound-finder.readthedocs.io/en/latest/</p>
+<p><strong>Kurtosis detector:</strong></p>
+<ul>
+<li>This is a versatile impulse detector that is being used for detecting pile driving sounds (used by NOAA in the SNE wind energy areas for monitoring pile driving activity), haddock knock trains (what I use for monitoring haddock in the Gulf of Maine), and Megaptcliks from humpback whales (what I used in our herring investigation in Stellwagen bank).</li>
+<li>The configuration file used with the detector dictates what signals/frequencies to look for</li>
+<li>The GitHub repo is here and has a Word doc with instructions to run it: https://github.com/xaviermouy/KurtosisDetector</li>
+</ul>
+<p><strong>Humpback detector:</strong></p>
+<ul>
+<li>This  is the package from Vincent Kather called AcoDet: https://github.com/vskode/acodet</li>
+<li>NOAA NEFSC is now using this detector in addition to LFDCS for humpbacks</li>
+</ul>
 <h2 id="architecture-decision-records">Architecture Decision Records</h2>
 <p>ADR <a href="adr-decisions/">Table of Contents</a></p>
 <hr />
