@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using these metadata after official project completion."
+title: "Passive Acoustics Monitoring Data Hub (PAMHUB)"
+authors:
+  - family-names: "Motyka"
+    given-names: "Jackie"
+# Omit date-released and identifiers (like DOI) until you actually publish the release
+references:
+  - type: grant
+    title: "Title of your ONR Funded Project"
+    number: "N00014-23-1-2805"
+    institution:
+      name: "Office of Naval Research"
+      alias: "ONR"
+      id: "https://ror.org/01awap711"
+  - type: grant
+    title: "Title of your NOAA Funded Project"
+    number: "NA21NOS0120095"
+    institution:
+      name: "National Oceanic and Atmospheric Administration"
+      alias: "NOAA"
+      id: "https://ror.org/?????"
+TODO: Update citation.cff with the correct metadata from the proposal.

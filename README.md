@@ -17,9 +17,10 @@ See [architecture.md](docs/architecture.md) for diagrams and an expanded descrip
 ## Contributing
 Contributions are restricted to the core project team at this time.
 
-## License  
-TBD
-
 ## Acknowledgements & references
 - NOAA Fisheries PAM-SI Cloud — baseline functional reference (PAMHUB replicates many of the PAM-SI (aka PAM-Cloud) functions but is not a complete migration). [NOAA PAM-Cloud documentation](https://nmfs-ost.github.io/PAM-Cloud/).
 
+## Funding
+This project is supported by the **Office of Naval Research (ONR)** under Grant Number **N00014-23-1-2805**. 
+* **Funder Registry ID:** [https://ror.org/01awap711](https://ror.org/01awap711)
+* **Crossref Funder DOI:** [10.13039/100000006](https://doi.org/10.13039/100000006)

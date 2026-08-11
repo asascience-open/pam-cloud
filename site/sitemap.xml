@@ -2,98 +2,98 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://asascience-open.github.io/pam-dac/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/roadmap/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/adr-decisions/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-001-archive-pam-data-at-ncei/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-002-create-hmd-files/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-003-detect-species-presence/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-004-visualize-climatology/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-005-upload-raw-data-to-pamhub/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-006-visualizations-other/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-007-quality-control-raw-audio/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-008-publish-detections/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-009-soundscope-integration/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-010-external-investigator-analysis/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-011-pre-upload-integrity-check/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-012-create-project-metadata/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-013-quality-control-HMD/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-014-archive-HMD-at-NCEI/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/uc-NNN-TEMPLATE/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/decisions/0001-record-architecture-decisions/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/decisions/0002-create-new-database-based-on-makara/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/architecture/old/PAM_Cloud_stories.docx/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/images/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
     <url>
          <loc>https://asascience-open.github.io/pam-dac/user-manual/</loc>
-         <lastmod>2026-06-11</lastmod>
+         <lastmod>2026-06-15</lastmod>
     </url>
 </urlset>
