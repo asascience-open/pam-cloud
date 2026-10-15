@@ -18,6 +18,21 @@
 !!! NOTE 
     These diagrams follow the [C4 software diagramming](https://c4model.com) conventions.  Importantly, in these diagrams "Containers" are generic objects that "contain" functionality provided by software packages.  They are simply a level of abstraction that allows for showing different levels of detail in different diagrams.  THEY ARE NOT DOCKER CONTAINERS!
 
+## Dynamic Views
+
+### Check the integrity and structure of raw audio before upload
+
+![Pre Upload directory and file check][uc-011-data-integrity]
+![Pre Upload directory and file check][uc-011-data-integrity-key]
+
+### Upload project metadata
+
+![Upload or create project and deployment metadata][uc-012-create-project-and-metadata]
+![Upload or create project and deployment metadata][uc-012-create-project-and-metadata-key]
+
+
+See [User Guide](../user-manual/index.md) 
+
 ## Use Cases
 
 Table of Use Cases
@@ -86,3 +101,7 @@ ADR [Table of Contents](adr-decisions.md)
 [pam-cloud-containers-key]: images/c4-containers-key.svg
 [dagster-components]: images/c4-component-dagster.svg
 [dagster-components-key]: images/c4-component-dagster-key.svg
+[uc-011-data-integrity]: images/uc-011-data-integrity.svg
+[uc-011-data-integrity-key]: images/uc-011-data-integrity-key.svg
+[uc-012-create-project-and-metadata]: images/uc-012-create-project-and-metadata.svg
+[uc-012-create-project-and-metadata-key]: images/uc-012-create-project-and-metadata-key.svg

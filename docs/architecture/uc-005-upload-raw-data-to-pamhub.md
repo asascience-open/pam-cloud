@@ -50,3 +50,23 @@ Use case terminates.
 
 [e.g., Response time must be under 2 seconds]
 [e.g., Mobile responsive layout required]
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant DP as Data Provider
+    participant PA as PAM Analyst
+    participant QC1 as Pre-Upload Quality Control
+    participant Cloud as PAMHUB Raw Bucket
+    participant QC2 as Post-Upload Quality Control
+
+    DP->>QC1: Perform QC checks on subset 
+    QC1-->>DP: Provide suggestions for improvement
+    DP->>PA: Provide deployment metadata spreadsheet
+    PA->>PA: Standardize metadata
+    PA->>DP: Approve raw audio upload
+    DP->>Cloud: Upload data
+    Cloud-->>DP: Upload complete / receipt confirmation
+    DP->>QC2: Perform post-upload quality control checks
+    QC2-->>DP: Upload verified and data validated
+```

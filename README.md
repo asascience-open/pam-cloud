@@ -9,7 +9,7 @@ PAMHUB is a NERACOOS-hosted migration and reimplementation of NOAA Fisheries’ 
 - Implement infrastructure, policies, and tooling appropriate to NERACOOS (may differ from NOAA choices while preserving essential functionality).
 
 ## Roadmap
-See [roadmap.md](docs/roadmap.md) for the current development goals.  GitHub Issues, Projects, and Milestones will be used to track and plan project progress.
+See [roadmap.md](docs/architecture/old/roadmap.md) for the current development goals.  GitHub Issues, Projects, and Milestones will be used to track and plan project progress.
 
 ## High-level architecture
 See [architecture.md](docs/architecture.md) for diagrams and an expanded description of PAMHUB.
