@@ -52,7 +52,15 @@
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Introduction</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#metadata-handling">Metadata Handling</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#uploading-raw-audio-files">Uploading Raw Audio Files</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#quality-control-of-audio-files-or-metadata-within-the-pamhub-system">Quality control of audio files or metadata within the PAMHUB system</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#creation-of-hmd-files">Creation of HMD files</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#quality-control-of-hmd-files">Quality Control of HMD Files</a>
     </li>
     </ul>
                   </li>
@@ -82,8 +90,101 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="pamhub-user-manual">PAMHUB User Manual</h1>
+<h2 id="metadata-handling">Metadata Handling</h2>
+<blockquote>
+<p>![TODO]
+The list below needs elaboration and examples.</p>
+</blockquote>
+<ul>
+<li>Define the types of metadata collected</li>
+<li>Platform, Deployment, Project, ????</li>
+<li>Provide metadata to the PAM Analyst (email, FTP etc.)</li>
+<li>PAM Analyst will review the metadata and standardize it according to the metadata model documented here.</li>
+<li>Links to <a href="https://passiveacoustics.fisheries.noaa.gov/pars/guide/metadata.html">PARS</a></li>
+<li>Links to Tugboat <a href="https://ccog.colorado.edu/tugboat/swagger-ui/index.html">API docs</a></li>
+<li>Links to NCEI archiving <a href="https://www.ncei.noaa.gov/products/passive-acoustic-data#tab-3561">best practices</a></li>
+<li>Links to any other reference that informed the metadata model implemented in PAMHUB.</li>
+<li>Links to csv templates for Data Providers</li>
+<li>PAM Analyst will work iteratively with the data provider to ensure the metadata is of sufficient quality to support all of the PAMHUB use cases (e.g. archiving data and derived products, calculating spectograms and creating HMD files, calculating climatological soundscape metrics, detecting species presence or absence, etc.)</li>
+</ul>
+<div class="highlight"><pre><span></span><code>%%{init: {&#39;theme&#39;: &#39;default&#39;, &#39;themeVariables&#39;: { &#39;primaryColor&#39;: &#39;#003478&#39;, &#39;primaryTextColor&#39;: &#39;#FFFFFF&#39;, &#39;primaryBorderColor&#39;: &#39;#000000&#39;, &#39;lineColor&#39;: &#39;#000000&#39; }}}%%
+flowchart TB
+    classDef qc fill:#B0C4DE,stroke:#003478,stroke-width:2px,color:#000000;
+    classDef storage fill:#FFFFFF,stroke:#000000,stroke-width:2px,color:#000000;
+    classDef doc fill:#FFFFFF,stroke:#000000,stroke-width:1.5px,stroke-dasharray: 0,color:#000000;
+    classDef process fill:#FFFFFF,stroke:#000000,stroke-width:1.5px,color:#000000;
+
+    subgraph DataProviderArea[&quot;Data Provider&quot;]
+        direction TB
+        S1[&quot;1. Metadata from data provider&quot;]:::doc
+        S5[(&quot;5. Raw audio data&quot;)]:::storage
+        S6[&quot;6. Data integrity verification&quot;]:::qc
+        S17_Review[&quot;Check integrity with data provider&quot;]:::process
+        DataProvider_QC[&quot;Data provider (Review)&quot;]:::process
+    end
+
+    subgraph PAMHub[&quot;PAM Hub&quot;]
+        direction TB
+        S2[&quot;2. Metadata data upload (intake form)&quot;]:::process
+        S3[&quot;3. Quality control of metadata&quot;]:::qc
+        S4[(&quot;4. Metadata database&quot;)]:::storage
+        S7[&quot;7. AWS data upload&quot;]:::process
+        S8[&quot;8. Data integrity verification&quot;]:::qc
+        S9[(&quot;9. Raw audio data&quot;)]:::storage
+        S17[&quot;17. Cloud Data Summary Report&quot;]:::doc
+        S10[&quot;10. HMD processing (Nebari)&quot;]:::process
+        S11[&quot;11. HMD data products (nc files)&quot;]:::doc
+        S12[&quot;12. Quality control of HMD data&quot;]:::qc
+        S13[&quot;13. Data QC report&quot;]:::doc
+        S14[(&quot;14. QA/QC database&quot;)]:::storage
+        S15[&quot;15. Add QC fields to nc files&quot;]:::process
+        S16[&quot;16. HMD data products with QC matrix (nc files)&quot;]:::doc
+    end
+
+    subgraph NCEI[&quot;NCEI&quot;]
+        NCEI_Raw[&quot;Raw Audio Archive&quot;]:::process
+        NCEI_HMD[&quot;HMD Products Archive&quot;]:::process
+    end
+
+    %% Metadata track
+    S1 --&gt; S2
+    S2 --&gt; S3
+    S3 --&gt; S4
+
+    %% Audio ingestion track
+    S5 --&gt; S6
+    S6 --&gt; S7
+    S7 --&gt; S8
+    S8 --&gt; S9
+    S8 --&gt; S17
+    S17 --&gt; S17_Review
+
+    %% Processing &amp; QC track
+    S4 --&gt; S10
+    S9 --&gt; S10
+    S9 -.-&gt; S12
+    S10 --&gt; S11
+    S11 --&gt; S12
+
+    %% Metadata feedback loop
+    S12 -. &quot;Correct metadata if needed (deployment start/end dates)&quot; .-&gt; S4
+
+    %% QC reporting &amp; output track
+    S12 --&gt; S13
+    S13 --&gt; DataProvider_QC
+    S13 --&gt; S14
+    S14 --&gt; S15
+    S15 --&gt; S16
+
+    %% Delivery to NCEI
+    S9 --&gt;|To NCEI| NCEI_Raw
+    S16 --&gt;|To NCEI| NCEI_HMD
+</code></pre></div>
 <h2 id="uploading-raw-audio-files">Uploading Raw Audio Files</h2>
 <p>TODO: Copy content from Issue <a href="https://github.com/asascience-open/pam-cloud/issues/3">#3</a></p>
+<h2 id="quality-control-of-audio-files-or-metadata-within-the-pamhub-system">Quality control of audio files or metadata within the PAMHUB system</h2>
+<h2 id="creation-of-hmd-files">Creation of HMD files</h2>
+<h2 id="quality-control-of-hmd-files">Quality Control of HMD Files</h2>
               
             </div>
           </div><footer>

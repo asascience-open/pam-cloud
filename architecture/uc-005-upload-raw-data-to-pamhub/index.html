@@ -122,6 +122,24 @@ Use case terminates.</p>
 <h2 id="4-special-requirements">4. Special Requirements</h2>
 <p>[e.g., Response time must be under 2 seconds]
 [e.g., Mobile responsive layout required]</p>
+<div class="highlight"><pre><span></span><code>sequenceDiagram
+    autonumber
+    participant DP as Data Provider
+    participant PA as PAM Analyst
+    participant QC1 as Pre-Upload Quality Control
+    participant Cloud as PAMHUB Raw Bucket
+    participant QC2 as Post-Upload Quality Control
+
+    DP-&gt;&gt;QC1: Perform QC checks on subset 
+    QC1--&gt;&gt;DP: Provide suggestions for improvement
+    DP-&gt;&gt;PA: Provide deployment metadata spreadsheet
+    PA-&gt;&gt;PA: Standardize metadata
+    PA-&gt;&gt;DP: Approve raw audio upload
+    DP-&gt;&gt;Cloud: Upload data
+    Cloud--&gt;&gt;DP: Upload complete / receipt confirmation
+    DP-&gt;&gt;QC2: Perform post-upload quality control checks
+    QC2--&gt;&gt;DP: Upload verified and data validated
+</code></pre></div>
               
             </div>
           </div><footer>

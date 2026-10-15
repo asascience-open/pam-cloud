@@ -1,0 +1,180 @@
+direction: down
+
+classes: {
+  qc_step: {
+    shape: rectangle
+    style: {
+      fill: "#B0C4DE"
+      stroke: "#003478"
+      stroke-width: 2
+      font-color: "#000000"
+    }
+  }
+  db_storage: {
+    shape: cylinder
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#000000"
+      stroke-width: 2
+      font-color: "#000000"
+    }
+  }
+  report_doc: {
+    shape: page
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#000000"
+      stroke-width: 1
+      font-color: "#000000"
+    }
+  }
+  process_task: {
+    shape: rectangle
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#000000"
+      stroke-width: 1
+      font-color: "#000000"
+    }
+  }
+}
+
+# --- Data Provider Context ---
+s1: "1. Metadata from data provider" {
+  class: report_doc
+}
+
+s5: "5. Raw audio data" {
+  class: db_storage
+}
+
+s6: "6. Data integrity verification" {
+  class: qc_step
+}
+
+check_integrity: "Check integrity with data provider" {
+  class: process_task
+}
+
+data_provider_qc: "Data provider" {
+  class: process_task
+}
+
+# --- PAM Hub Boundary ---
+pam_hub: "PAM Hub" {
+  style: {
+    stroke: "#2E7D32"
+    stroke-dash: 5
+    stroke-width: 2
+    fill: "transparent"
+  }
+
+  s2: "2. Metadata data upload\n(intake form)" {
+    class: process_task
+  }
+
+  s3: "3. Quality control of metadata" {
+    class: qc_step
+  }
+
+  s4: "4. Metadata database" {
+    class: db_storage
+  }
+
+  s7: "7. AWS data upload" {
+    class: process_task
+  }
+
+  s8: "8. Data integrity verification" {
+    class: qc_step
+  }
+
+  s9: "9. Raw audio data" {
+    class: db_storage
+  }
+
+  s17: "17. Cloud Data Summary Report" {
+    class: report_doc
+  }
+
+  s10: "10. HMD processing\n(Nebari)" {
+    class: process_task
+  }
+
+  s11: "11. HMD data products\n(nc files)" {
+    class: report_doc
+  }
+
+  s12: "12. Quality control of HMD data" {
+    class: qc_step
+  }
+
+  s13: "13. Data QC report" {
+    class: report_doc
+  }
+
+  s14: "14. QA/QC database" {
+    class: db_storage
+  }
+
+  s15: "15. Add QC fields to nc files" {
+    class: process_task
+  }
+
+  s16: "16. HMD data products with\nQC matrix (nc files)" {
+    class: report_doc
+  }
+}
+
+# --- Archive Destinations ---
+ncei_raw: "NCEI: Raw Audio Archive" {
+  class: process_task
+}
+
+ncei_hmd: "NCEI: HMD Products Archive" {
+  class: process_task
+}
+
+# --- Metadata Pipelines ---
+s1 -> pam_hub.s2
+pam_hub.s2 -> pam_hub.s3
+pam_hub.s3 -> pam_hub.s4
+
+# --- Audio Ingestion Pipelines ---
+s5 -> s6
+s6 -> pam_hub.s7
+pam_hub.s7 -> pam_hub.s8
+pam_hub.s8 -> pam_hub.s9
+pam_hub.s8 -> pam_hub.s17
+pam_hub.s17 -> check_integrity
+
+# --- Processing & QC Pipelines ---
+pam_hub.s4 -> pam_hub.s10
+pam_hub.s9 -> pam_hub.s10
+pam_hub.s10 -> pam_hub.s11
+pam_hub.s11 -> pam_hub.s12
+
+pam_hub.s9 -> pam_hub.s12: {
+  style.stroke-dash: 5
+}
+
+# --- Metadata Correction Feedback Loop ---
+pam_hub.s12 -> pam_hub.s4: "Correct metadata if needed\n(deployment start/end dates)" {
+  style: {
+    stroke: "#0047AB"
+    stroke-dash: 5
+    stroke-width: 2
+    font-color: "#0047AB"
+  }
+}
+
+# --- QC Reporting & Final Packaging ---
+pam_hub.s12 -> pam_hub.s13
+pam_hub.s13 -> data_provider_qc: "To data provider"
+pam_hub.s13 -> pam_hub.s14
+pam_hub.s14 -> pam_hub.s15
+pam_hub.s15 -> pam_hub.s16
+
+# --- Egress to Long-Term Archive ---
+pam_hub.s9 -> ncei_raw: "To NCEI"
+pam_hub.s16 -> ncei_hmd: "To NCEI"
