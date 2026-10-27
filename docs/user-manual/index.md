@@ -2,8 +2,8 @@
 
 ## Metadata Handling
 
-> ![TODO]
-> The list below needs elaboration and examples.
+!!! TODO
+    The list below needs elaboration and examples.
 
 - Define the types of metadata collected
   - Platform, Deployment, Project, ????

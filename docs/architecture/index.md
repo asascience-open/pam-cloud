@@ -7,6 +7,50 @@
 
 ## Decompose PAMHUB into High level functions (Containers)
 
+### Comments from Travis
+
+- What is Ingest Service?
+  - COMMENT - Ingest service was intended as a generic container to capture the different funcitons related to create, read, updat, delete project/platform/deployment metadata.  It also contains the AWS CLI which uploads files directly to a bucket.  Arguably that's a stretch.  More below on what I did to adjust.  Removing the name Ingest and using Asset Manager as the main container and UI functionality.
+  - Not sure what user/project environment is
+    - COMMENT: This was intended to be the controller for anything that needs to be created in PAMHUB when a new user logs in to the system to initiate the process of creating a PAM project which contains 1..N deployments.  includes: setting up the S3 directories, setting up anything needed on the FormsUI, Project ID, user authentication?  It was a generic nod to things we might need if we're giving indivduals access to the system and don't want them to mess up other user's environments.  Is there a better name?  What do you call this set of fucnitons in the Research Workspace code?
+  - File uploads are accepted directly by S3, no separate service necessary there
+    - COMMENT: Noted.  Separating the AWS CLI from Asset Manager.
+  - Ingest Service's file upload role overlaps with the form UI, which will be used to do light QC and trigger upload to S3
+    - COMMENT:  Can we call this Asset Manager generally? I removed Ingest Service everywhere and replaced it with the Asset Manager stack you described below minus the metadataDB which remains separate for now.  Since the DB needs to be accessed by other elements of the system beyond the Asset Manager, it seems separate.  You can definitely convince me otherwise.  Just want to make sure Cheryl understands.
+  - To the extent that Ingest Service represents the form UI, it's not really as distinct from the Metadata Database as shown
+    - COMMENT: OK, but I'm not really sure how to change that.  I left it as is pending discussion.
+- Nothing should be interacting with the Metadata Database directly via SQL since it's got a PostgREST API sitting in front of it specifically to serve that purpose. 
+  - COMMENT: Noted.  Changed everywhere.
+- What is Delivery API?
+  - COMMENT: I removed Delivery API.  But, there is still a question to be resolved.  Where are dagster workflows initiated?  Below you suggest that's part of Asset Manager but I understood that Cheryl initiates them currently from the Nebari/JupyterHub environment.  I don't know if they are literally triggered by a notebook or if Nebari has another way to initiate jobs on a schedule or when triggered.
+  - Processed products are exposed directly via S3, no need for a separate service
+    - NOTED
+  - Dagster is likely the compontent that will be pushing archives to tugboat, not an API
+    - I agree for Metdata.  Are we certain that Tugboat supports large data transfers?  
+  - Extracting/formatting metadata and writing it to the Metadata Database would also likely be a Dagster job, not something an API would do
+    - COMMENT: This sounds like something to be discussed and decided in a way that everyone understands.  For example, we will need a function to query the metadataDB, extract the relevant information, and create PyPAM config files.  Are you saying that function should be the responsibility of the dagster-service called from a Jupyter notebook?  If that's true, then the function probably needs to be a Python module installed in the user's jupyterhub environment.  True?  Who can write that?  
+- Not sure it should be a goal to be able to write to the metadata database via a Jupyter notebook? 
+  - COMMENT:  OK, TBD.  Consider the use case where we run a species detector algorithm from jupyter notebook and want to store the annotations or any other results from the detector run.  How would they be written to the DB?
+- My sense for the components we need:
+  - S3 buckets for raw and processed data
+  - asset-manager-backed stack
+    - to be used for
+      - raw data QC/upload
+      - *Some* automated metadata extraction
+      - Manual metadata curation
+      - Batch processing job management (eventually)
+        - COMMENT: TBD pending discussion with Cheryl.  I don't understand how this batch management differs from the dagster workflows. 
+    - to consist of
+      - A form UI sitting on top of
+      - A PostgREST API sitting on top of
+      - A Postgres database
+      - COMMENT: Agreed.  I didn't inlcude a container/component for the API but noted it in the labeling on the lines connecting the components.  
+  - Suite of Dagster pipelines for data/metadata processing
+  - Maybe something like AWS Lambda for lighter weight jobs to be triggered via the form UI/dashboard
+    - COMMENT: What "lighter weight jobs" are you thinking?  
+  - Windows workstation for manual QC, etc.
+  - JupyterHub for manual analysis, custom derived proudcts generation, etc.
+
 ![Containers in PAMHUB][pam-cloud-containers]
 ![Containers in PAMHUB Key][pam-cloud-containers-key]
 

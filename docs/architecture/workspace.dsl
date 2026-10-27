@@ -5,27 +5,29 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 	!docs .
 	
 	model {
-		
+		archetypes {
+			comment = element {
+				tag "Comment"
+			}
+		}
 		# ── Actors ───────────────────────────────────────────────────────────────
 		
 		dataProvider = person "Data Provider" "Submits acoustic recordings, metadata, and derived products." "External Person"
 		
 		analyst = person "PAM Analyst" "Reviews, annotates, and approves processed data via cloud workstation."
 		
+		# ── External Systems ──────────────────────────────────────────────────────────────
+		ncei = softwareSystem "NCEI Archive" "National Centers for Environmental Information long-term data archive." "External System, Priority1"
 		
 		# ── Systems ──────────────────────────────────────────────────────────────
 		
 		acousticPlatform = softwareSystem "PAMHUB" "Ingests acoustic data, orchestrates processing pipelines, and delivers output products." {
 			
 			# ── Containers ───────────────────────────────────────────────────────
-			
-			ingest = container "Ingest Service" "Create user/project environment, accepts file uploads." "Web Application; REST API; CLI" {
-				asset-manager = component "Asset Manager" "Accepts metadata file uploads, input/edit/validate metadata, and triggers ingestion workflow." "Web Application; FastAPI" "Web Page"
-				data-integrity-checker = component "Data Integrity Checker" "Inspect select data provider files before upload for errors" "Web Application; Asset Manager" "Web Page"
-				upload-cli = component "Data Upload CLI" "Interface to AWS upload CLI" "AWS CLI" "Shell"
+			asset-manager = container "Asset Manager" "Create and edit user/project environment and metadata." "Web Application" {
+				forms-ui = component "Form UI" "UI to manually input/edit/validate metadata and accept/validate metadata file uploads." "Web Application" "Web Page"
+				data-integrity-checker = component "Data Integrity Checker" "Inspect select data provider files before upload for errors" "Web Application" "Web Page"
 			}
-			
-			rawBucket = container "Raw Data Bucket" "Stores raw acoustic files (wav, FLAC, mp3, other?) and associated metadata (fmt - TBD)." "Cloud Object Store" "Storage"
 			
 			dagster-service = container "Dagster Orchestration" "Administer Dagster OSS components; Orchestrate PAMHUB Flows" "K8s/Dagster/Nebari"  {
 				extract-metadata-workflow = component "Extract Metadata" "Extract instrument/platform metadata from raw audio files" "Dagster Flow/Asset Manager" "Priority1"
@@ -35,13 +37,14 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 				extract-hmd-visuals-workflow = component "Extract SoundScape Metrics from HMD" "Create new HMD-based metrics and publish to visualization service." "Dagster Flow/Python" "Priority2"
 			}
 			
-			jupyterhub = container "JupyterHub" "Development environment for data analysis and data pipeline invocation." "Nebari/JupyterHub"  "Web Page"
-			
+			metadataDb = container "Metadata Database" "Tracks deployments, recordings, detections, annotations, workflow state & audit log. Makara like." "Relational DB" "Database"
+			jupyterhub = container "Nebari/JupyterHub" "Development environment for data analysis and data pipeline invocation." "Nebari/JupyterHub"  "Web Page"
+			rawBucket = container "Raw Data Bucket" "Stores raw acoustic files (wav, FLAC, mp3, other?) and associated metadata (fmt - TBD)." "Cloud Object Store" "Storage"
 			productsBucket = container "Products Bucket" "Stores processed outputs: spectrograms, detection CSVs, archive packages." "Cloud Object Store" "Storage"
 			
-			metadataDb = container "Metadata Database" "Tracks deployments, recordings, detections, annotations, workflow state & audit log. Makara like." "Relational DB" "Database"
+			visualizer = container "Visualization Portal" "Interactive web application for exploring acoustic products and annotations." "Web Page, Priority2"  "Web Page"
 			
-			deliveryApi = container "Delivery API" "Exposes processed products to downstream systems via authenticated endpoints." "REST API"
+			#deliveryApi = container "Delivery API" "Exposes processed products to downstream systems via authenticated endpoints." "REST API"
 			
 			windows_workstation = container "Windows Workstation" "Windows virtual machine in PAMHUB for analysis" "MS Windows" "Priority1" {
 				# Passive Packer https://www.ncei.noaa.gov/products/passivepacker
@@ -55,76 +58,68 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 				pamguard = component "PamGuard analysis software" "Windows Application" "Priority1"
 			}
 			
+			# ── System-to-system or actor-to-system level relationships (Level 1) ─────────────────────────────────
+			dataProvider     -> acousticPlatform "Uploads raw acoustic files & metadata, reviews detections"
+			dataProvider 	 -> analyst "Collaborate to process data/metadata"
+			acousticPlatform -> ncei             "Delivers data packages for archiving"
+			#acousticPlatform -> visualizer       "Delivers processed spectrograms, annotations & metadata" "REST API / S3 event"
 			
 			# ── Container-to-container relationships ─────────────────────────────
 			
-			# Ingest
-			ingest  -> metadataDb        "Create/Update metadata" "SQL/PostgresT"
-			ingest  -> rawBucket         "Create/Update data and products" "AWS CLI; S3 PutObject; Other?"
+			# asset-manager
+			asset-manager  -> metadataDb        "Create/Update metadata" "PostgREST"
+			asset-manager  -> rawBucket         "Create/Update data and products" "S3 PutObject; Other?"
 			
 			# Direct interaction between JupyterHub and data
 			jupyterhub       -> rawBucket         "Read raw files" "S3 GetObject/?"
-			jupyterhub       -> metadataDb        "Read/write metadata" "SQL via ??"
+			jupyterhub       -> metadataDb        "Read/write metadata" "PostgREST"
 			jupyterhub       -> productsBucket    "Write analysis results" "S3 PutObject/Xarray?"
 			
 			# Windows Workstation for manual analysis
-			windows_workstation -> metadataDb "Read metadata" "SQL/PostgresT"
+			windows_workstation -> metadataDb "Read metadata" "PostgREST"
 			windows_workstation -> rawBucket "Read/Write" "Filesystem"
 			
 			# Nebari/JupyterHub initiates data pipelines
-			jupyterhub    -> dagster-service      "Launch data pipeline" "Dagster/Python"
-			dagster-service   -> metadataDb        "Read metadata" "SQL/PostgresT"
-			dagster-service   -> productsBucket       "Write product files" "S3 PutObject/Xarray/"
+			jupyterhub    -> dagster-service      "Launch data pipeline" "Dagster/Python???"
+			dagster-service   -> metadataDb        "Read metadata" "PostgREST"
+			#dagster-service   -> productsBucket       "Write product files" "S3 PutObject/Xarray/"
 			dagster-service -> rawBucket         "Read raw files" "S3 GetObject/"
-			dagster-service -> deliveryApi        "Publish data and products" "UNKNOWN"
+			dagster-service -> visualizer	"Delivery derived products for visualization" "???"
 			
-			deliveryApi       -> productsBucket    "Extracts and formats finalized products" "S3 GetObject"
-			deliveryApi       -> metadataDb        "Extracts and formats metadata for publication" "SQL"
+			# ── Container-to-actor / container-to-external relationships (Level 2) ───
+			dataProvider     -> rawBucket "Upload raw audio" "AWS CLI"
+			dataProvider     -> forms-ui   "Create/upload/edit project metadata" "HTTPS"
+			dataProvider     -> data-integrity-checker "Check files on user disk before upload" "???"
+			analyst          -> jupyterhub "Reviews detections, annotates, approves" "SSH / HTTPS"
+			analyst          -> windows_workstation "Reviews detections, annotates, approves" "SSH / HTTPS"
+			dagster-service  -> ncei                         "Pushes archive packages" "Tugboat API "
 			
-			# ── Coomponent-to-component relationships ─────────────────────────────
-			asset-manager  -> metadataDb "Create/Update metadata" "SQL?"
-			asset-manager -> rawBucket "Create user partition for raw audio" "FastAPI"
-			upload-cli -> rawBucket "Upload raw audio" "AWS CLI"
+			# Component/container relationships
+			jupyterhub -> hmd-workflow "Initiate HMD calculation"
+			hmd-workflow -> productsBucket "Write HMD files"
+			# This interaction is TBD based on cost
+			dataProvider -> jupyterhub "Analyze PAM data and products" "JupyterHub" "Priority4"
+			# It is probably better to include soundscope as a component of the JupyterHub workstation.
 			
+		} # end acousticPlatform
+		
+		# ── Comments ───────────────────────────────────────────────────────
+		comment-context = comment "Comment" {
+			description "Some additional information about this system context diagram..."
 		}
-		
-		ncei = softwareSystem "NCEI Archive" "National Centers for Environmental Information long-term data archive." "External System, Priority1"
-		
-		visualizer = softwareSystem "Visualization Portal" "Interactive web application for exploring acoustic products and annotations." "External Web Page, Priority2"
-		
-		# ── System-level relationships (Level 1) ─────────────────────────────────
-		
-		dataProvider     -> acousticPlatform "Uploads raw acoustic files & metadata, reviews detections" "HTTPS"
-		analyst     	 -> windows_workstation "Analyzes raw audio, perform QC, review and approve detections" "MS Windows Virutal Machine"
-		dataProvider 	 -> analyst "Collaborate to process data/metadata"
-		analyst          -> acousticPlatform "Performs QA/QC, triggers workflow, approves products" "JupyterHub"
-		acousticPlatform -> ncei             "Delivers archived data packages" "HTTPS / SFTP"
-		acousticPlatform -> visualizer       "Delivers processed spectrograms, annotations & metadata" "REST API / S3 event"
-		
-		# ── Container-to-actor / container-to-external relationships (Level 2) ───
-		
-		dataProvider     -> asset-manager   "Create/upload/edit project metadata" ""
-		dataProvider     -> data-integrity-checker "Check files on user disk before upload" "Pyodide"
-		dataProvider     -> upload-cli   "Upload raw audio files (products?)" "AWS CLI upload"
-		analyst          -> jupyterhub "Reviews detections, annotates, approves" "SSH / HTTPS"
-		deliveryApi      -> ncei                         "Pushes archive packages" "Tugboat API "
-		deliveryApi      -> visualizer                   "Publishes products & metadata" "REST API / S3 event"
-		
-		# This interaction is TBD based on cost
-		dataProvider -> jupyterhub "Analyze PAM data and products" "JupyterHub" "Priority4"
-		# It is sprobably better to include soundscope as a component of the JupyterHub workstation.
-	}
+	} #end model
 	
 	views {
 		
 		systemContext acousticPlatform "c4-system-context" "System Context for the PAMHUB" {
 			include *
-			# autoLayout lr
+			include comment-context
+			autoLayout lr
 		}
 		
 		container acousticPlatform "c4-containers" "Containers within the PAMHUB" {
 			include *
-			# autoLayout lr
+			autoLayout lr
 		}
 		
 		component dagster-service "c4-component-dagster" "Data pipelines orchestrated by Dagster" {
@@ -132,13 +127,24 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 			autoLayout lr
 		}
 		
-		component ingest "c4-component-ingest" "Components of the Ingest Service" {
+		component asset-manager "c4-component-asset-manager" "Components of the asset-manager Service" {
+			include *
+			autolayout lr
+		}
+		
+		component windows_workstation "c4-component-windows" "Components of the Windows workstation" {
 			include *
 			autolayout lr
 		}
 		
 		# Use Case 012 Upload project metadata (and create user partition in bucket)
-		dynamic ingest "uc-012-create-project-and-metadata" "Create new project and upload metadata" {
+		# Below is commented until we decide on the exact metadata flow.  In reality for MVP:
+		# provider emails spreadsheet to analyst
+		# provider uploads raw files
+		# analyst extracts metadata from raw files
+		# analyst merges two sources into standard form
+		# analyst writes metadata to database -> END
+		dynamic acousticPlatform "uc-012-create-project-and-metadata" "Create new project and upload metadata" {
 			dataProvider -> asset-manager "Enter or upload new project metadata"
 			dataProvider -> analyst "Submit non-standard metadata"
 			asset-manager -> metadataDb "Load project metadata"
@@ -147,7 +153,7 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 		}
 		
 		# Use Case 011 Pre Upload integrity check
-		dynamic ingest "uc-011-data-integrity" "Check data integrity prior to uploading" {
+		dynamic asset-manager "uc-011-data-integrity" "Check data integrity prior to uploading" {
 			dataProvider -> data-integrity-checker "Run `analyze-raw-subset`"
 			data-integrity-checker -> dataProvider "Provide Markdown report with potential errors and omissions."
 			autolayout lr
@@ -155,12 +161,21 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 		}
 		
 		# Use Case Upload raw audio files
-		
+		dynamic acousticPlatform "uc-005-upload-raw-data-to-pamhub" "Upload raw data to PAMHUB using AWS CLI" {
+			dataProvider -> rawBucket "Upload raw audio" "AWS CLI"
+		}
 		
 		
 		# TODO: (Pri1) dynamic view to perform analysis and QC uc-007-quality-control-raw-audio.md
-		# TODO: (Pri1) dynamic view for creating HMD files uc-002-calculate-spectograms.md
+		
+		# TODO: (Pri1) dynamic view for creating HMD files uc-002-create-hmd-files
 		# PAM Analyst manually triggers Dagster workflow from the jupyterHub;
+		dynamic dagster-service "uc-002-create-hmd-files" "Manually trigger HMD creation" {
+			analyst -> jupyterhub "Write analysis steps in Jupyter notebook"
+			jupyterhub -> hmd-workflow "Trigger HMD Workflow on Dagster Server"
+			hmd-workflow -> productsBucket "Write HMD files"
+			
+		}
 		# JupyterHub callse Dagster service to run a workflow;
 		# Workflow reads raw data, accesses something from the database,
 		# and writes HMD netCDF compliant with a standard.
@@ -252,6 +267,15 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 			}
 			element "Priority4" {
 				background "#c05b5b"
+			}
+			element "Comment" {
+				shape box
+				strokeWidth 2
+				background #FAFCBB
+				stroke #FAFCBB
+				color black
+				fontsize 20
+				height 200
 			}
 		}
 		
