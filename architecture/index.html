@@ -50,6 +50,10 @@
     <li class="toctree-l2"><a class="reference internal" href="#system-context">System Context</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#decompose-pamhub-into-high-level-functions-containers">Decompose PAMHUB into High level functions (Containers)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#comments-from-travis">Comments from Travis</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#dagster-components">Dagster Components</a>
     </li>
@@ -104,6 +108,70 @@
 <p><img alt="System Context" src="images/c4-system-context.svg" />
 <img alt="System Context Key" src="images/c4-system-context-key.svg" /></p>
 <h2 id="decompose-pamhub-into-high-level-functions-containers">Decompose PAMHUB into High level functions (Containers)</h2>
+<h3 id="comments-from-travis">Comments from Travis</h3>
+<ul>
+<li>What is Ingest Service?</li>
+<li>COMMENT - Ingest service was intended as a generic container to capture the different funcitons related to create, read, updat, delete project/platform/deployment metadata.  It also contains the AWS CLI which uploads files directly to a bucket.  Arguably that's a stretch.  More below on what I did to adjust.  Removing the name Ingest and using Asset Manager as the main container and UI functionality.</li>
+<li>Not sure what user/project environment is<ul>
+<li>COMMENT: This was intended to be the controller for anything that needs to be created in PAMHUB when a new user logs in to the system to initiate the process of creating a PAM project which contains 1..N deployments.  includes: setting up the S3 directories, setting up anything needed on the FormsUI, Project ID, user authentication?  It was a generic nod to things we might need if we're giving indivduals access to the system and don't want them to mess up other user's environments.  Is there a better name?  What do you call this set of fucnitons in the Research Workspace code?</li>
+</ul>
+</li>
+<li>File uploads are accepted directly by S3, no separate service necessary there<ul>
+<li>COMMENT: Noted.  Separating the AWS CLI from Asset Manager.</li>
+</ul>
+</li>
+<li>Ingest Service's file upload role overlaps with the form UI, which will be used to do light QC and trigger upload to S3<ul>
+<li>COMMENT:  Can we call this Asset Manager generally? I removed Ingest Service everywhere and replaced it with the Asset Manager stack you described below minus the metadataDB which remains separate for now.  Since the DB needs to be accessed by other elements of the system beyond the Asset Manager, it seems separate.  You can definitely convince me otherwise.  Just want to make sure Cheryl understands.</li>
+</ul>
+</li>
+<li>To the extent that Ingest Service represents the form UI, it's not really as distinct from the Metadata Database as shown<ul>
+<li>COMMENT: OK, but I'm not really sure how to change that.  I left it as is pending discussion.</li>
+</ul>
+</li>
+<li>Nothing should be interacting with the Metadata Database directly via SQL since it's got a PostgREST API sitting in front of it specifically to serve that purpose. </li>
+<li>COMMENT: Noted.  Changed everywhere.</li>
+<li>What is Delivery API?</li>
+<li>COMMENT: I removed Delivery API.  But, there is still a question to be resolved.  Where are dagster workflows initiated?  Below you suggest that's part of Asset Manager but I understood that Cheryl initiates them currently from the Nebari/JupyterHub environment.  I don't know if they are literally triggered by a notebook or if Nebari has another way to initiate jobs on a schedule or when triggered.</li>
+<li>Processed products are exposed directly via S3, no need for a separate service<ul>
+<li>NOTED</li>
+</ul>
+</li>
+<li>Dagster is likely the compontent that will be pushing archives to tugboat, not an API<ul>
+<li>I agree for Metdata.  Are we certain that Tugboat supports large data transfers?  </li>
+</ul>
+</li>
+<li>Extracting/formatting metadata and writing it to the Metadata Database would also likely be a Dagster job, not something an API would do<ul>
+<li>COMMENT: This sounds like something to be discussed and decided in a way that everyone understands.  For example, we will need a function to query the metadataDB, extract the relevant information, and create PyPAM config files.  Are you saying that function should be the responsibility of the dagster-service called from a Jupyter notebook?  If that's true, then the function probably needs to be a Python module installed in the user's jupyterhub environment.  True?  Who can write that?  </li>
+</ul>
+</li>
+<li>Not sure it should be a goal to be able to write to the metadata database via a Jupyter notebook? </li>
+<li>COMMENT:  OK, TBD.  Consider the use case where we run a species detector algorithm from jupyter notebook and want to store the annotations or any other results from the detector run.  How would they be written to the DB?</li>
+<li>My sense for the components we need:</li>
+<li>S3 buckets for raw and processed data</li>
+<li>asset-manager-backed stack<ul>
+<li>to be used for</li>
+<li>raw data QC/upload</li>
+<li><em>Some</em> automated metadata extraction</li>
+<li>Manual metadata curation</li>
+<li>Batch processing job management (eventually)<ul>
+<li>COMMENT: TBD pending discussion with Cheryl.  I don't understand how this batch management differs from the dagster workflows. </li>
+</ul>
+</li>
+<li>to consist of</li>
+<li>A form UI sitting on top of</li>
+<li>A PostgREST API sitting on top of</li>
+<li>A Postgres database</li>
+<li>COMMENT: Agreed.  I didn't inlcude a container/component for the API but noted it in the labeling on the lines connecting the components.  </li>
+</ul>
+</li>
+<li>Suite of Dagster pipelines for data/metadata processing</li>
+<li>Maybe something like AWS Lambda for lighter weight jobs to be triggered via the form UI/dashboard<ul>
+<li>COMMENT: What "lighter weight jobs" are you thinking?  </li>
+</ul>
+</li>
+<li>Windows workstation for manual QC, etc.</li>
+<li>JupyterHub for manual analysis, custom derived proudcts generation, etc.</li>
+</ul>
 <p><img alt="Containers in PAMHUB" src="images/c4-containers.svg" />
 <img alt="Containers in PAMHUB Key" src="images/c4-containers-key.svg" /></p>
 <h2 id="dagster-components">Dagster Components</h2>

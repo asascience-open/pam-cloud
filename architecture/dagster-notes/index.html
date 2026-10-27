@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="PAMHUB Development Team" name="author"/><link href="https://asascience-open.github.io/pam-dac/architecture/dagster-notes/" rel="canonical"/>
+<link href="../../img/favicon.ico" rel="shortcut icon"/>
+<title>Dagster notes - PAMHUB</title>
+<link href="../../css/theme.css" rel="stylesheet"/>
+<link href="../../css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "Dagster notes";
+        var mkdocs_page_input_path = "architecture/dagster-notes.md";
+        var mkdocs_page_url = "/pam-dac/architecture/dagster-notes/";
+      </script>
+<!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+</head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a class="icon icon-home" href="../.."> PAMHUB
+        </a><div role="search">
+<form action="../../search.html" class="wy-form" id="rtd-search-form" method="get">
+<input aria-label="Search docs" name="q" placeholder="Search docs" title="Type search term here" type="text"/>
+</form>
+</div>
+</div>
+<div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">System Architecture</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../">Introduction</a>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../user-manual/">Introduction</a>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="Mobile navigation menu" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="../..">PAMHUB</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a aria-label="Docs" class="icon icon-home" href="../.."></a></li>
+<li class="breadcrumb-item active">Dagster notes</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div class="section" itemprop="articleBody">
+<div class="mermaid">graph TD
+    %% Define Automation &amp; Triggers
+    subgraph Automation_Layer [Automation Layer]
+        Schedule[⏱ Schedule: Cron / Time-based] 
+        Sensor[🔔 Sensor: Event-driven / File Drop]
+    end
+
+    %% Define the Job Layer
+    subgraph Job_Layer [Job: Orchestration Selection]
+        direction LR
+
+        %% Core Asset Graph (Lineage)
+        subgraph Asset_Graph [Asset Lineage Graph]
+            A["📦 Asset A: Raw Data (Bronze)"] --&gt;|Depends on| B["📦 Asset B: Cleaned Data (Silver)"]
+            B --&gt;|Depends on| C["📦 Asset C: Aggregated Metrics (Gold)"]
+        end
+    end
+
+    %% Define Infrastructure Layer
+    subgraph Infra_Layer [Infrastructure &amp; IO Layer]
+        IO["💾 I/O Manager (Handles Read/Write)"]
+        Res["🔌 Resource (Database / API Conn)"]
+    end
+
+    %% Connectors
+    Schedule --&gt;|Triggers| Job_Layer
+    Sensor --&gt;|Triggers| Job_Layer
+    Asset_Graph -.-&gt;|Uses| IO
+    Asset_Graph -.-&gt;|Uses| Res
+
+    classDef asset fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
+    classDef automation fill:#efebe9,stroke:#5d4037,stroke-width:2px;
+    classDef infra fill:#f1f8e9,stroke:#558b2f,stroke-width:2px;
+    class A,B,C asset;
+    class Schedule,Sensor automation;
+    class IO,Res infra;
+</div>
+</div>
+</div><footer>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+</div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+</span>
+</div>
+<script src="../../js/jquery-3.6.0.min.js"></script>
+<script>var base_url = "../..";</script>
+<script src="../../js/theme_extra.js"></script>
+<script src="../../js/theme.js"></script>
+<script src="../../search/main.js"></script>
+<script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+mermaid.initialize({});</script></body>
+</html>

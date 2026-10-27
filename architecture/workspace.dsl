@@ -5,25 +5,29 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 	!docs .
 	
 	model {
-		
+		archetypes {
+			comment = element {
+				tag "Comment"
+			}
+		}
 		# ── Actors ───────────────────────────────────────────────────────────────
 		
 		dataProvider = person "Data Provider" "Submits acoustic recordings, metadata, and derived products." "External Person"
 		
 		analyst = person "PAM Analyst" "Reviews, annotates, and approves processed data via cloud workstation."
 		
+		# ── External Systems ──────────────────────────────────────────────────────────────
+		ncei = softwareSystem "NCEI Archive" "National Centers for Environmental Information long-term data archive." "External System, Priority1"
 		
 		# ── Systems ──────────────────────────────────────────────────────────────
 		
 		acousticPlatform = softwareSystem "PAMHUB" "Ingests acoustic data, orchestrates processing pipelines, and delivers output products." {
 			
 			# ── Containers ───────────────────────────────────────────────────────
-			
 			asset-manager = container "Asset Manager" "Create and edit user/project environment and metadata." "Web Application" {
 				forms-ui = component "Form UI" "UI to manually input/edit/validate metadata and accept/validate metadata file uploads." "Web Application" "Web Page"
 				data-integrity-checker = component "Data Integrity Checker" "Inspect select data provider files before upload for errors" "Web Application" "Web Page"
 			}
-			upload-cli = container "Data Upload CLI" "Interface to AWS upload CLI" "AWS CLI" "Shell"
 			
 			dagster-service = container "Dagster Orchestration" "Administer Dagster OSS components; Orchestrate PAMHUB Flows" "K8s/Dagster/Nebari"  {
 				extract-metadata-workflow = component "Extract Metadata" "Extract instrument/platform metadata from raw audio files" "Dagster Flow/Asset Manager" "Priority1"
@@ -54,12 +58,17 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 				pamguard = component "PamGuard analysis software" "Windows Application" "Priority1"
 			}
 			
+			# ── System-to-system or actor-to-system level relationships (Level 1) ─────────────────────────────────
+			dataProvider     -> acousticPlatform "Uploads raw acoustic files & metadata, reviews detections"
+			dataProvider 	 -> analyst "Collaborate to process data/metadata"
+			acousticPlatform -> ncei             "Delivers data packages for archiving"
+			#acousticPlatform -> visualizer       "Delivers processed spectrograms, annotations & metadata" "REST API / S3 event"
 			
 			# ── Container-to-container relationships ─────────────────────────────
 			
 			# asset-manager
 			asset-manager  -> metadataDb        "Create/Update metadata" "PostgREST"
-			asset-manager  -> rawBucket         "Create/Update data and products" "AWS CLI; S3 PutObject; Other?"
+			asset-manager  -> rawBucket         "Create/Update data and products" "S3 PutObject; Other?"
 			
 			# Direct interaction between JupyterHub and data
 			jupyterhub       -> rawBucket         "Read raw files" "S3 GetObject/?"
@@ -73,191 +82,205 @@ workspace "PAMHUB" "Passive Acoustic Monitoring Data Platform" {
 			# Nebari/JupyterHub initiates data pipelines
 			jupyterhub    -> dagster-service      "Launch data pipeline" "Dagster/Python???"
 			dagster-service   -> metadataDb        "Read metadata" "PostgREST"
-			dagster-service   -> productsBucket       "Write product files" "S3 PutObject/Xarray/"
+			#dagster-service   -> productsBucket       "Write product files" "S3 PutObject/Xarray/"
 			dagster-service -> rawBucket         "Read raw files" "S3 GetObject/"
 			dagster-service -> visualizer	"Delivery derived products for visualization" "???"
 			
-			# ── Coomponent-to-component relationships ─────────────────────────────
-			asset-manager  -> metadataDb "Create/Update metadata" "PostgREST"
-			asset-manager -> rawBucket "Create user partition for raw audio" "FastAPI"
-			upload-cli -> rawBucket "Upload raw audio" "AWS CLI"
-			
-			
-			ncei = softwareSystem "NCEI Archive" "National Centers for Environmental Information long-term data archive." "External System, Priority1"
-			
-			#visualizer = softwareSystem "Visualization Portal" "Interactive web application for exploring acoustic products and annotations." "External Web Page, Priority2"
-			
-			# ── System-level relationships (Level 1) ─────────────────────────────────
-			
-			dataProvider     -> acousticPlatform "Uploads raw acoustic files & metadata, reviews detections"
-			dataProvider 	 -> analyst "Collaborate to process data/metadata"
-			analyst          -> acousticPlatform "Performs QA/QC, triggers workflow, approves products"
-			acousticPlatform -> ncei             "Delivers data packages for archiving"
-			#acousticPlatform -> visualizer       "Delivers processed spectrograms, annotations & metadata" "REST API / S3 event"
-			
 			# ── Container-to-actor / container-to-external relationships (Level 2) ───
-			
-			dataProvider     -> asset-manager   "Create/upload/edit project metadata" "HTTPS"
+			dataProvider     -> rawBucket "Upload raw audio" "AWS CLI"
+			dataProvider     -> forms-ui   "Create/upload/edit project metadata" "HTTPS"
 			dataProvider     -> data-integrity-checker "Check files on user disk before upload" "???"
-			dataProvider     -> upload-cli   "Upload raw audio files (products?)" "AWS CLI upload"
 			analyst          -> jupyterhub "Reviews detections, annotates, approves" "SSH / HTTPS"
 			analyst          -> windows_workstation "Reviews detections, annotates, approves" "SSH / HTTPS"
-			dagster-service      -> ncei                         "Pushes archive packages" "Tugboat API "
-			dagster-service      -> visualizer                   "Publishes products & metadata" "REST API / S3 event"
+			dagster-service  -> ncei                         "Pushes archive packages" "Tugboat API "
 			
+			# Component/container relationships
+			jupyterhub -> hmd-workflow "Initiate HMD calculation"
+			hmd-workflow -> productsBucket "Write HMD files"
 			# This interaction is TBD based on cost
 			dataProvider -> jupyterhub "Analyze PAM data and products" "JupyterHub" "Priority4"
-			# It is sprobably better to include soundscope as a component of the JupyterHub workstation.
+			# It is probably better to include soundscope as a component of the JupyterHub workstation.
+			
+		} # end acousticPlatform
+		
+		# ── Comments ───────────────────────────────────────────────────────
+		comment-context = comment "Comment" {
+			description "Some additional information about this system context diagram..."
+		}
+	} #end model
+	
+	views {
+		
+		systemContext acousticPlatform "c4-system-context" "System Context for the PAMHUB" {
+			include *
+			include comment-context
+			autoLayout lr
 		}
 		
-		views {
-			
-			systemContext acousticPlatform "c4-system-context" "System Context for the PAMHUB" {
-				include *
-				# autoLayout lr
-			}
-			
-			container acousticPlatform "c4-containers" "Containers within the PAMHUB" {
-				include *
-				# autoLayout lr
-			}
-			
-			component dagster-service "c4-component-dagster" "Data pipelines orchestrated by Dagster" {
-				include *
-				autoLayout lr
-			}
-			
-			component asset-manager "c4-component-asset-manager" "Components of the asset-manager Service" {
-				include *
-				autolayout lr
-			}
-			
-			component windows_workstation "c4-component-windows" "Components of the Windows workstation" {
-				include *
-				autolayout lr
-			}
-			
-			# Use Case 012 Upload project metadata (and create user partition in bucket)
-			dynamic asset-manager-ingest "uc-012-create-project-and-metadata" "Create new project and upload metadata" {
-				dataProvider -> asset-manager "Enter or upload new project metadata"
-				dataProvider -> analyst "Submit non-standard metadata"
-				asset-manager -> metadataDb "Load project metadata"
-				asset-manager -> rawBucket "Create project partition/directory"
-				asset-manager -> dataProvider "Provide user credentials and upload instructions"
-			}
-			
-			# Use Case 011 Pre Upload integrity check
-			dynamic pre-upload-qc "uc-011-data-integrity" "Check data integrity prior to uploading" {
-				dataProvider -> data-integrity-checker "Run `analyze-raw-subset`"
-				data-integrity-checker -> dataProvider "Provide Markdown report with potential errors and omissions."
-				autolayout lr
-				# TODO: Investigate structurizr note syntax and add note that dataProvider will investigate and fix possible errors on their own computers or negotiate with PAM Analyst.
-			}
-			
-			# Use Case Upload raw audio files
-			
-			
-			
-			# TODO: (Pri1) dynamic view to perform analysis and QC uc-007-quality-control-raw-audio.md
-			# TODO: (Pri1) dynamic view for creating HMD files uc-002-calculate-spectograms.md
-			# PAM Analyst manually triggers Dagster workflow from the jupyterHub;
-			# JupyterHub callse Dagster service to run a workflow;
-			# Workflow reads raw data, accesses something from the database,
-			# and writes HMD netCDF compliant with a standard.
-			
-			# TODO: (Pri1) dynamic view to archive at NCEI uc-001-archive-pam-data-at-ncei.md
-			# TODO: (Pri2) dynamic view to update HMD climatology and publish to visualization server
-			# TODO: (Pri2) Write use case on extracting HMD metrics to publish to visualization server
-			# TODO: (Pri3) dynamic view to run a species detector uc-003-detect-species-presence.md
-			# TODO: (Pri3) Analyze and understand SoundScope visualization use case
-			# TODO: (Pri3) Write use case defining external PI (data provider) interacting with the Jupyterhub. uc-010-external-investigator-analysis.md
-			# TODO: (Pri4) dynamic view to publish detections to PACM and/or NCEI uc-008-publish-detections.md
-			# TODO: (Pri4) Write use case on publishing detections to PACM and/or NCEI uc-008-publish-detections.md
-			
-			styles {
-				element "Person" {
-					shape Person
-					background "#08427b"
-					color "#ffffff"
-					stroke "#052d56"
-				}
-				element "External Person" {
-					shape Person
-					background "#999999"
-					color "#ffffff"
-					stroke "#6b6b6b"
-				}
-				element "Software System" {
-					shape RoundedBox
-					background "#1168bd"
-					color "#ffffff"
-					stroke "#0b4884"
-				}
-				element "Web Page" {
-					shape WebBrowser
-					background "#1168bd"
-					color "#ffffff"
-					stroke "#0b4884"
-				}
-				element "Shell" {
-					shape Shell
-					background "#1168bd"
-					color "#ffffff"
-					stroke "#0b4884"
-				}
-				element "Terminal" {
-					shape Terminal
-					background "#1168bd"
-					color "#ffffff"
-					stroke "#0b4884"
-				}
-				element "External Web Page" {
-					shape WebBrowser
-					background "#999999"
-					color "#ffffff"
-					stroke "#6b6b6b"
-				}
-				element "External System" {
-					shape RoundedBox
-					background "#999999"
-					color "#ffffff"
-					stroke "#6b6b6b"
-				}
-				element "Container" {
-					shape RoundedBox
-					background "#1168bd"
-					color "#ffffff"
-					stroke "#0b4884"
-				}
-				element "Database" {
-					shape Cylinder
-					background "#1168bd"
-					color "#ffffff"
-					stroke "#0b4884"
-				}
-				element "Storage" {
-					shape Cylinder
-					background "#1168bd"
-					color "#ffffff"
-					stroke "#0b4884"
-				}
-				element "Priority1" {
-					background "#1168bd"
-				}
-				element "Priority2" {
-					background "#11bd22"
-				}
-				element "Priority3" {
-					background "#bd8711"
-				}
-				element "Priority4" {
-					background "#c05b5b"
-				}
-			}
+		container acousticPlatform "c4-containers" "Containers within the PAMHUB" {
+			include *
+			autoLayout lr
+		}
+		
+		component dagster-service "c4-component-dagster" "Data pipelines orchestrated by Dagster" {
+			include *
+			autoLayout lr
+		}
+		
+		component asset-manager "c4-component-asset-manager" "Components of the asset-manager Service" {
+			include *
+			autolayout lr
+		}
+		
+		component windows_workstation "c4-component-windows" "Components of the Windows workstation" {
+			include *
+			autolayout lr
+		}
+		
+		# Use Case 012 Upload project metadata (and create user partition in bucket)
+		# Below is commented until we decide on the exact metadata flow.  In reality for MVP:
+		# provider emails spreadsheet to analyst
+		# provider uploads raw files
+		# analyst extracts metadata from raw files
+		# analyst merges two sources into standard form
+		# analyst writes metadata to database -> END
+		dynamic acousticPlatform "uc-012-create-project-and-metadata" "Create new project and upload metadata" {
+			dataProvider -> asset-manager "Enter or upload new project metadata"
+			dataProvider -> analyst "Submit non-standard metadata"
+			asset-manager -> metadataDb "Load project metadata"
+			asset-manager -> rawBucket "Create project partition/directory"
+			asset-manager -> dataProvider "Provide user credentials and upload instructions"
+		}
+		
+		# Use Case 011 Pre Upload integrity check
+		dynamic asset-manager "uc-011-data-integrity" "Check data integrity prior to uploading" {
+			dataProvider -> data-integrity-checker "Run `analyze-raw-subset`"
+			data-integrity-checker -> dataProvider "Provide Markdown report with potential errors and omissions."
+			autolayout lr
+			# TODO: Investigate structurizr note syntax and add note that dataProvider will investigate and fix possible errors on their own computers or negotiate with PAM Analyst.
+		}
+		
+		# Use Case Upload raw audio files
+		dynamic acousticPlatform "uc-005-upload-raw-data-to-pamhub" "Upload raw data to PAMHUB using AWS CLI" {
+			dataProvider -> rawBucket "Upload raw audio" "AWS CLI"
+		}
+		
+		
+		# TODO: (Pri1) dynamic view to perform analysis and QC uc-007-quality-control-raw-audio.md
+		
+		# TODO: (Pri1) dynamic view for creating HMD files uc-002-create-hmd-files
+		# PAM Analyst manually triggers Dagster workflow from the jupyterHub;
+		dynamic dagster-service "uc-002-create-hmd-files" "Manually trigger HMD creation" {
+			analyst -> jupyterhub "Write analysis steps in Jupyter notebook"
+			jupyterhub -> hmd-workflow "Trigger HMD Workflow on Dagster Server"
+			hmd-workflow -> productsBucket "Write HMD files"
 			
 		}
-		configuration {
-			scope softwaresystem
+		# JupyterHub callse Dagster service to run a workflow;
+		# Workflow reads raw data, accesses something from the database,
+		# and writes HMD netCDF compliant with a standard.
+		
+		# TODO: (Pri1) dynamic view to archive at NCEI uc-001-archive-pam-data-at-ncei.md
+		# TODO: (Pri2) dynamic view to update HMD climatology and publish to visualization server
+		# TODO: (Pri2) Write use case on extracting HMD metrics to publish to visualization server
+		# TODO: (Pri3) dynamic view to run a species detector uc-003-detect-species-presence.md
+		# TODO: (Pri3) Analyze and understand SoundScope visualization use case
+		# TODO: (Pri3) Write use case defining external PI (data provider) interacting with the Jupyterhub. uc-010-external-investigator-analysis.md
+		# TODO: (Pri4) dynamic view to publish detections to PACM and/or NCEI uc-008-publish-detections.md
+		# TODO: (Pri4) Write use case on publishing detections to PACM and/or NCEI uc-008-publish-detections.md
+		
+		styles {
+			element "Person" {
+				shape Person
+				background "#08427b"
+				color "#ffffff"
+				stroke "#052d56"
+			}
+			element "External Person" {
+				shape Person
+				background "#999999"
+				color "#ffffff"
+				stroke "#6b6b6b"
+			}
+			element "Software System" {
+				shape RoundedBox
+				background "#1168bd"
+				color "#ffffff"
+				stroke "#0b4884"
+			}
+			element "Web Page" {
+				shape WebBrowser
+				background "#1168bd"
+				color "#ffffff"
+				stroke "#0b4884"
+			}
+			element "Shell" {
+				shape Shell
+				background "#1168bd"
+				color "#ffffff"
+				stroke "#0b4884"
+			}
+			element "Terminal" {
+				shape Terminal
+				background "#1168bd"
+				color "#ffffff"
+				stroke "#0b4884"
+			}
+			element "External Web Page" {
+				shape WebBrowser
+				background "#999999"
+				color "#ffffff"
+				stroke "#6b6b6b"
+			}
+			element "External System" {
+				shape RoundedBox
+				background "#999999"
+				color "#ffffff"
+				stroke "#6b6b6b"
+			}
+			element "Container" {
+				shape RoundedBox
+				background "#1168bd"
+				color "#ffffff"
+				stroke "#0b4884"
+			}
+			element "Database" {
+				shape Cylinder
+				background "#1168bd"
+				color "#ffffff"
+				stroke "#0b4884"
+			}
+			element "Storage" {
+				shape Cylinder
+				background "#1168bd"
+				color "#ffffff"
+				stroke "#0b4884"
+			}
+			element "Priority1" {
+				background "#1168bd"
+			}
+			element "Priority2" {
+				background "#11bd22"
+			}
+			element "Priority3" {
+				background "#bd8711"
+			}
+			element "Priority4" {
+				background "#c05b5b"
+			}
+			element "Comment" {
+				shape box
+				strokeWidth 2
+				background #FAFCBB
+				stroke #FAFCBB
+				color black
+				fontsize 20
+				height 200
+			}
 		}
+		
 	}
-	
+	configuration {
+		scope softwaresystem
+	}
+}
